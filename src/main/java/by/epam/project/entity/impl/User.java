@@ -7,7 +7,7 @@ public class User extends Entity {
     public enum UserType {
         Admin,
         User,
-        Anonymous;
+        GUEST;
     }
 
     private String login;
