@@ -1,4 +1,4 @@
-package by.epam.login.manager;
+package by.epam.project.command.manager;
 
 import java.util.ResourceBundle;
 

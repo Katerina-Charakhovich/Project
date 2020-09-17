@@ -1,9 +1,13 @@
-package by.epam.login.controller;
+package by.epam.project.controller;
 
-import by.epam.login.command.Command;
-import by.epam.login.manager.ConfigurationManager;
-import by.epam.login.manager.MessageManager;
-import by.epam.login.factory.ActionFactory;
+import by.epam.project.command.Command;
+import by.epam.project.dao.exception.DaoException;
+import by.epam.project.command.manager.ConfigurationManager;
+import by.epam.project.command.manager.MessageManager;
+import by.epam.project.command.factory.ActionFactory;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,17 +19,27 @@ import java.io.IOException;
 
 
 @WebServlet(urlPatterns = "/controller")
-public class Controller extends HttpServlet {
+public class ControllerServlet extends HttpServlet {
+    public static final Logger LOGGER = LogManager.getLogger();
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (DaoException e) {
+            LOGGER.log(Level.ERROR, e);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (DaoException e) {
+            LOGGER.log(Level.ERROR, e);
+        }
     }
 
     private void processRequest(HttpServletRequest request
-            , HttpServletResponse response) throws ServletException, IOException {
+            , HttpServletResponse response) throws ServletException, IOException, DaoException {
         String page;
         Command command = ActionFactory.defineCommand(request);
         page = command.execute(request);

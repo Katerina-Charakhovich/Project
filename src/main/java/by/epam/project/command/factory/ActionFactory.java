@@ -1,13 +1,16 @@
-package by.epam.login.factory;
+package by.epam.project.command.factory;
 
-import by.epam.login.command.Command;
-import by.epam.login.command.CommandType;
-import by.epam.login.command.impl.EmptyCommand;
-import by.epam.login.manager.MessageManager;
+import by.epam.project.command.Command;
+import by.epam.project.command.CommandType;
+import by.epam.project.command.impl.EmptyCommand;
+import by.epam.project.command.manager.MessageManager;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class ActionFactory {
+    private ActionFactory() {
+    }
+
     public static Command defineCommand(HttpServletRequest request) {
         Command current = new EmptyCommand();
         String action = request.getParameter("command");

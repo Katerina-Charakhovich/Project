@@ -1,7 +1,7 @@
-package by.epam.login.command.impl;
+package by.epam.project.command.impl;
 
-import by.epam.login.command.Command;
-import by.epam.login.manager.ConfigurationManager;
+import by.epam.project.command.Command;
+import by.epam.project.command.manager.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
 

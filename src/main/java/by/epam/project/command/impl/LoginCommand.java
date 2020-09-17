@@ -1,9 +1,11 @@
-package by.epam.login.command.impl;
+package by.epam.project.command.impl;
 
-import by.epam.login.command.Command;
-import by.epam.login.manager.ConfigurationManager;
-import by.epam.login.manager.MessageManager;
-import by.epam.login.service.UserService;
+import by.epam.project.command.Command;
+import by.epam.project.dao.exception.DaoException;
+import by.epam.project.command.manager.ConfigurationManager;
+import by.epam.project.command.manager.MessageManager;
+import by.epam.project.service.UserService;
+import by.epam.project.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,11 +14,12 @@ public class LoginCommand implements Command {
     private static final String PASSWORD = "password";
 
     @Override
-    public String execute(HttpServletRequest request) {
+    public String execute(HttpServletRequest request) throws DaoException {
         String page;
         String login = request.getParameter(LOGIN);
-        String pass = request.getParameter(PASSWORD);
-        if (UserService.checkLogin(login, pass)) {
+        String password = request.getParameter(PASSWORD);
+        UserService userService = new UserServiceImpl();
+        if (userService.checkLoginAndPass(login, password)) {
             request.setAttribute("user", login);
             page = ConfigurationManager.getProperty("path.page.welcome");
         } else {

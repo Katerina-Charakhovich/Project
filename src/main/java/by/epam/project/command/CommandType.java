@@ -1,9 +1,10 @@
-package by.epam.login.command;
+package by.epam.project.command;
 
-import by.epam.login.command.impl.LoginCommand;
-import by.epam.login.command.impl.LogoutCommand;
+import by.epam.project.command.impl.LoginCommand;
+import by.epam.project.command.impl.LogoutCommand;
 
 public enum CommandType {
+
     LOGIN {
         {
             this.command = new LoginCommand();
@@ -19,4 +20,6 @@ public enum CommandType {
     public Command getCurrentCommand() {
         return command;
     }
+
+
 }
