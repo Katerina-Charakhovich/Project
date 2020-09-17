@@ -45,7 +45,7 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws SQLException, PoolException {
-        Connection connection = ConnectionCreator.createConnection();
+        Connection connection = ConnectionCreator.getInstance().createConnection();
         try {
             for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
                 connection = freeConnections.take();

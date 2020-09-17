@@ -31,19 +31,20 @@ public class ConnectionCreator {
 
 
     static {
-        try(InputStream inputStream =
-                     ConnectionCreator.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE))
-            {
+        try (InputStream inputStream =
+                     ConnectionCreator.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
             properties.load(inputStream);
             String driverName = (String) properties.get("db.driver");
             Class.forName(driverName);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        DATABASE_URL = (String)properties.get("db.url");
+        DATABASE_URL = (String) properties.get("db.url");
     }
+
     private ConnectionCreator() {
     }
+
     public static ConnectionCreator getInstance() {
         if (!instanceWasCreated.get()) {
             lock.lock();
@@ -58,9 +59,11 @@ public class ConnectionCreator {
         }
         return instance;
     }
-    public static Connection createConnection() throws SQLException {
+
+     Connection createConnection() throws SQLException {
         return DriverManager.getConnection(DATABASE_URL, properties);
     }
+
     void deregisterDrivers() throws PoolException {
         Enumeration<Driver> drivers = DriverManager.getDrivers();
         while (drivers.hasMoreElements()) {
@@ -68,8 +71,8 @@ public class ConnectionCreator {
             try {
                 DriverManager.deregisterDriver(driver);
             } catch (SQLException e) {
-                LOGGER.log(Level.ERROR, MessageManager.getProperty("message.driversnotfound"),e);
-                throw new PoolException(MessageManager.getProperty("message.driversnotfound"),e);
+                LOGGER.log(Level.ERROR, MessageManager.getProperty("message.driversnotfound"), e);
+                throw new PoolException(MessageManager.getProperty("message.driversnotfound"), e);
             }
         }
     }
