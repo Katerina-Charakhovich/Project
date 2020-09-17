@@ -49,7 +49,7 @@ public class ConnectionPool {
         try {
             for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
                 connection = freeConnections.take();
-                freeConnections.offer(new ProxyConnection(connection));
+                givenAwayConnections.offer(new ProxyConnection(connection));
             }
         } catch (InterruptedException e) {
             LOGGER.log(Level.ERROR, MessageManager.getProperty("message.getconnection"), e);
