@@ -14,6 +14,7 @@ public class RegistrationCommand implements Command {
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
     private static final String REPEAT_PASSWORD = "repeat password";
+    private static ValidationService validationService = ValidationService.getInstance();
 
 
     @Override
@@ -27,12 +28,12 @@ public class RegistrationCommand implements Command {
                     MessageManager.getProperty("message.passwordsDoNotMatch"));
            return ConfigurationManager.getProperty("path.page.registration");
         }
-        if (!ValidationService.getInstance().isRightLogin(email)){
+        if (!validationService.isRightLogin(email)){
             request.setAttribute("registrationErrorLogin",
                     MessageManager.getProperty("message.incorrectLoginAndPassword"));
             return ConfigurationManager.getProperty("path.page.registration");
         }
-        if (!ValidationService.getInstance().isRightPassword(password)){
+        if (!validationService.isRightPassword(password)){
             request.setAttribute("registrationErrorPassword",
                     MessageManager.getProperty("message.incorrectLoginAndPassword"));
             return ConfigurationManager.getProperty("path.page.registration");
