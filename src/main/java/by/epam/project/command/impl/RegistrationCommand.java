@@ -28,13 +28,8 @@ public class RegistrationCommand implements Command {
                     MessageManager.getProperty("message.passwordsDoNotMatch"));
            return ConfigurationManager.getProperty("path.page.registration");
         }
-        if (!validationService.isRightLogin(email)){
-            request.setAttribute("registrationErrorLogin",
-                    MessageManager.getProperty("message.incorrectLoginAndPassword"));
-            return ConfigurationManager.getProperty("path.page.registration");
-        }
-        if (!validationService.isRightPassword(password)){
-            request.setAttribute("registrationErrorPassword",
+        if (!validationService.isRightPassword(password) && !validationService.isRightLogin(email)){
+            request.setAttribute("registrationError",
                     MessageManager.getProperty("message.incorrectLoginAndPassword"));
             return ConfigurationManager.getProperty("path.page.registration");
         }

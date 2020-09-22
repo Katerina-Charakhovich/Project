@@ -62,7 +62,6 @@
                             The password must consist of large and small letters and numbers</small>
                     </div>
                 </div>
-                ${registrationErrorPassword}<br/>
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="exampleInputPassword">Confirm password</label>
