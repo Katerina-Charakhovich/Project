@@ -24,12 +24,21 @@ public class ConnectionPool {
     public static final Logger LOGGER = LogManager.getLogger();
 
 
-    private ConnectionPool() {
-        freeConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
+    private ConnectionPool() throws SQLException {
+        freeConnections = init();
         givenAwayConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
     }
 
-    public static ConnectionPool getInstance() {
+    private BlockingQueue<ProxyConnection> init() throws SQLException {
+        freeConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
+        Connection connection = ConnectionCreator.getInstance().createConnection();
+        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+            freeConnections.offer(new ProxyConnection(connection));
+        }
+        return freeConnections;
+    }
+
+    public static ConnectionPool getInstance() throws PoolException {
         if (!instanceWasCreated.get()) {
             lock.lock();
             try {
@@ -37,6 +46,9 @@ public class ConnectionPool {
                     instance = new ConnectionPool();
                     instanceWasCreated.set(true);
                 }
+            } catch (SQLException e) {
+                LOGGER.log(Level.ERROR, MessageManager.getProperty("message.getconnection"), e);
+                throw new PoolException(MessageManager.getProperty("message.getconnection"), e);
             } finally {
                 lock.unlock();
             }
@@ -45,12 +57,10 @@ public class ConnectionPool {
     }
 
     public Connection getConnection() throws SQLException, PoolException {
-        Connection connection = ConnectionCreator.getInstance().createConnection();
+        ProxyConnection connection;
         try {
-            for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-                connection = freeConnections.take();
-                givenAwayConnections.offer(new ProxyConnection(connection));
-            }
+            connection = freeConnections.take();
+            givenAwayConnections.offer(connection);
         } catch (InterruptedException e) {
             LOGGER.log(Level.ERROR, MessageManager.getProperty("message.getconnection"), e);
             throw new PoolException(MessageManager.getProperty("message.getconnection"), e);

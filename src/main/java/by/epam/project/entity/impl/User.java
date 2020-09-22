@@ -5,27 +5,26 @@ import by.epam.project.entity.Entity;
 
 public class User extends Entity {
     public enum UserType {
-        Admin,
-        User,
+        ADMIN,
+        USER,
         GUEST;
     }
 
-    private String login;
+    private String email;
     private String password;
 
-
-    public User(long id, int deleted, String login, String password) {
-        super(id, deleted);
-        this.login = login;
+    public User(int deleted, String email, String password) {
+        super(deleted);
+        this.email = email;
         this.password = password;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -44,22 +43,22 @@ public class User extends Entity {
 
         User user = (User) o;
 
-        if (getLogin() != null ? !getLogin().equals(user.getLogin()) : user.getLogin() != null) return false;
+        if (getEmail() != null ? !getEmail().equals(user.getEmail()) : user.getEmail() != null) return false;
         return getPassword() != null ? getPassword().equals(user.getPassword()) : user.getPassword() == null;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
+        result = 31 * result + (getEmail() != null ? getEmail().hashCode() : 0);
         result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        return sb.append("User{").append("login='").append(login).append('\'')
+        StringBuilder stringBuilder = new StringBuilder();
+        return stringBuilder.append("User{").append("Email='").append(email).append('\'')
                 .append(", password='").append(password).append('\'').append('}').toString();
     }
 }

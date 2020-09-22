@@ -18,31 +18,44 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     public static final Logger LOGGER = LogManager.getLogger();
+    private static UserDaoImpl instance;
     private static final String SQL_SELECT_ALL_UNDELETED_USERS =
-            "SELECT id, login,password FROM testlogin.users WHERE deleted = 0";
+            "SELECT email,password FROM testlogin.users WHERE deleted = 0";
     private static final String SQL_SELECT_ALL_DELETED_USERS =
-            "SELECT id, login,password FROM testlogin.users WHERE deleted = 1";
+            "SELECT email,password FROM testlogin.users WHERE deleted = 1";
     private static final String SQL_SELECT_BY_LOGIN =
-            "SELECT id, password, deleted FROM testlogin.users WHERE login = ? AND deleted = 0";
+            "SELECT password, deleted FROM testlogin.users WHERE email = ? AND deleted = 0";
     private static final String SQL_SELECT_BY_ID =
-            "SELECT login, password, deleted FROM testlogin.users WHERE id = ? AND deleted = 0";
+            "SELECT email, password, deleted FROM testlogin.users WHERE id = ? AND deleted = 0";
     private static final String SQL_SELECT_DELETED_USER =
             "UPDATE testlogin.users SET deleted = 1";
+    private static final String INSERT_NEW_USER =
+            "INSERT INTO testlogin.users(email,password) VALUES(?,?)";
 
+    private UserDaoImpl() {
+    }
+
+    public static UserDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new UserDaoImpl();
+        }
+        return instance;
+    }
 
     @Override
     public User findEntityById(long id) throws DaoException {
         User user = null;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID);
+             ResultSet resultSet = statement.executeQuery();
         ) {
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
-                String login = resultSet.getString(2);
-                String password = resultSet.getString(3);
-                int deleted = resultSet.getInt(4);
-                user = new User(id, deleted, login, password);
+                String email = resultSet.getString(1);
+                String password = resultSet.getString(2);
+                int deleted = resultSet.getInt(3);
+                user = new User(deleted, email, password);
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, MessageManager.getProperty("message.usernotfound"), e);
@@ -52,7 +65,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean delete(Object o) throws DaoException {
+    public boolean delete(User user) throws DaoException {
         return false;
     }
 
@@ -63,7 +76,6 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_DELETED_USER);
         ) {
-            statement.executeUpdate();
             if (user.getDeleted() == 0) {
                 statement.executeUpdate();
                 result = true;
@@ -75,28 +87,40 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean create(Object o) throws DaoException {
-        return false;
+    public boolean create(User user) throws DaoException {
+        boolean result;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_NEW_USER)
+        ) {
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getPassword());
+            result = statement.executeUpdate() > 0;
+        } catch (SQLException | PoolException e) {
+            LOGGER.log(Level.ERROR, MessageManager.getProperty("message.usernotfound"), e);
+            throw new DaoException(MessageManager.getProperty("message.usernotfound"), e);
+        }
+        return result;
     }
 
     @Override
-    public Object update(Object o) throws DaoException {
+    public User update(User user) throws DaoException {
         return null;
     }
 
     @Override
-    public User findUserByLogin(String login) throws DaoException {
+    public User findUserByLogin(String email) throws DaoException {
         User user = null;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_LOGIN);
+
         ) {
-            statement.setString(1, login);
+            statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
-                long id = resultSet.getLong(1);
-                String password = resultSet.getString(3);
-                int deleted = resultSet.getInt(4);
-                user = new User(id, deleted, login, password);
+                String password = resultSet.getString(1);
+                int deleted = resultSet.getInt(2);
+                user = new User(deleted, email, password);
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, MessageManager.getProperty("message.usernotfound"), e);
@@ -110,15 +134,15 @@ public class UserDaoImpl implements UserDao {
         List<User> undeletedUsers = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_UNDELETED_USERS);
+             ResultSet resultSet = statement.executeQuery();
         ) {
             statement.setObject(1, user);
-            ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
-                long id = resultSet.getLong(1);
-                String login = resultSet.getString(2);
-                String password = resultSet.getString(3);
-                int deleted = resultSet.getInt(4);
-                undeletedUsers.add(new User(id, deleted, login, password));
+                String email = resultSet.getString(1);
+                String password = resultSet.getString(2);
+                int deleted = resultSet.getInt(3);
+                undeletedUsers.add(new User(deleted, email, password));
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, MessageManager.getProperty("message.usernotfound"), e);
@@ -132,15 +156,15 @@ public class UserDaoImpl implements UserDao {
         List<User> deletedUsers = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_DELETED_USERS);
+             ResultSet resultSet = statement.executeQuery()
         ) {
             statement.setObject(1, user);
-            ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
-                long id = resultSet.getLong(1);
-                String login = resultSet.getString(2);
-                String password = resultSet.getString(3);
-                int deleted = resultSet.getInt(4);
-                deletedUsers.add(new User(id, deleted, login, password));
+                String email = resultSet.getString(1);
+                String password = resultSet.getString(2);
+                int deleted = resultSet.getInt(3);
+                deletedUsers.add(new User(deleted, email, password));
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, MessageManager.getProperty("message.usernotfound"), e);

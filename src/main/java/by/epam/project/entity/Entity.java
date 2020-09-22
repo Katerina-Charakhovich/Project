@@ -6,17 +6,12 @@ public class Entity implements Serializable, Cloneable {
     private long id;
     private int deleted;
 
-    public Entity(long id, int deleted) {
-        this.id = id;
+    public Entity( int deleted) {
         this.deleted = deleted;
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public int getDeleted() {

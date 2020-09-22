@@ -1,28 +1,27 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <title>Login</title>
+    <title>Registration</title>
 </head>
 <body>
 <style>
     body {
-        padding-top:100px;
+        padding-top: 60px;
     }
-    fieldset{
+
+    fieldset {
         text-align: center;
     }
-    .register-button {
-        margin-top: -54px;
-        margin-left: 100px;
-    }
+
     input[type=email], input[type=password] {
         border: 1px solid #ccc;
         border-radius: 50px;
     }
-    input[type=submit]{
-        margin-left: 60px;
+
+    input[type=submit] {
+        margin-left: 120px;
     }
 
 </style>
@@ -31,11 +30,11 @@
         <div class="col">
         </div>
         <div class="col-4">
-            <form name="loginForm" method="post" action="controller" class="was-validated">
+            <form name="registrationForm" method="post" action="controller" class="was-validated">
                 <fieldset disabled>
-                    <legend>Sign in</legend>
+                    <legend>Create your account</legend>
                 </fieldset>
-                <input type="hidden" name="command" value="login"/>
+                <input type="hidden" name="command" value="registration"/>
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Login</label>
@@ -48,6 +47,7 @@
                                required>
                     </div>
                 </div>
+                ${registrationErrorLogin}<br/>
                 <div class="mb-3">
                     <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
@@ -58,19 +58,27 @@
                                pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,20}$"
                                placeholder="Must be 6-20 characters long"
                                required>
+                        <small id="passwordHelp" class="form-text text-muted">
+                            The password must consist of large and small letters and numbers</small>
                     </div>
                 </div>
-                            ${wrongAction}
-                            ${nullPage}
-                            ${errorLoginPassMessage}<br/><br/>
-                <div>
-                <input class="btn btn-outline-primary" type="submit" value="Log in" >
+                ${registrationErrorPassword}<br/>
+                <div class="mb-3">
+                    <div class="form-group">
+                        <label for="exampleInputPassword">Confirm password</label>
+                        <input type="password" name="repeat password"
+                               class="form-control is-invalid"
+                               id="exampleInputPassword"
+                               aria-describedby="validatedInputGroupPrepend"
+                               pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,20}$"
+                               placeholder="Confirm your password"
+                               required>
+                    </div>
                 </div>
-            </form>
-            <form name="registrationSubmit" method="post" action="controller" class="register-button">
-                <input class="btn btn-outline-primary" type="submit" value="Registration">
-                <input type="hidden" name="command" value="forward"/>
-                <input type="hidden" name="page" value="path.page.registration"/>
+                ${wrongAction}
+                ${nullPage}
+                ${registrationError}<br/><br/>
+                <input class="btn btn-outline-primary" type="submit" value="Submit">
             </form>
         </div>
         <div class="col">

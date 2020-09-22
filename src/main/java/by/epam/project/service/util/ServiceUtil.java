@@ -11,11 +11,11 @@ import java.security.NoSuchAlgorithmException;
 public class ServiceUtil {
 
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String hash(String pass){
+    public static String hash(String password){
         String hashPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
-            byte[] messageDigest = md.digest(pass.getBytes());
+            byte[] messageDigest = md.digest(password.getBytes());
             BigInteger no = new BigInteger(1, messageDigest);
             hashPassword = no.toString(16);
             while (hashPassword.length() < 32) {

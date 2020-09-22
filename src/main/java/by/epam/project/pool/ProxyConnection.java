@@ -1,5 +1,11 @@
 package by.epam.project.pool;
 
+import by.epam.project.command.manager.MessageManager;
+import by.epam.project.pool.exception.PoolException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Properties;
@@ -7,6 +13,7 @@ import java.util.concurrent.Executor;
 
 public class ProxyConnection implements Connection {
     private Connection connection;
+    public static final Logger LOGGER = LogManager.getLogger();
 
     ProxyConnection(Connection connection) {
         this.connection = connection;
@@ -54,7 +61,11 @@ public class ProxyConnection implements Connection {
 
     @Override
     public void close() throws SQLException {
-        ConnectionPool.getInstance().releaseConnection(this);
+        try {
+            ConnectionPool.getInstance().releaseConnection(this);
+        } catch (PoolException e) {
+            LOGGER.log(Level.ERROR, MessageManager.getProperty("message.getconnection"), e);
+        }
     }
 
     void trueClose() {
