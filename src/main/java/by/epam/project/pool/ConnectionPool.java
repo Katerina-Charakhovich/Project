@@ -17,9 +17,9 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ConnectionPool {
     private static ConnectionPool instance;
     private static Lock lock = new ReentrantLock();
-    private static AtomicBoolean instanceWasCreated = new AtomicBoolean();
+    private static final AtomicBoolean instanceWasCreated = new AtomicBoolean();
     private BlockingQueue<ProxyConnection> freeConnections;
-    private BlockingQueue<ProxyConnection> givenAwayConnections;
+    private final BlockingQueue<ProxyConnection> givenAwayConnections;
     private static final int DEFAULT_POOL_SIZE = 32;
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -56,7 +56,7 @@ public class ConnectionPool {
         return instance;
     }
 
-    public Connection getConnection() throws SQLException, PoolException {
+    public Connection getConnection() throws PoolException {
         ProxyConnection connection;
         try {
             connection = freeConnections.take();
@@ -68,9 +68,13 @@ public class ConnectionPool {
         return connection;
     }
 
-    public void releaseConnection(ProxyConnection connection) {
-        givenAwayConnections.remove(connection);
-        freeConnections.offer(connection);
+    public void releaseConnection(Connection connection) {
+        if (connection!=null){
+            if (connection instanceof ProxyConnection) {
+                givenAwayConnections.remove(connection);
+                freeConnections.offer((ProxyConnection)connection);
+            }
+        }
     }
 
     public void destroyPool() throws PoolException {

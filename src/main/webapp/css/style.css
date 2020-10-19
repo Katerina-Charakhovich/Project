@@ -1,0 +1,149 @@
+
+.container-sm_registration {
+    padding-top: 60px;
+}
+.registration{
+    background-image: url("/pictures_for_project/127304-nebo-fentezi-drakon-atmosfera-cifrovoe_iskusstvo-1920x1080.jpg");
+}
+
+.create_your_account {
+    text-align: center;
+    color: #cccccc;
+}
+
+.submit-registration {
+    margin-left: 150px;
+}
+.container-sm
+{
+    padding-top: 120px;
+    background-size: 100%;
+}
+.sign_in{
+    text-align: center;
+    color: #cccccc;
+}
+.register-button {
+    margin-top: -54px;
+    margin-left: 170px;
+}
+input[type=email], input[type=password] {
+    border: 1px solid #ccc;
+    border-radius: 50px;
+}
+.submit-login{
+    margin-left: 60px;
+}
+
+.carousel-item {
+    height: 400px;
+    overflow: hidden;
+    width: 100%;
+    float: left;
+}
+
+.carousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.photos{
+    margin-bottom: 30px;
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+    width: 25%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#poster-row1 {
+    margin-bottom: 16px;
+}
+
+.startPage{
+   background-image: url(/pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg);
+}
+.login{
+    background-image: url("/pictures_for_project/127304-nebo-fentezi-drakon-atmosfera-cifrovoe_iskusstvo-1920x1080.jpg");
+}
+.footer-copyright{
+    flex: 0 0 auto;
+    padding-top: 300px;
+    color: aliceblue;
+}
+.validationTooltip{
+    color: #cccccc;
+}
+#headerForm{
+    position: relative;
+    left: -20px;
+}
+#passwordHelp{
+    color: #cccccc;
+}
+#dropDownGroup{
+    margin-top: -38px;
+    margin-left: 300px;
+}
+.film{
+    background-image: url("/pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
+}
+#trailer{
+    right: 40px;
+}
+#genre{
+    right: 20px;
+}
+.edit_profile{
+    text-align: center;
+    color: #cccccc;
+}
+.submit-edit {
+    text-align: center;
+}
+#edit{
+    margin-right: 100px;
+}
+.Profile{
+    background-image: url("/pictures_for_project/planeta_oblaka_svet_zvezdy_94996_1920x1080.jpg");
+}
+.table{
+    background: cadetblue;
+    color: white;
+}
+.button-save{
+    margin-top: 30px;
+}
+#profileForm{
+    position: relative;
+    left: -40px;
+}
+.profile_edit{
+    background-image: url("/pictures_for_project/planeta_oblaka_svet_zvezdy_94996_1920x1080.jpg");
+}
+.profileType{
+    color: #cccccc;
+}
+.Admin_Page{
+    background-image: url("/pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
+}
+.validation {
+
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    color: #D63301;
+    background-color: #FFCCBA;
+    background-image: url('/pictures_for_project/msg/validation.png');
+    text-align: center;
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+}
+.profileCard{
+    background-image: url("/pictures_for_project/25311-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
+}
+
+

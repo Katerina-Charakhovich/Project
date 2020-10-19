@@ -6,9 +6,12 @@ public class Entity implements Serializable, Cloneable {
     private long id;
     private int deleted;
 
-    public Entity( int deleted) {
-        this.deleted = deleted;
+    public Entity(long id) {
+        this.id = id;
     }
+    public Entity() {
+    }
+
 
     public long getId() {
         return id;
@@ -20,6 +23,10 @@ public class Entity implements Serializable, Cloneable {
 
     public void setDeleted(int deleted) {
         this.deleted = deleted;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override
@@ -43,7 +50,7 @@ public class Entity implements Serializable, Cloneable {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        return sb.append("Entity{").append("id=").append(id).append(", deleted=")
-                .append(deleted).append('}').toString();
+        return sb.append("Entity{").append("id=").append(id)
+                .append(", deleted=").append(deleted).append('}').toString();
     }
 }

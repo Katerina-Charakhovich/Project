@@ -14,6 +14,10 @@ public class ActionFactory {
     public static Command defineCommand(HttpServletRequest request) {
         Command current = new EmptyCommand();
         String action = request.getParameter("command");
+        return getCommand(request, current, action);
+    }
+
+    public static Command getCommand(HttpServletRequest request, Command current, String action) {
         if (action == null || action.isEmpty()) {
             return current;
         }

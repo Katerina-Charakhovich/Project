@@ -1,12 +1,13 @@
 package by.epam.project.controller;
 
 import by.epam.project.command.Command;
-import by.epam.project.dao.exception.DaoException;
+import by.epam.project.command.exception.CommandException;
 import by.epam.project.command.manager.ConfigurationManager;
 import by.epam.project.command.manager.MessageManager;
 import by.epam.project.command.factory.ActionFactory;
+import by.epam.project.entity.Router;
+import by.epam.project.pool.ConnectionPool;
 import by.epam.project.pool.exception.PoolException;
-import by.epam.project.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.SQLException;
 
 
 @WebServlet(urlPatterns = "/controller")
@@ -29,7 +29,7 @@ public class ControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ServiceException | DaoException e) {
+        } catch (CommandException e) {
             LOGGER.log(Level.ERROR, e);
         }
     }
@@ -38,7 +38,7 @@ public class ControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ServiceException | DaoException e) {
+        } catch (CommandException e) {
             LOGGER.log(Level.ERROR, e);
 
 
@@ -46,18 +46,30 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request
-            , HttpServletResponse response) throws ServletException, IOException, DaoException, ServiceException {
-        String page;
+            , HttpServletResponse response) throws ServletException, IOException, CommandException {
         Command command = ActionFactory.defineCommand(request);
-        page = command.execute(request);
-        if (page != null) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(page);
-            dispatcher.forward(request, response);
-        } else {
-            page = ConfigurationManager.getProperty("path.page.index");
+        Router router = command.execute(request);
+        request.getSession().setAttribute("currentPage", router.getPage());
+        if (router.getPage() == null){
+            router.setPage(ConfigurationManager.getProperty("path.page.index"));
             request.getSession().setAttribute("nullPage",
                     MessageManager.getProperty("message.nullpage"));
-            response.sendRedirect(request.getContextPath() + page);
+            response.sendRedirect(request.getContextPath() + router.getPage());
+        }
+        if (Router.Type.FORWARD.equals(router.getType())) {
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(router.getPage());
+            dispatcher.forward(request, response);
+        } else {
+            response.sendRedirect(request.getContextPath() + router.getPage());
+        }
+    }
+
+    @Override
+    public void destroy() {
+        try {
+            ConnectionPool.getInstance().destroyPool();
+        } catch (PoolException e) {
+            LOGGER.log(Level.ERROR, e);
         }
     }
 }

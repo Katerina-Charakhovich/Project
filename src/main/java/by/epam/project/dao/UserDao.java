@@ -8,7 +8,16 @@ import java.util.List;
 public interface UserDao extends BaseDao<User> {
     User findUserByLogin(String login) throws DaoException;
 
-    List<User> findAllUndeletedUsers(User user) throws DaoException;
+    List<User> findAllUndeletedUsers(int currentPage, int filmsOnPage) throws DaoException;
 
-    List<User> findAllDeletedUsers(User user) throws DaoException;
+    User findUserWithTheAllInfoByLogin(String login) throws DaoException;
+
+    User updateInfo(User user) throws DaoException;
+
+    User updateAvatar(User user) throws DaoException;
+
+    int getNumberOfRows() throws DaoException;
+
+    User lockUser(User user) throws DaoException;
+
 }
