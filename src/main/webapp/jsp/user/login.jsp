@@ -13,7 +13,7 @@
         <%@include file="/css/style.css" %>
     </style>
 </head>
-<c:import url="common/header.jsp"/>
+<c:import url="../common/header.jsp"/>
 <div class="login">
     <div class="container-sm">
         <div class="row">
@@ -92,6 +92,6 @@
     <br/>
     <br/>
     <br/>
-    <c:import url="common/footer.jsp"/>
+    <c:import url="../common/footer.jsp"/>
 </div>
 </html>

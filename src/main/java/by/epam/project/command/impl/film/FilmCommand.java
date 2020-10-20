@@ -5,7 +5,7 @@ import by.epam.project.command.exception.CommandException;
 import by.epam.project.command.manager.ConfigurationManager;
 import by.epam.project.entity.Router;
 import by.epam.project.entity.impl.FilmInfo;
-import by.epam.project.service.MediaService;
+import by.epam.project.service.impl.MediaServiceImpl;
 import by.epam.project.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +21,7 @@ public class FilmCommand implements Command {
     private static final String CURRENT_YEAR_OF_CREATION = "yearOfCreation";
     private static final String CURRENT_GENRE = "genre";
     private static final String CURRENT_LINK = "link";
-    private static final MediaService mediaService = MediaService.getInstance();
+    private static final MediaServiceImpl MEDIA_SERVICE_IMPL = MediaServiceImpl.getInstance();
     public static final Logger LOGGER = LogManager.getLogger();
 
     @Override
@@ -33,7 +33,7 @@ public class FilmCommand implements Command {
         String filmName = request.getParameter(CURRENT_FILM_NAME);
         String realName = request.getParameter(CURRENT_REAL_FILM_NAME);
         try {
-            filmInfo = mediaService.findInfoById(id);
+            filmInfo = MEDIA_SERVICE_IMPL.findInfoById(id);
             request.getSession().setAttribute(CURRENT_DESCRIPTION, filmInfo.getDescription());
             request.getSession().setAttribute(CURRENT_YEAR_OF_CREATION, filmInfo.getYearOfCreation());
             request.getSession().setAttribute(CURRENT_GENRE, filmInfo.getGenre());

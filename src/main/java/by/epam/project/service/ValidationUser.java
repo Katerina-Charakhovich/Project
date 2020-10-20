@@ -16,6 +16,7 @@ public class ValidationUser {
         }
         return instance;
     }
+
     public Boolean isRightLogin(String enteredLogin) {
         return enteredLogin.matches(LOGIN_EXPRESSION);
     }
@@ -28,7 +29,9 @@ public class ValidationUser {
         return aboutMe.length() <= MAX_SYMBOLS;
     }
 
-    public Boolean isRightName(String name){
+    public Boolean isRightName(String name) {
         return name.matches(NAME_EXPRESSION);
     }
+
+
 }

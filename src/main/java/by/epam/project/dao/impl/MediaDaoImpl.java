@@ -84,7 +84,7 @@ public class MediaDaoImpl implements MediaDao {
                 String realName = resultSet.getString("real_name");
                 long id = resultSet.getLong("id");
                 String filmName = resultSet.getString("file_name");
-                        film = new Film(id, filmName, realName);
+                film = new Film(id, filmName, realName);
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
@@ -100,14 +100,14 @@ public class MediaDaoImpl implements MediaDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_UNDELETED_FILMS);
         ) {
-            statement.setInt(1,start);
-            statement.setInt(2,filmsOnPage);
+            statement.setInt(1, start);
+            statement.setInt(2, filmsOnPage);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String realName = resultSet.getString("real_name");
                 long id = resultSet.getLong("id");
                 String filmName = resultSet.getString("film_name");
-                undeletedFilms.add(new Film(id,filmName,realName));
+                undeletedFilms.add(new Film(id, filmName, realName));
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, "Films not found", e);
@@ -126,12 +126,12 @@ public class MediaDaoImpl implements MediaDao {
             while (resultSet.next()) {
                 numOfRows = resultSet.getInt(1);
             }
-        }catch (SQLException | PoolException e) {
-                LOGGER.log(Level.ERROR, "Films not found", e);
-                throw new DaoException("Films not found", e);
-            }
-        return numOfRows;
+        } catch (SQLException | PoolException e) {
+            LOGGER.log(Level.ERROR, "Films not found", e);
+            throw new DaoException("Films not found", e);
         }
+        return numOfRows;
+    }
 
     @Override
     public Film findFilmById(long id) throws DaoException {
@@ -163,12 +163,12 @@ public class MediaDaoImpl implements MediaDao {
             statement.setLong(1, filmId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-              String description = resultSet.getString("description");
-              int yearOfCreation = resultSet.getInt("year_of_creation");
-              String genre = resultSet.getString("genre");
-              String link = resultSet.getString("link");
-              long idFilm = resultSet.getLong("film_id");
-              filmInfo = new FilmInfo(description,yearOfCreation,genre,idFilm,link);
+                String description = resultSet.getString("description");
+                int yearOfCreation = resultSet.getInt("year_of_creation");
+                String genre = resultSet.getString("genre");
+                String link = resultSet.getString("link");
+                long idFilm = resultSet.getLong("film_id");
+                filmInfo = new FilmInfo(description, yearOfCreation, genre, idFilm, link);
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);

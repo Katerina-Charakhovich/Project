@@ -10,7 +10,6 @@
     text-align: center;
     color: #cccccc;
 }
-
 .submit-registration {
     margin-left: 150px;
 }
@@ -34,7 +33,6 @@ input[type=email], input[type=password] {
 .submit-login{
     margin-left: 60px;
 }
-
 .carousel-item {
     height: 400px;
     overflow: hidden;
@@ -59,7 +57,6 @@ input[type=email], input[type=password] {
 #poster-row1 {
     margin-bottom: 16px;
 }
-
 .startPage{
    background-image: url(/pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg);
 }
@@ -144,6 +141,10 @@ input[type=email], input[type=password] {
 }
 .profileCard{
     background-image: url("/pictures_for_project/25311-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
+}
+.error{
+    background-image: url("/pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
+    color: #cccccc;
 }
 
 

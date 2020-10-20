@@ -1,10 +1,11 @@
 package by.epam.project.entity;
 
 public class Router {
-    public enum Type{
+    public enum Type {
         FORWARD,
         REDIRECT
     }
+
     private String page;
     private Type type;
 

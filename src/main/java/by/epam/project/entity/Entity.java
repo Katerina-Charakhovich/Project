@@ -9,6 +9,7 @@ public class Entity implements Serializable, Cloneable {
     public Entity(long id) {
         this.id = id;
     }
+
     public Entity() {
     }
 

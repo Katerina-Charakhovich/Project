@@ -5,7 +5,7 @@ import by.epam.project.command.exception.CommandException;
 import by.epam.project.command.manager.ConfigurationManager;
 import by.epam.project.entity.Router;
 import by.epam.project.entity.impl.FilmInfo;
-import by.epam.project.service.MediaService;
+import by.epam.project.service.impl.MediaServiceImpl;
 import by.epam.project.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,8 +21,9 @@ public class ViewFilmPageCommand implements Command {
     private static final String CURRENT_YEAR_OF_CREATION = "yearOfCreation";
     private static final String CURRENT_GENRE = "genre";
     private static final String CURRENT_LINK = "link";
-    private final MediaService mediaService = MediaService.getInstance();
+    private final MediaServiceImpl mediaServiceImpl = MediaServiceImpl.getInstance();
     public static final Logger LOGGER = LogManager.getLogger();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = ConfigurationManager.getProperty("path.page.film");
@@ -32,7 +33,7 @@ public class ViewFilmPageCommand implements Command {
         String filmName = request.getParameter(CURRENT_FILM_NAME);
         String realName = request.getParameter(CURRENT_REAL_FILM_NAME);
         try {
-            filmInfo = mediaService.findInfoById(filmId);
+            filmInfo = mediaServiceImpl.findInfoById(filmId);
             request.getSession().setAttribute(CURRENT_DESCRIPTION, filmInfo.getDescription());
             request.getSession().setAttribute(CURRENT_YEAR_OF_CREATION, filmInfo.getYearOfCreation());
             request.getSession().setAttribute(CURRENT_GENRE, filmInfo.getGenre());

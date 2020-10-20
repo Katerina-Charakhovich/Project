@@ -9,7 +9,7 @@ public class FilmInfo extends Entity {
     private String link;
     private long filmId;
 
-    public FilmInfo(String description, int yearOfCreation, String genre, long filmId,String link) {
+    public FilmInfo(String description, int yearOfCreation, String genre, long filmId, String link) {
         this.description = description;
         this.yearOfCreation = yearOfCreation;
         this.genre = genre;

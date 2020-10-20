@@ -50,7 +50,7 @@ public class ControllerServlet extends HttpServlet {
         Command command = ActionFactory.defineCommand(request);
         Router router = command.execute(request);
         request.getSession().setAttribute("currentPage", router.getPage());
-        if (router.getPage() == null){
+        if (router.getPage() == null) {
             router.setPage(ConfigurationManager.getProperty("path.page.index"));
             request.getSession().setAttribute("nullPage",
                     MessageManager.getProperty("message.nullpage"));

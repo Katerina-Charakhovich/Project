@@ -27,11 +27,18 @@
                 <br/>
                 <br/>
                 <div class="upload text-info">
-                    <fmt:message key="Label.SelectFileUpload"/><br/>
-                                    <form action="upload" enctype="multipart/form-data" method="POST">
-                                        <INPUT type="file" name="content" height="130">
+                    <fmt:message key="Label.SelectFileUpload"/>
+                    <br/>
+                    <form action="upload" enctype="multipart/form-data" method="post">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="content" id="validatedCustomFile"
+                                   required>
+                            <label class="custom-file-label" for="validatedCustomFile"><fmt:message
+                                    key="Avatar.Choose"/></label>
+                        </div>
                         <div class="button-save">
-                            <button class="btn btn-outline-primary " type="submit"><fmt:message key="Submit.Save"/></button>
+                            <button class="btn btn-outline-primary " type="submit"><fmt:message
+                                    key="Submit.Save"/></button>
                         </div>
                     </form>
                 </div>

@@ -1,7 +1,6 @@
 package by.epam.project.pool;
 
 import by.epam.project.pool.exception.PoolException;
-import by.epam.project.command.manager.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +18,7 @@ public class ConnectionPool {
     private static Lock lock = new ReentrantLock();
     private static final AtomicBoolean instanceWasCreated = new AtomicBoolean();
     private BlockingQueue<ProxyConnection> freeConnections;
-    private final BlockingQueue<ProxyConnection> givenAwayConnections;
+    private BlockingQueue<ProxyConnection> givenAwayConnections;
     private static final int DEFAULT_POOL_SIZE = 32;
     public static final Logger LOGGER = LogManager.getLogger();
 
@@ -47,8 +46,8 @@ public class ConnectionPool {
                     instanceWasCreated.set(true);
                 }
             } catch (SQLException e) {
-                LOGGER.log(Level.ERROR, MessageManager.getProperty("message.getconnection"), e);
-                throw new PoolException(MessageManager.getProperty("message.getconnection"), e);
+                LOGGER.log(Level.ERROR, "Impossible to create Connection", e);
+                throw new PoolException("Impossible to create Connection", e);
             } finally {
                 lock.unlock();
             }
@@ -62,17 +61,18 @@ public class ConnectionPool {
             connection = freeConnections.take();
             givenAwayConnections.offer(connection);
         } catch (InterruptedException e) {
-            LOGGER.log(Level.ERROR, MessageManager.getProperty("message.getconnection"), e);
-            throw new PoolException(MessageManager.getProperty("message.getconnection"), e);
+            LOGGER.log(Level.ERROR, "Impossible to create Connection", e);
+            throw new PoolException("Impossible to create Connection", e);
         }
         return connection;
     }
 
     public void releaseConnection(Connection connection) {
-        if (connection!=null){
-            if (connection instanceof ProxyConnection) {
-                givenAwayConnections.remove(connection);
-                freeConnections.offer((ProxyConnection)connection);
+        if (connection != null) {
+            if (connection instanceof ProxyConnection && givenAwayConnections.remove(connection)) {
+                freeConnections.offer((ProxyConnection) connection);
+            } else {
+                LOGGER.log(Level.FATAL, "Connection is not a ProxyConnection");
             }
         }
     }
@@ -92,8 +92,8 @@ public class ConnectionPool {
                 }
             }
         } catch (InterruptedException e) {
-            LOGGER.log(Level.ERROR, MessageManager.getProperty("message.destroypool"), e);
-            throw new PoolException(MessageManager.getProperty("message.destroypool"), e);
+            LOGGER.log(Level.ERROR, "Impossible to destroy pool", e);
+            throw new PoolException("Impossible to destroy pool", e);
         }
         ConnectionCreator.getInstance().deregisterDrivers();
     }

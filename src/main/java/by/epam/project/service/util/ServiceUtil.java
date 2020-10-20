@@ -4,6 +4,7 @@ import by.epam.project.command.manager.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +12,8 @@ import java.security.NoSuchAlgorithmException;
 public class ServiceUtil {
 
     public static final Logger LOGGER = LogManager.getLogger();
-    public static String hash(String password){
+
+    public static String hash(String password) {
         String hashPassword = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -23,7 +25,7 @@ public class ServiceUtil {
             }
 
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.log(Level.ERROR, MessageManager.getProperty("message.wrongpassword"), e);
+            LOGGER.log(Level.ERROR, "Algorithm not found", e);
         }
         return hashPassword;
     }

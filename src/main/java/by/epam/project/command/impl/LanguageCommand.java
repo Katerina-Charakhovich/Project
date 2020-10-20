@@ -20,13 +20,11 @@ public class LanguageCommand implements Command {
 
         if ("en".equalsIgnoreCase(localeFromNavButton)) {
             request.getSession().setAttribute(LANGUAGE, "RU");
-
         } else {
             request.getSession().setAttribute(LANGUAGE, "EN");
         }
         String currentPage = (String) request.getSession().getAttribute("currentPage");
         Router router = new Router(currentPage, Router.Type.FORWARD);
-
         if (action != null && !action.isEmpty()) {
             Command current = new EmptyCommand();
             current = ActionFactory.getCommand(request, current, action);

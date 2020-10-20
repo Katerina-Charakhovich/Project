@@ -7,7 +7,8 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title><fmt:message key="Label.Welcome"/></title>
     <style>
         <%@include file="/css/style.css" %>
@@ -23,13 +24,13 @@
                     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active" data-interval="2000">
-                                <img src="pictures_for_project/jocker.jpg" class="d-block w-100" alt="...">
+                                <img src="../../pictures_for_project/jocker.jpg" class="d-block w-100" alt="...">
                             </div>
                             <div class="carousel-item" data-interval="2000">
-                                <img src="pictures_for_project/vedmak.jpg" class="d-block w-100" alt="...">
+                                <img src="../../pictures_for_project/vedmak.jpg" class="d-block w-100" alt="...">
                             </div>
                             <div class="carousel-item" data-interval="2000">
-                                <img src="pictures_for_project/ironMan.jpg" class="d-block w-100" alt="...">
+                                <img src="../../pictures_for_project/ironMan.jpg" class="d-block w-100" alt="...">
                             </div>
                         </div>
                         <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
@@ -55,17 +56,20 @@
                 </div>
                 <div class="col">
                     <div class="row" id="poster-row1">
-                        <div class="col"><img src="pictures_for_project/posters_EN/inception.jpg" alt="" width="131">
+                        <div class="col"><img src="../../pictures_for_project/posters_EN/inception.jpg" alt=""
+                                              width="131">
                         </div>
-                        <div class="col"><img src="pictures_for_project/posters_EN/john_wick2.jpg" alt="" width="131">
+                        <div class="col"><img src="../../pictures_for_project/posters_EN/john_wick2.jpg" alt=""
+                                              width="131">
                         </div>
                         <div class="col-3"></div>
                     </div>
                     <div class="row">
                         <div class="col"><img
-                                src="pictures_for_project/posters_EN/three_billboards_outside_ebbing_missouri.jpg"
+                                src="../../pictures_for_project/posters_EN/three_billboards_outside_ebbing_missouri.jpg"
                                 alt="" width="131"></div>
-                        <div class="col"><img src="pictures_for_project/posters_RU/Tenet.jpg" alt="" width="131"></div>
+                        <div class="col"><img src="../../pictures_for_project/posters_RU/Tenet.jpg" alt="" width="131">
+                        </div>
                         <div class="col-3"></div>
                     </div>
                 </div>
@@ -77,7 +81,8 @@
             <div class="input-group-prepend">
                 <label class="input-group-text" for="dropDownGroup"><fmt:message key="Label.choose"/></label>
             </div>
-            <button class="btn btn-secondary dropdown-toggle" id="dropDownGroup" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" id="dropDownGroup" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
                 ${filmsOnPage}
             </button>
             <form method="post" action="controller">
@@ -123,7 +128,8 @@
 
                 <c:if test="${currentFilmPage lt noOfPages}">
                     <li class="page-item"><a class="page-link"
-                                             href="controller?command=init_start_page&filmsOnPage=${filmsOnPage}&currentFilmPage=${currentFilmPage+1}"><fmt:message key="Label.next"/></a>
+                                             href="controller?command=init_start_page&filmsOnPage=${filmsOnPage}&currentFilmPage=${currentFilmPage+1}"><fmt:message
+                            key="Label.next"/></a>
                     </li>
                 </c:if>
             </ul>

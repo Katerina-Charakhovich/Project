@@ -14,7 +14,7 @@ public class User extends Entity {
     private String name;
     private String locked;
 
-    public User( long id, String email, String password, String role) {
+    public User(long id, String email, String password, String role) {
         super(id);
         this.email = email;
         this.password = password;

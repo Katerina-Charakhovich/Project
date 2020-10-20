@@ -10,8 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ForwardCommand implements Command {
     private static final String PAGE = "page";
+
     @Override
-    public Router execute(HttpServletRequest request){
+    public Router execute(HttpServletRequest request) {
         String page = ConfigurationManager.getProperty(request.getParameter(PAGE));
         return new Router(page, Router.Type.FORWARD);
     }

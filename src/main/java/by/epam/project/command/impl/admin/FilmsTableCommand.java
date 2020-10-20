@@ -6,7 +6,7 @@ import by.epam.project.command.manager.ConfigurationManager;
 import by.epam.project.entity.Router;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.FilmInfo;
-import by.epam.project.service.MediaService;
+import by.epam.project.service.impl.MediaServiceImpl;
 import by.epam.project.service.exception.ServiceException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -18,29 +18,30 @@ import java.util.List;
 
 public class FilmsTableCommand implements Command {
     private static final String LIST = "films";
-    private static final String CURRENT_PAGE= "currentPage";
+    private static final String CURRENT_PAGE = "currentPage";
     private static final String FILMS_ON_PAGE = "filmsOnPage";
     private static final String NUMBER_OF_PAGES = "noOfPages";
     private static final String LIST_INFO = "filmsInfo";
     public static final Logger LOGGER = LogManager.getLogger();
-    private final MediaService mediaService = MediaService.getInstance();
+    private final MediaServiceImpl mediaServiceImpl = MediaServiceImpl.getInstance();
+
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = ConfigurationManager.getProperty("path.page.filmsTable");
         String current = request.getParameter(CURRENT_PAGE) == null ? "1" : request.getParameter(CURRENT_PAGE);
-        String countOfFilms = request.getParameter(FILMS_ON_PAGE)== null ? "5" : request.getParameter(FILMS_ON_PAGE);
+        String countOfFilms = request.getParameter(FILMS_ON_PAGE) == null ? "5" : request.getParameter(FILMS_ON_PAGE);
         int currentPage = Integer.parseInt(current);
         int filmsOnPage = Integer.parseInt(countOfFilms);
-        List<Film>films;
-        List<FilmInfo>filmsInfo = new ArrayList<>();
+        List<Film> films;
+        List<FilmInfo> filmsInfo = new ArrayList<>();
         try {
-            films = mediaService.findAllUndeletedFilms(currentPage,filmsOnPage);
+            films = mediaServiceImpl.findAllUndeletedFilms(currentPage, filmsOnPage);
             for (Film film : films) {
-                FilmInfo filmInfo = mediaService.findInfoById(film.getId());
+                FilmInfo filmInfo = mediaServiceImpl.findInfoById(film.getId());
                 filmsInfo.add(filmInfo);
             }
 
-            int rows = mediaService.getNumberOfRows();
+            int rows = mediaServiceImpl.getNumberOfRows();
             int nOfPages = rows / filmsOnPage;
             if (nOfPages % filmsOnPage > 0) {
                 nOfPages++;
@@ -52,8 +53,8 @@ public class FilmsTableCommand implements Command {
             request.getSession().setAttribute(LIST_INFO, filmsInfo);
 
         } catch (ServiceException e) {
-            LOGGER.log(Level.ERROR,"Command  initStartPage invalid",e);
-            throw new CommandException("Command  initStartPage invalid",e);
+            LOGGER.log(Level.ERROR, "Command  initStartPage invalid", e);
+            throw new CommandException("Command  initStartPage invalid", e);
         }
         return new Router(page, Router.Type.FORWARD);
     }

@@ -2,7 +2,6 @@ package by.epam.project.pool;
 
 
 import by.epam.project.pool.exception.PoolException;
-import by.epam.project.command.manager.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,7 +36,8 @@ public class ConnectionCreator {
             String driverName = (String) properties.get("db.driver");
             Class.forName(driverName);
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.FATAL, "ConnectionCreator was not initialized", e);
+            throw new ExceptionInInitializerError("ConnectionCreator was not initialized");
         }
         DATABASE_URL = (String) properties.get("db.url");
     }
@@ -60,7 +60,7 @@ public class ConnectionCreator {
         return instance;
     }
 
-     Connection createConnection() throws SQLException {
+    Connection createConnection() throws SQLException {
         return DriverManager.getConnection(DATABASE_URL, properties);
     }
 
@@ -71,8 +71,8 @@ public class ConnectionCreator {
             try {
                 DriverManager.deregisterDriver(driver);
             } catch (SQLException e) {
-                LOGGER.log(Level.ERROR, MessageManager.getProperty("message.driversnotfound"), e);
-                throw new PoolException(MessageManager.getProperty("message.driversnotfound"), e);
+                LOGGER.log(Level.ERROR, "Registered drivers are missing", e);
+                throw new PoolException("Registered drivers are missing", e);
             }
         }
     }

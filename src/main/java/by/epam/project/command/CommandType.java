@@ -43,42 +43,42 @@ public enum CommandType {
             this.command = new FilmCommand();
         }
     },
-    PROFILE{
+    PROFILE {
         {
             this.command = new ProfileCommand();
         }
     },
-    EDIT_PROFILE{
+    EDIT_PROFILE {
         {
             this.command = new EditProfileCommand();
         }
     },
-    FORWARD_TO_EDIT_PROFILE{
+    FORWARD_TO_EDIT_PROFILE {
         {
             this.command = new ForwardToEditProfileCommand();
         }
     },
-    ADMIN_PAGE{
+    ADMIN_PAGE {
         {
             this.command = new UsersTableCommand();
         }
     },
-    ACTION_LOCK_USER{
+    ACTION_LOCK_USER {
         {
             this.command = new ActionLockUserCommand();
         }
     },
-    VIEW_PROFILE{
+    VIEW_PROFILE {
         {
             this.command = new ViewProfileCommand();
         }
     },
-    ADMIN_PAGE_FILMS{
+    ADMIN_PAGE_FILMS {
         {
             this.command = new FilmsTableCommand();
         }
     },
-    VIEW_FILM_PAGE{
+    VIEW_FILM_PAGE {
         {
             this.command = new ViewFilmPageCommand();
         }

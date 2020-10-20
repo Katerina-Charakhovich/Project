@@ -7,7 +7,7 @@ import by.epam.project.command.manager.MessageManager;
 import by.epam.project.entity.Router;
 import by.epam.project.service.ValidationUser;
 import by.epam.project.service.exception.ServiceException;
-import by.epam.project.service.UserService;
+import by.epam.project.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,7 +17,7 @@ public class RegistrationCommand implements Command {
     private static final String PASSWORD = "password";
     private static final String REPEAT_PASSWORD = "repeat password";
     private static final ValidationUser validationUser = ValidationUser.getInstance();
-    private static UserService userService = UserService.getInstance();
+    private static UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
     private static final String ROLE = "role";
     private static final String PATH_TO_PAGE = "path.page.registration";
     private Router router;
@@ -34,19 +34,19 @@ public class RegistrationCommand implements Command {
         if (!password.equals(repeatPassword)) {
             request.setAttribute("registrationError",
                     MessageManager.getProperty("message.passwordsDoNotMatch"));
-            page =  ConfigurationManager.getProperty(PATH_TO_PAGE);
-           router = new Router(page, Router.Type.REDIRECT);
+            page = ConfigurationManager.getProperty(PATH_TO_PAGE);
+            router = new Router(page, Router.Type.REDIRECT);
         }
         if (!validationUser.isRightPassword(password) && !validationUser.isRightLogin(email)) {
             request.setAttribute("registrationError",
                     MessageManager.getProperty("message.incorrectLoginAndPassword"));
-            page =  ConfigurationManager.getProperty(PATH_TO_PAGE);
+            page = ConfigurationManager.getProperty(PATH_TO_PAGE);
             router = new Router(page, Router.Type.REDIRECT);
         }
 
         try {
-            if (UserService.getInstance().create(email, password)) {
-                String userRole = userService.findUserRole(email);
+            if (UserServiceImpl.getInstance().create(email, password)) {
+                String userRole = userServiceImpl.findUserRole(email);
                 request.getSession().setAttribute(ROLE, userRole);
                 request.getSession().setAttribute(EMAIL, email);
                 page = ConfigurationManager.getProperty("path.page.start");

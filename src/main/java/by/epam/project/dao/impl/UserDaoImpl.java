@@ -154,7 +154,7 @@ public class UserDaoImpl implements UserDao {
         ) {
             statement.setInt(2, start);
             statement.setInt(3, usersOnPage);
-            statement.setString(1,"user");
+            statement.setString(1, "user");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 User user = new User();
