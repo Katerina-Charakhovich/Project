@@ -1,5 +1,4 @@
-<%@ page isErrorPage="true" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ page isErrorPage="true" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${language}" scope="session"/>
@@ -22,12 +21,9 @@
             <div class="col">
             </div>
             <div class="col">
-                <fieldset disabled class="sign_in">
-                    EXCEPTION
-                </fieldset>
                 <br/>
                 <br/>
-                Exception: ${pageContext.exception}
+                ${pageContext.exception}
             </div>
             <div class="col">
             </div>

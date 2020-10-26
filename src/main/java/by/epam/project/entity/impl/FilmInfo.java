@@ -2,7 +2,7 @@ package by.epam.project.entity.impl;
 
 import by.epam.project.entity.Entity;
 
-public class FilmInfo extends Entity {
+public class FilmInfo implements Entity {
     private String description;
     private int yearOfCreation;
     private String genre;

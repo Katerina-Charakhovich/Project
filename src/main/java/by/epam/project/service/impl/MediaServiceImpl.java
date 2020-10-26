@@ -12,18 +12,23 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * The type Media service.
+ */
 public class MediaServiceImpl implements MediaService {
-    private static MediaServiceImpl instance;
+    private static final MediaServiceImpl instance = new MediaServiceImpl();
     private static final MediaDaoImpl mediaDao = MediaDaoImpl.getInstance();
     public static final Logger LOGGER = LogManager.getLogger();
 
     private MediaServiceImpl() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static MediaServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new MediaServiceImpl();
-        }
         return instance;
     }
 
@@ -48,9 +53,9 @@ public class MediaServiceImpl implements MediaService {
         return films;
     }
 
-    public int getNumberOfRows() throws ServiceException {
+    public int calculateNumberOfRows() throws ServiceException {
         try {
-            return mediaDao.getNumberOfRows();
+            return mediaDao.calculateNumberOfRows();
         } catch (DaoException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
             throw new ServiceException("Film not found", e);

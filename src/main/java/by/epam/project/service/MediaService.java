@@ -11,7 +11,7 @@ public interface MediaService {
 
     List<Film> findAllUndeletedFilms(int currentPage, int filmsOnPage) throws ServiceException;
 
-    int getNumberOfRows() throws ServiceException;
+    int calculateNumberOfRows() throws ServiceException;
 
     Film findFilmByName(String name) throws ServiceException;
 

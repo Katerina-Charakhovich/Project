@@ -26,7 +26,7 @@
                 <a class="nav-link" href="#">Link</a>
             </li>
 <c:choose>
-    <c:when test="${role == 'admin'}">
+    <c:when test="${role == 'ADMIN'}">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
         role="button" data-toggle="dropdown"
@@ -38,7 +38,7 @@
                     <a class="dropdown-item" href="controller?command=admin_page_films"><fmt:message key="Page.Films"/></a>
 
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="controller?command=init_admin_table"><fmt:message key="Page.Admins"/></a>
                 </div>
             </li>
     </c:when>
@@ -70,7 +70,6 @@
         </c:choose>
         <form class="form-inline my-2 my-lg-0" method="post" action="controller">
             <input type="hidden" name="command" value="language"/>
-            <%--<c:set var="processCommand" value="profile" scope="session"/>--%>
             <input type="hidden" name="langChangeProcessCommand" value="${langChangeProcessCommand}"/>
             <input class="btn btn-outline-secondary" type="submit" name="currentNavLocale" value="${language}">
         </form>

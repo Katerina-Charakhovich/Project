@@ -45,7 +45,7 @@ public enum CommandType {
     },
     PROFILE {
         {
-            this.command = new ProfileCommand();
+            this.command = new InitProfileCommand();
         }
     },
     EDIT_PROFILE {
@@ -60,12 +60,7 @@ public enum CommandType {
     },
     ADMIN_PAGE {
         {
-            this.command = new UsersTableCommand();
-        }
-    },
-    ACTION_LOCK_USER {
-        {
-            this.command = new ActionLockUserCommand();
+            this.command = new InitUserTableCommand();
         }
     },
     VIEW_PROFILE {
@@ -75,15 +70,24 @@ public enum CommandType {
     },
     ADMIN_PAGE_FILMS {
         {
-            this.command = new FilmsTableCommand();
+            this.command = new InitFilmTableCommand();
         }
     },
     VIEW_FILM_PAGE {
         {
             this.command = new ViewFilmPageCommand();
         }
+    },
+    INIT_ADMIN_TABLE {
+        {
+            this.command = new InitAdminTableCommand();
+        }
+    },
+    FILM_CREATOR{
+        {
+            this.command = new FilmCreator();
+        }
     };
-
 
     Command command;
 

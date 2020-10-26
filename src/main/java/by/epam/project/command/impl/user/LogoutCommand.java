@@ -1,18 +1,19 @@
 package by.epam.project.command.impl.user;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.entity.Router;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.Router;
+import by.epam.project.command.RequestAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class LogoutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
-        String page = ConfigurationManager.getProperty("path.page.index");
-        String currentPage = (String) request.getSession().getAttribute("currentPage");
+        String page = PathToPage.INDEX_PAGE;
+        String currentPage = (String) request.getSession().getAttribute(RequestAttribute.CURRENT_PAGE);
         request.getSession().invalidate();
-        request.getSession().setAttribute("currentPage", currentPage);
-        return new Router(page, Router.Type.FORWARD);
+        request.getSession().setAttribute(RequestAttribute.CURRENT_PAGE, currentPage);
+        return new Router(page);
     }
 }

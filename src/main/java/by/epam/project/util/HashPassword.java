@@ -1,6 +1,5 @@
-package by.epam.project.service.util;
+package by.epam.project.util;
 
-import by.epam.project.command.manager.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,18 +8,27 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class ServiceUtil {
+public class HashPassword {
 
     public static final Logger LOGGER = LogManager.getLogger();
+    private static final String ALGORITHM_FOR_HASH = "SHA-512";
+    private static final int MAX_LENGTH_PASSWORD = 32;
+    private static final int DEFAULT_LENGTH_HASH_PASSWORD = 16;
+
+    /**
+     * Algorithm for hash password
+     */
+    private HashPassword() {
+    }
 
     public static String hash(String password) {
         String hashPassword = null;
         try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            MessageDigest md = MessageDigest.getInstance(ALGORITHM_FOR_HASH);
             byte[] messageDigest = md.digest(password.getBytes());
             BigInteger no = new BigInteger(1, messageDigest);
-            hashPassword = no.toString(16);
-            while (hashPassword.length() < 32) {
+            hashPassword = no.toString(DEFAULT_LENGTH_HASH_PASSWORD);
+            while (hashPassword.length() < MAX_LENGTH_PASSWORD) {
                 hashPassword = "0" + hashPassword;
             }
 

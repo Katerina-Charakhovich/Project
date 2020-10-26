@@ -6,14 +6,12 @@ import by.epam.project.service.exception.ServiceException;
 import java.util.List;
 
 public interface UserService {
-    Boolean isLoginAndPasswordValid(String enteredLogin, String enteredPassword) throws
+    boolean isLoginAndPasswordValid(String enteredLogin, String enteredPassword) throws
             ServiceException;
 
-    Boolean create(String enteredLogin, String enteredPassword) throws ServiceException;
+    boolean create(String enteredLogin, String enteredPassword) throws ServiceException;
 
-    Boolean isLoginExists(String enteredLogin) throws ServiceException;
-
-    String findUserRole(String enteredLogin) throws ServiceException;
+    boolean isLoginExists(String enteredLogin) throws ServiceException;
 
     User findUserWithTheAllInfoByLogin(String email) throws ServiceException;
 
@@ -22,11 +20,19 @@ public interface UserService {
 
     User updateAvatar(String email, String avatar) throws ServiceException;
 
-    List<User> findAllUndeletedUsers(int currentPage, int usersOnPage) throws ServiceException;
+    List<User> findUsersOnPage(int currentPage, int usersOnPage) throws ServiceException;
 
-    int getNumberOfRows() throws ServiceException;
+    int calculateNumberOfRowsByUser() throws ServiceException;
 
-    void lockUser(String email) throws ServiceException;
+    int calculateNumberOfRowsByAdmin() throws ServiceException;
 
-    Boolean isUserLocked(String name) throws ServiceException;
+    User lockUser(User user) throws ServiceException;
+
+    boolean isUserLocked(String name) throws ServiceException;
+
+    public User changeRoleToAdmin(User user) throws ServiceException;
+
+    List<User> findAllAdmins(int currentPage, int adminsOnPage) throws ServiceException;
+
+    public User changeRoleToUser(String email) throws ServiceException;
 }

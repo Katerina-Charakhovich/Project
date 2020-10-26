@@ -1,15 +1,18 @@
 package by.epam.project.command.impl;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.entity.Router;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.Router;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The type Empty command.
+ */
 public class EmptyCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
-        String page = ConfigurationManager.getProperty("path.page.index");
-        return new Router(page, Router.Type.FORWARD);
+        String page = PathToPage.INDEX_PAGE;
+        return new Router(page);
     }
 }

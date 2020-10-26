@@ -14,16 +14,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 
-public class ConnectionCreator {
+class ConnectionCreator {
     public static final Logger LOGGER = LogManager.getLogger();
     private static ConnectionCreator instance;
-    private static Lock lock = new ReentrantLock();
-    private static AtomicBoolean instanceWasCreated = new AtomicBoolean();
     private static final Properties properties = new Properties();
     private static final String DATABASE_URL;
     private static final String PROPERTIES_FILE = "dataBase.properties";
@@ -45,17 +40,9 @@ public class ConnectionCreator {
     private ConnectionCreator() {
     }
 
-    public static ConnectionCreator getInstance() {
-        if (!instanceWasCreated.get()) {
-            lock.lock();
-            try {
-                if (instance == null) {
-                    instance = new ConnectionCreator();
-                    instanceWasCreated.set(true);
-                }
-            } finally {
-                lock.unlock();
-            }
+    static ConnectionCreator getInstance() {
+        if (instance == null) {
+            instance = new ConnectionCreator();
         }
         return instance;
     }

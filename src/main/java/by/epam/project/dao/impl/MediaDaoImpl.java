@@ -1,6 +1,7 @@
 package by.epam.project.dao.impl;
 
 
+import by.epam.project.dao.ColumnName;
 import by.epam.project.dao.MediaDao;
 import by.epam.project.dao.exception.DaoException;
 import by.epam.project.entity.impl.Film;
@@ -23,15 +24,15 @@ public class MediaDaoImpl implements MediaDao {
     private static MediaDaoImpl instance;
     public static final Logger LOGGER = LogManager.getLogger();
     private static final String SQL_SELECT_BY_NAME =
-            "SELECT id, film_name, real_name FROM testlogin.films WHERE film_name = ?";
+            "SELECT film_id, film_name, real_name FROM testlogin.films WHERE film_name = ?";
     private static final String SQL_SELECT_ALL_UNDELETED_FILMS =
-            "SELECT id, film_name, real_name  FROM testlogin.films ORDER BY id DESC LIMIT ?,?";
+            "SELECT film_id, film_name, real_name  FROM testlogin.films ORDER BY film_id DESC LIMIT ?,?";
     private static final String SQL_SELECT_COUNT_OF_ROWS =
-            "SELECT COUNT(id) FROM testlogin.films";
+            "SELECT COUNT(film_id) FROM testlogin.films";
     private static final String SQL_SELECT_BY_ID =
-            "SELECT id, film_name, real_name FROM testlogin.films WHERE id = ?";
+            "SELECT film_id, film_name, real_name FROM testlogin.films WHERE film_id = ?";
     private static final String SQL_SELECT_INFO_BY_ID =
-            "SELECT id, description, year_of_creation, genre, link, film_id FROM testlogin.films_info WHERE film_id = ?";
+            "SELECT id_films_info, description, year_of_creation, genre, link, film_id FROM testlogin.films_info WHERE film_id = ?";
     private static final String SQL_SELECT_ALL_FILMS_INFO =
             "SELECT id, description, year_of_creation, genre, link, film_id FROM testlogin.films_info ORDER BY id DESC LIMIT ?,? ";
 
@@ -74,6 +75,7 @@ public class MediaDaoImpl implements MediaDao {
     @Override
     public Film findFilmByName(String name) throws DaoException {
         Film film = null;
+        FilmInfo filmInfo;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_NAME);
 
@@ -81,10 +83,11 @@ public class MediaDaoImpl implements MediaDao {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String realName = resultSet.getString("real_name");
-                long id = resultSet.getLong("id");
-                String filmName = resultSet.getString("file_name");
-                film = new Film(id, filmName, realName);
+                String realName = resultSet.getString(ColumnName.REAL_NAME);
+                long id = resultSet.getLong(ColumnName.FILM_ID);
+                String filmName = resultSet.getString(ColumnName.FILM_NAME);
+                filmInfo = findInfoById(id);
+                film = new Film(id, filmName, realName,filmInfo);
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
@@ -96,6 +99,7 @@ public class MediaDaoImpl implements MediaDao {
     @Override
     public List<Film> findAllUndeletedFilms(int currentPage, int filmsOnPage) throws DaoException {
         List<Film> undeletedFilms = new ArrayList<>();
+        FilmInfo filmInfo;
         int start = currentPage * filmsOnPage - filmsOnPage;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL_UNDELETED_FILMS);
@@ -104,10 +108,11 @@ public class MediaDaoImpl implements MediaDao {
             statement.setInt(2, filmsOnPage);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String realName = resultSet.getString("real_name");
-                long id = resultSet.getLong("id");
-                String filmName = resultSet.getString("film_name");
-                undeletedFilms.add(new Film(id, filmName, realName));
+                String realName = resultSet.getString(ColumnName.REAL_NAME);
+                long id = resultSet.getLong(ColumnName.FILM_ID);
+                String filmName = resultSet.getString(ColumnName.FILM_NAME);
+                filmInfo = findInfoById(id);
+                undeletedFilms.add(new Film(id, filmName, realName,filmInfo));
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, "Films not found", e);
@@ -117,7 +122,7 @@ public class MediaDaoImpl implements MediaDao {
     }
 
     @Override
-    public int getNumberOfRows() throws DaoException {
+    public int calculateNumberOfRows() throws DaoException {
         int numOfRows = 0;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_COUNT_OF_ROWS);
@@ -136,6 +141,7 @@ public class MediaDaoImpl implements MediaDao {
     @Override
     public Film findFilmById(long id) throws DaoException {
         Film film = null;
+        FilmInfo filmInfo;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID);
         ) {
@@ -143,9 +149,10 @@ public class MediaDaoImpl implements MediaDao {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String realName = resultSet.getString("real_name");
-                long filmId = resultSet.getLong("id");
+                long filmId = resultSet.getLong("film_id");
                 String filmName = resultSet.getString("file_name");
-                film = new Film(filmId, filmName, realName);
+                filmInfo = findInfoById(id);
+                film = new Film(id, filmName, realName,filmInfo);
             }
         } catch (SQLException | PoolException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
@@ -163,11 +170,11 @@ public class MediaDaoImpl implements MediaDao {
             statement.setLong(1, filmId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String description = resultSet.getString("description");
-                int yearOfCreation = resultSet.getInt("year_of_creation");
-                String genre = resultSet.getString("genre");
-                String link = resultSet.getString("link");
-                long idFilm = resultSet.getLong("film_id");
+                String description = resultSet.getString(ColumnName.FILM_DESCRIPTION);
+                int yearOfCreation = resultSet.getInt(ColumnName.FILM_YEAR_OF_CREATION);
+                String genre = resultSet.getString(ColumnName.FILM_GENRE);
+                String link = resultSet.getString(ColumnName.FILM_LINK);
+                long idFilm = resultSet.getLong(ColumnName.FILM_INFO_FILM_ID);
                 filmInfo = new FilmInfo(description, yearOfCreation, genre, idFilm, link);
             }
         } catch (SQLException | PoolException e) {

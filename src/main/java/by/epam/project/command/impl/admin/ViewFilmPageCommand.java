@@ -2,8 +2,9 @@ package by.epam.project.command.impl.admin;
 
 import by.epam.project.command.Command;
 import by.epam.project.command.exception.CommandException;
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.entity.Router;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.RequestAttribute;
+import by.epam.project.command.Router;
 import by.epam.project.entity.impl.FilmInfo;
 import by.epam.project.service.impl.MediaServiceImpl;
 import by.epam.project.service.exception.ServiceException;
@@ -14,37 +15,29 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 public class ViewFilmPageCommand implements Command {
-    private static final String FILM_ID = "id";
-    private static final String CURRENT_FILM_NAME = "filmName";
-    private static final String CURRENT_REAL_FILM_NAME = "realName";
-    private static final String CURRENT_DESCRIPTION = "description";
-    private static final String CURRENT_YEAR_OF_CREATION = "yearOfCreation";
-    private static final String CURRENT_GENRE = "genre";
-    private static final String CURRENT_LINK = "link";
-    private final MediaServiceImpl mediaServiceImpl = MediaServiceImpl.getInstance();
     public static final Logger LOGGER = LogManager.getLogger();
+    private MediaServiceImpl mediaServiceImpl = MediaServiceImpl.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        String page = ConfigurationManager.getProperty("path.page.film");
+        String page = PathToPage.FILM_PAGE;
         FilmInfo filmInfo;
-        String currentFilmId = request.getParameter(FILM_ID);
+        String currentFilmId = request.getParameter(RequestAttribute.FILM_ID);
         long filmId = Long.parseLong(currentFilmId);
-        String filmName = request.getParameter(CURRENT_FILM_NAME);
-        String realName = request.getParameter(CURRENT_REAL_FILM_NAME);
+        String filmName = request.getParameter(RequestAttribute.CURRENT_FILM_NAME);
+        String realName = request.getParameter(RequestAttribute.CURRENT_REAL_FILM_NAME);
         try {
             filmInfo = mediaServiceImpl.findInfoById(filmId);
-            request.getSession().setAttribute(CURRENT_DESCRIPTION, filmInfo.getDescription());
-            request.getSession().setAttribute(CURRENT_YEAR_OF_CREATION, filmInfo.getYearOfCreation());
-            request.getSession().setAttribute(CURRENT_GENRE, filmInfo.getGenre());
-            request.getSession().setAttribute(CURRENT_LINK, filmInfo.getLink());
-            request.getSession().setAttribute(CURRENT_FILM_NAME, filmName);
-            request.getSession().setAttribute(CURRENT_REAL_FILM_NAME, realName);
-
+            request.getSession().setAttribute(RequestAttribute.CURRENT_DESCRIPTION, filmInfo.getDescription());
+            request.getSession().setAttribute(RequestAttribute.CURRENT_YEAR_OF_CREATION, filmInfo.getYearOfCreation());
+            request.getSession().setAttribute(RequestAttribute.CURRENT_GENRE, filmInfo.getGenre());
+            request.getSession().setAttribute(RequestAttribute.CURRENT_LINK, filmInfo.getLink());
+            request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_NAME, filmName);
+            request.getSession().setAttribute(RequestAttribute.CURRENT_REAL_FILM_NAME, realName);
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
             throw new CommandException("Film not found", e);
         }
-        return new Router(page, Router.Type.FORWARD);
+        return new Router(page);
     }
 }

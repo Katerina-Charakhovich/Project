@@ -29,7 +29,7 @@
                 <div class="upload text-info">
                     <fmt:message key="Label.SelectFileUpload"/>
                     <br/>
-                    <form action="upload" enctype="multipart/form-data" method="post">
+                    <form action="${request.getContextPath()}/TaskWebLogin_war/upload" enctype="multipart/form-data" method="post">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="content" id="validatedCustomFile"
                                    required>
@@ -63,13 +63,13 @@
                     </tr>
                     </tbody>
                 </table>
-                <form class="form-inline my-2 my-lg-0">
-                    <div class="Sub_edit" id="edit">
-                        <input class="btn btn-outline-primary" type="submit" method="post" action="controller"
+                <div class="Sub_edit" id="edit">
+                <form class="form-inline my-2 my-lg-0" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                        <input class="btn btn-outline-primary" type="submit"
                                value="<fmt:message key="Label.Edit"/>">
                         <input type="hidden" name="command" value="forward_to_edit_profile"/>
-                    </div>
                 </form>
+                </div>
             </div>
             <div class="col">
             </div>

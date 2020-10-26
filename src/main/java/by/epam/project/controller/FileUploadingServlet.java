@@ -1,10 +1,11 @@
 package by.epam.project.controller;
 
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.command.manager.MessageManager;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.RequestAttribute;
 import by.epam.project.entity.impl.User;
 import by.epam.project.service.impl.UserServiceImpl;
 import by.epam.project.service.exception.ServiceException;
+import org.apache.logging.log4j.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -17,23 +18,16 @@ import java.io.*;
 
 import java.util.UUID;
 
+import static by.epam.project.command.RequestAttribute.*;
+
 @WebServlet(urlPatterns = {"/upload/*"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024
         , maxFileSize = 1024 * 1024 * 5
         , maxRequestSize = 1024 * 1024 * 5 * 5)
 
 public class FileUploadingServlet extends HttpServlet {
-    private static final String UPLOAD_DIR = "C:\\Kristina\\TaskWebLogin\\src\\main\\webapp\\pictures_for_project\\picturesForAvatar\\";
-    public static final String SUCCESSFULLY_LOADING = MessageManager.getProperty("message.successLoading");
-    public static final String NOT_SUCCESSFULLY_LOADING = MessageManager.getProperty("message.notSuccessLoading");
-    public static final String FILE_FOR_UPLOAD = ConfigurationManager.getProperty("path.page.profile");
-    private static final String EMAIL = "email";
-    private final UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
-    private static final String GENDER = "gender";
-    private static final String COUNTRY = "country";
-    private static final String ABOUT_ME = "about_me";
-    private static final String AVATAR = "avatar";
-    private static final String NAME = "name";
+
+    private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -43,23 +37,29 @@ public class FileUploadingServlet extends HttpServlet {
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdirs();
         }
+        request.getServletContext().getRealPath("/");
         for (Part part : request.getParts()) {
             try {
                 String path = part.getSubmittedFileName();
                 String randFilename = UUID.randomUUID() + path.substring(path.lastIndexOf("."));
                 part.write(UPLOAD_DIR + randFilename);
-                request.setAttribute("upload_result", SUCCESSFULLY_LOADING);
+                part.write(SERVER_UPLOAD_DIR + randFilename);
                 userServiceImpl.updateAvatar(email, randFilename);
                 User user = userServiceImpl.findUserWithTheAllInfoByLogin(email);
-                request.setAttribute(GENDER, user.getGender());
-                request.setAttribute(COUNTRY, user.getCountry());
-                request.setAttribute(ABOUT_ME, user.getAboutMe());
-                request.setAttribute(NAME, user.getName());
-                request.setAttribute(AVATAR, user.getAvatar());
+                request.setAttribute(RequestAttribute.GENDER, user.getUserGender());
+                request.setAttribute(RequestAttribute.COUNTRY, user.getCountry());
+                request.setAttribute(RequestAttribute.ABOUT_ME, user.getAboutMe());
+                request.setAttribute(RequestAttribute.NAME_USER, user.getName());
+                request.setAttribute(RequestAttribute.AVATAR, user.getAvatar());
+                request.getServletPath();
             } catch (IOException | ServiceException e) {
-                request.setAttribute("upload_result", NOT_SUCCESSFULLY_LOADING);
+                boolean uploadResult = false;
+                request.setAttribute(RequestAttribute.UPLOAD_RESULT, uploadResult);
+                String error = e.getMessage();
+                request.setAttribute(RequestAttribute.ERROR, error);
+                request.getRequestDispatcher(PathToPage.ERROR_PAGE).forward(request, response);
             }
-            request.getRequestDispatcher(FILE_FOR_UPLOAD).forward(request, response);
+            request.getRequestDispatcher(PathToPage.PROFILE_PAGE).forward(request, response);
         }
     }
 }

@@ -14,30 +14,36 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool {
+    public static final Logger LOGGER = LogManager.getLogger();
     private static ConnectionPool instance;
     private static Lock lock = new ReentrantLock();
-    private static final AtomicBoolean instanceWasCreated = new AtomicBoolean();
+    private static AtomicBoolean instanceWasCreated = new AtomicBoolean();
     private BlockingQueue<ProxyConnection> freeConnections;
     private BlockingQueue<ProxyConnection> givenAwayConnections;
     private static final int DEFAULT_POOL_SIZE = 32;
-    public static final Logger LOGGER = LogManager.getLogger();
 
 
-    private ConnectionPool() throws SQLException {
+    private ConnectionPool() {
         freeConnections = init();
         givenAwayConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
     }
 
-    private BlockingQueue<ProxyConnection> init() throws SQLException {
+    private BlockingQueue<ProxyConnection> init() {
         freeConnections = new LinkedBlockingDeque<>(DEFAULT_POOL_SIZE);
-        Connection connection = ConnectionCreator.getInstance().createConnection();
-        for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-            freeConnections.offer(new ProxyConnection(connection));
+        Connection connection;
+        try {
+            connection = ConnectionCreator.getInstance().createConnection();
+            for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+                freeConnections.offer(new ProxyConnection(connection));
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.FATAL, "");
+            throw new RuntimeException();
         }
         return freeConnections;
     }
 
-    public static ConnectionPool getInstance() throws PoolException {
+    public static ConnectionPool getInstance() {
         if (!instanceWasCreated.get()) {
             lock.lock();
             try {
@@ -45,9 +51,6 @@ public class ConnectionPool {
                     instance = new ConnectionPool();
                     instanceWasCreated.set(true);
                 }
-            } catch (SQLException e) {
-                LOGGER.log(Level.ERROR, "Impossible to create Connection", e);
-                throw new PoolException("Impossible to create Connection", e);
             } finally {
                 lock.unlock();
             }
@@ -59,7 +62,7 @@ public class ConnectionPool {
         ProxyConnection connection;
         try {
             connection = freeConnections.take();
-            givenAwayConnections.offer(connection);
+            givenAwayConnections.put(connection);
         } catch (InterruptedException e) {
             LOGGER.log(Level.ERROR, "Impossible to create Connection", e);
             throw new PoolException("Impossible to create Connection", e);
@@ -67,34 +70,31 @@ public class ConnectionPool {
         return connection;
     }
 
-    public void releaseConnection(Connection connection) {
+    public void releaseConnection(Connection connection) throws PoolException {
         if (connection != null) {
             if (connection instanceof ProxyConnection && givenAwayConnections.remove(connection)) {
-                freeConnections.offer((ProxyConnection) connection);
-            } else {
-                LOGGER.log(Level.FATAL, "Connection is not a ProxyConnection");
+                try {
+                    freeConnections.put((ProxyConnection) connection);
+                } catch (InterruptedException e) {
+                    LOGGER.log(Level.FATAL, "Connection is not a ProxyConnection");
+                    throw new PoolException("Connection is not a ProxyConnection", e);
+                }
             }
         }
     }
 
-    public void destroyPool() throws PoolException {
-        try {
-            for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-                if (!freeConnections.isEmpty()) {
-                    ProxyConnection connection = freeConnections.take();
-                    connection.trueClose();
+        public void destroyPool () throws PoolException {
+            try {
+                for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
+                    if (!freeConnections.isEmpty()) {
+                        ProxyConnection connection = freeConnections.take();
+                        connection.trueClose();
+                    }
                 }
+            } catch (InterruptedException e) {
+                LOGGER.log(Level.ERROR, "Impossible to destroy pool", e);
+                throw new PoolException("Impossible to destroy pool", e);
             }
-            for (int i = 0; i < DEFAULT_POOL_SIZE; i++) {
-                if (!givenAwayConnections.isEmpty()) {
-                    ProxyConnection connection = givenAwayConnections.take();
-                    connection.trueClose();
-                }
-            }
-        } catch (InterruptedException e) {
-            LOGGER.log(Level.ERROR, "Impossible to destroy pool", e);
-            throw new PoolException("Impossible to destroy pool", e);
+            ConnectionCreator.getInstance().deregisterDrivers();
         }
-        ConnectionCreator.getInstance().deregisterDrivers();
     }
-}

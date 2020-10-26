@@ -2,63 +2,64 @@ package by.epam.project.command.impl.user;
 
 import by.epam.project.command.Command;
 import by.epam.project.command.exception.CommandException;
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.command.manager.MessageManager;
-import by.epam.project.entity.Router;
-import by.epam.project.service.ValidationUser;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.RequestAttribute;
+import by.epam.project.command.Router;
+import by.epam.project.entity.impl.User;
+import by.epam.project.util.ValidationUser;
 import by.epam.project.service.exception.ServiceException;
 import by.epam.project.service.impl.UserServiceImpl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
 
 public class RegistrationCommand implements Command {
-    private static final String EMAIL = "email";
-    private static final String PASSWORD = "password";
-    private static final String REPEAT_PASSWORD = "repeat password";
-    private static final ValidationUser validationUser = ValidationUser.getInstance();
-    private static UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
-    private static final String ROLE = "role";
-    private static final String PATH_TO_PAGE = "path.page.registration";
+    public static final Logger LOGGER = LogManager.getLogger();
+    private ValidationUser validationUser = ValidationUser.getInstance();
+    private  UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
     private Router router;
 
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page;
-        String email = request.getParameter(EMAIL);
-        String password = request.getParameter(PASSWORD);
-        String repeatPassword = request.getParameter(REPEAT_PASSWORD);
-
-
+        String email = request.getParameter(RequestAttribute.EMAIL);
+        String password = request.getParameter(RequestAttribute.PASSWORD);
+        String repeatPassword = request.getParameter(RequestAttribute.REPEAT_PASSWORD);
         if (!password.equals(repeatPassword)) {
-            request.setAttribute("registrationError",
-                    MessageManager.getProperty("message.passwordsDoNotMatch"));
-            page = ConfigurationManager.getProperty(PATH_TO_PAGE);
-            router = new Router(page, Router.Type.REDIRECT);
+           boolean registrationErrorPasswords = false;
+            request.setAttribute(RequestAttribute.PASSWORDS_DO_NOT_MATCH,
+                    registrationErrorPasswords);
+            page = PathToPage.REGISTRATION_PAGE;
+            router = new Router(page);
         }
         if (!validationUser.isRightPassword(password) && !validationUser.isRightLogin(email)) {
-            request.setAttribute("registrationError",
-                    MessageManager.getProperty("message.incorrectLoginAndPassword"));
-            page = ConfigurationManager.getProperty(PATH_TO_PAGE);
-            router = new Router(page, Router.Type.REDIRECT);
-        }
+            boolean registrationErrorSymbols = false;
 
+            request.setAttribute(RequestAttribute.INCORRECT_ERROR_SYMBOLS, registrationErrorSymbols);
+            page = PathToPage.REGISTRATION_PAGE;
+            router = new Router(page);
+        }
         try {
-            if (UserServiceImpl.getInstance().create(email, password)) {
-                String userRole = userServiceImpl.findUserRole(email);
-                request.getSession().setAttribute(ROLE, userRole);
-                request.getSession().setAttribute(EMAIL, email);
-                page = ConfigurationManager.getProperty("path.page.start");
-                router = new Router(page, Router.Type.REDIRECT);
+            if (userServiceImpl.create(email, password)) {
+                User user = userServiceImpl.findUserWithTheAllInfoByLogin(email);
+                request.getSession().setAttribute(RequestAttribute.ROLE, user.getUserRole());
+                request.getSession().setAttribute(RequestAttribute.EMAIL, email);
+                page = PathToPage.INDEX_PAGE;
+                router = new Router(page);
+                router.useRedirect();
             } else {
-                request.setAttribute("registrationErrorLogin",
-                        MessageManager.getProperty("message.thisUserExists"));
-                page = ConfigurationManager.getProperty(PATH_TO_PAGE);
-                router = new Router(page, Router.Type.REDIRECT);
+                boolean registrationError = false;
+                request.setAttribute(RequestAttribute.REGISTRATION_ERROR, registrationError);
+                page = PathToPage.REGISTRATION_PAGE;
+                router = new Router(page);
             }
         } catch (ServiceException e) {
-            throw new CommandException("Command invalide");
+            LOGGER.log(Level.ERROR,"Registration failed",e);
+            throw new CommandException("Registration failed",e);
         }
         return router;
     }

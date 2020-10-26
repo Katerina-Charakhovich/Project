@@ -11,7 +11,7 @@ public interface MediaDao extends BaseDao<Film> {
 
     List<Film> findAllUndeletedFilms(int currentPage, int filmsOnPage) throws DaoException;
 
-    int getNumberOfRows() throws DaoException;
+    int calculateNumberOfRows() throws DaoException;
 
     Film findFilmById(long id) throws DaoException;
 

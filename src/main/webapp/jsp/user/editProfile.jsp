@@ -21,7 +21,7 @@
             <div class="col-4">
             </div>
             <div class="col-4">
-                <form name="editProfileForm" method="post" action="controller">
+                <form name="editProfileForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
                     <fieldset disabled class="edit_profile">
                         <legend><fmt:message key="Label.Edit_profile"/></legend>
                     </fieldset>
@@ -117,7 +117,7 @@
                             <textarea type="text" name="about_me" maxlength="300" class="form-control"
                                       aria-label="Sizing example input"
                                       aria-describedby="inputGroup-sizing-default"
-                                      id="exampleFormControlTextarea1"></textarea>
+                                      id="exampleFormControlTextarea1"><c:out value="${about_me}"/></textarea>
                         </div>
                         <div class="validation">${errorData}</div>
                     </div>

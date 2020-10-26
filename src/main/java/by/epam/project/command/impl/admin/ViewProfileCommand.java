@@ -2,8 +2,9 @@ package by.epam.project.command.impl.admin;
 
 import by.epam.project.command.Command;
 import by.epam.project.command.exception.CommandException;
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.entity.Router;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.RequestAttribute;
+import by.epam.project.command.Router;
 import by.epam.project.entity.impl.User;
 import by.epam.project.service.impl.UserServiceImpl;
 import by.epam.project.service.exception.ServiceException;
@@ -14,37 +15,30 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 public class ViewProfileCommand implements Command {
-    private static final String EMAIL = "email";
-    private static final String GENDER = "gender";
-    private static final String COUNTRY = "country";
-    private static final String ABOUT_ME = "about_me";
-    private static final String NAME = "name";
-    private static final String AVATAR = "avatar";
-    private static final String COMMAND = "langChangeProcessCommand";
-    private final UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
     public static final Logger LOGGER = LogManager.getLogger();
+    private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        String page = ConfigurationManager.getProperty("path.page.profileCard");
+        String page = PathToPage.PROFILE_CARD_PAGE;
         User user;
-        String email = request.getParameter(EMAIL) == null
+        String email = request.getParameter(RequestAttribute.EMAIL) == null
                 ? (String) request.getSession().getAttribute("chosenUserEmail")
-                : request.getParameter(EMAIL);
+                : request.getParameter(RequestAttribute.EMAIL);
         try {
             user = userServiceImpl.findUserWithTheAllInfoByLogin(email);
-            request.setAttribute(GENDER, user.getGender());
-            request.setAttribute(COUNTRY, user.getCountry());
-            request.setAttribute(ABOUT_ME, user.getAboutMe());
-            request.setAttribute(NAME, user.getName());
-            request.setAttribute(AVATAR, user.getAvatar());
+            request.setAttribute(RequestAttribute.GENDER, user.getUserGender());
+            request.setAttribute(RequestAttribute.COUNTRY, user.getCountry());
+            request.setAttribute(RequestAttribute.ABOUT_ME, user.getAboutMe());
+            request.setAttribute(RequestAttribute.NAME_USER, user.getName());
+            request.setAttribute(RequestAttribute.AVATAR, user.getAvatar());
 
             request.getSession().setAttribute("chosenUserEmail", email);
-            request.setAttribute(COMMAND, "view_profile");
+            request.setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND, "view_profile");
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "User not found", e);
             throw new CommandException("User not found", e);
         }
-        return new Router(page, Router.Type.FORWARD);
+        return new Router(page);
     }
 }

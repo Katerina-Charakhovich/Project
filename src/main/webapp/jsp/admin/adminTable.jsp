@@ -18,25 +18,25 @@
 <div class="Admin_Page">
     <div class="container-sm">
         <fieldset disabled class="sign_in">
-            <legend><fmt:message key="Label.films"/></legend>
+            <legend><fmt:message key="Label.Admins"/></legend>
         </fieldset>
         <div class="row">
             <div class="dropdown">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="dropDownGroup"><fmt:message key="Label.choose"/></label>
+                    <label class="input-group-text" for="dropDownGroup"><fmt:message key="Label.chooseAdmins"/></label>
                 </div>
                 <button class="btn btn-secondary dropdown-toggle" id="dropDownGroup" type="button"
                         data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                    ${filmsOnPage}
+                    ${adminsOnPage}
                 </button>
                 <form method="post" action="controller">
-                    <input type="hidden" name="command" value="admin_page"/>
+                    <input type="hidden" name="command" value="init_admin_table"/>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <button class="dropdown-item" type="input" name="filmsOnPage" value="5">5</button>
-                        <button class="dropdown-item" type="input" name="filmsOnPage" value="10">10</button>
-                        <button class="dropdown-item" type="input" name="filmsOnPage" value="15">15</button>
-                        <button class="dropdown-item" type="input" name="filmsOnPage" value="20">20</button>
+                        <button class="dropdown-item" type="input" name="adminsOnPage" value="4">4</button>
+                        <button class="dropdown-item" type="input" name="adminsOnPage" value="8">8</button>
+                        <button class="dropdown-item" type="input" name="adminsOnPage" value="12">12</button>
+                        <button class="dropdown-item" type="input" name="adminsOnPage" value="16">16</button>
                     </div>
                 </form>
             </div>
@@ -44,41 +44,43 @@
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col"><fmt:message key="Label.FilmName"/></th>
-                    <th scope="col"><fmt:message key="Film.Description"/></th>
-                    <th scope="col"><fmt:message key="Film.YearOfCreation"/></th>
-                    <th scope="col"><fmt:message key="Film.genre"/></th>
+                    <th scope="col">Email</th>
+                    <th scope="col"><fmt:message key="Label.User_name"/></th>
+                    <th scope="col"><fmt:message key="Label.Sex"/></th>
+                    <th scope="col"><fmt:message key="Label.Country"/></th>
+                    <th scope="col"><fmt:message key="Label.Role"/></th>
+                    <th scope="col"><fmt:message key="Label.Locked"/></th>
                     <th scope="col"><fmt:message key="Label.Action"/></th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${films}" var="film">
-<%--                    <c:forEach items="${filmsInfo}" var="filmInfo">--%>
+                <c:forEach items="${admins}" var="admin">
                     <tr>
-                        <td>${film.id}</td>
-                        <td>${film.filmName}</td>
-                        <td><fmt:message key="${film.filmInfo.description}"/></td>
-                        <td>${filmInfo.yearOfCreation}</td>
-                        <td><fmt:message key="${filmInfo.genre}"/></td>
+                        <td>${admin.userId}</td>
+                        <td>${admin.email}</td>
+                        <td>${admin.name}</td>
+                        <td>${admin.userGender}</td>
+                        <td>${admin.country}</td>
+                        <td>${admin.userRole}</td>
+                        <td>${admin.locked}</td>
+
                         <td>
                             <div class="dropdown">
-                                <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     ...
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="controller?command=view_film_page&id=${film.id}&filmName=${film.filmName}&realName=${film.realName}">
-                                        <fmt:message key="View.film"/>
-                                    </a>
-                                    <a class="dropdown-item" href="controller?command=view_profile&email=${user.email}">
+                                    <a class="dropdown-item" href="controller?command=view_profile&email=${admin.email}">
                                         <fmt:message key="View.profile"/>
                                     </a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" href="controller?command=init_admin_table&make_user=${make_user}&email=${admin.email}&currentAdminsPage=${currentAdminsPage}&adminsOnPage=${adminsOnPage}">
+                                        <fmt:message key="Label.RemoveAdmin"/>
+                                    </a>
                                 </div>
                             </div>
                         </td>
                     </tr>
-<%--                    </c:forEach>--%>
                 </c:forEach>
                 </tbody>
             </table>
@@ -86,23 +88,23 @@
                 <ul class="pagination pg-blue">
                     <c:forEach begin="1" end="${noOfPages}" var="i">
                         <c:choose>
-                            <c:when test="${currentPage eq i}">
+                            <c:when test="${currentAdminsPage eq i}">
                                 <li class="page-item active"><span class="page-link">
                                     ${i} <span class="sr-only">(current)</span>
                                 </li>
                             </c:when>
                             <c:otherwise>
                                 <li class="page-item"><a class="page-link"
-                                                         href="controller?command=admin_page_films&filmsOnPage=${filmsOnPage}&currentPage=${i}">${i}</a>
+                                                         href="controller?command=init_admin_table&adminsOnPage=${adminsOnPage}&currentAdminsPage=${i}">${i}</a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
 
-                    <c:if test="${currentPage lt noOfPages}">
+                    <c:if test="${currentAdminsPage lt noOfPages}">
                         <li class="page-item"><a class="page-link"
-                                                 href="controller?command=admin_page_films&filmsOnPage=${filmsOnPage}&currentPage=${currentPage+1}"><fmt:message
-                                key="Label.next"/></a>
+                                                 href="controller?command=init_admin_table&adminsOnPage=${adminsOnPage}&currentAdminsPage=${currentAdminsPage+1}">
+                            <fmt:message key="Label.next"/></a>
                         </li>
                     </c:if>
                 </ul>
@@ -112,4 +114,3 @@
     <c:import url="/jsp/common/footer.jsp"/>
 </div>
 </html>
-

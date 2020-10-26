@@ -6,9 +6,9 @@ import by.epam.project.entity.impl.User;
 import java.util.List;
 
 public interface UserDao extends BaseDao<User> {
-    User findUserByLogin(String login) throws DaoException;
+    boolean findUserByLoginAndPassword(String login, String password) throws DaoException;
 
-    List<User> findAllUndeletedUsers(int currentPage, int filmsOnPage) throws DaoException;
+    List<User> findUsersOnPage(int currentPage, int filmsOnPage) throws DaoException;
 
     User findUserWithTheAllInfoByLogin(String login) throws DaoException;
 
@@ -16,8 +16,19 @@ public interface UserDao extends BaseDao<User> {
 
     User updateAvatar(User user) throws DaoException;
 
-    int getNumberOfRows() throws DaoException;
+    int calculateNumberOfRowsByUser() throws DaoException;
 
-    User lockUser(User user) throws DaoException;
+    void lockUser(User user) throws DaoException;
 
+    boolean create(String email, String password) throws DaoException;
+
+    void changeRoleToAdmin(User user) throws DaoException;
+
+    boolean isUserExist(String email) throws DaoException;
+
+    List<User> findAdminsOnPage(int currentPage, int adminsOnPage) throws DaoException;
+
+    User changeRoleToUser(User user) throws DaoException;
+    int calculateNumberOfRowsByAdmin() throws DaoException;
 }
+

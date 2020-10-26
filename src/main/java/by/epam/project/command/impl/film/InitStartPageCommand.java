@@ -2,8 +2,9 @@ package by.epam.project.command.impl.film;
 
 import by.epam.project.command.Command;
 import by.epam.project.command.exception.CommandException;
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.entity.Router;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.RequestAttribute;
+import by.epam.project.command.Router;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.service.impl.MediaServiceImpl;
 import by.epam.project.service.exception.ServiceException;
@@ -15,40 +16,36 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class InitStartPageCommand implements Command {
-    private static final String LIST = "list";
-    private static final String CURRENT_FILM_PAGE = "currentFilmPage";
-    private static final String FILMS_ON_PAGE = "filmsOnPage";
-    private static final String NUMBER_OF_PAGES = "noOfPages";
-    private static final String COMMAND = "langChangeProcessCommand";
     public static final Logger LOGGER = LogManager.getLogger();
-    private static final MediaServiceImpl MEDIA_SERVICE_IMPL = MediaServiceImpl.getInstance();
+    private MediaServiceImpl mediaService = MediaServiceImpl.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        String page = ConfigurationManager.getProperty("path.page.start");
-        String current = request.getParameter(CURRENT_FILM_PAGE) == null ? "1" : request.getParameter(CURRENT_FILM_PAGE);
-        String countOfFilms = request.getParameter(FILMS_ON_PAGE) == null ? "8" : request.getParameter(FILMS_ON_PAGE);
+        String page = PathToPage.START_PAGE;
+        String current = request.getParameter(RequestAttribute.CURRENT_FILM_PAGE)== null ? "1" : request.getParameter(RequestAttribute.CURRENT_FILM_PAGE);
+        String countOfFilms = request.getParameter(RequestAttribute.FILMS_ON_PAGE)== null ? "8" : request.getParameter(RequestAttribute.FILMS_ON_PAGE);
         int currentPage = Integer.parseInt(current);
         int filmsOnPage = Integer.parseInt(countOfFilms);
         List<Film> films;
         try {
-            films = MEDIA_SERVICE_IMPL.findAllUndeletedFilms(currentPage, filmsOnPage);
-            int rows = MEDIA_SERVICE_IMPL.getNumberOfRows();
+            films = mediaService.findAllUndeletedFilms(currentPage, filmsOnPage);
+            int rows = mediaService.calculateNumberOfRows();
             int nOfPages = rows / filmsOnPage;
-            if (nOfPages % filmsOnPage > 0) {
+            if (nOfPages * filmsOnPage < rows) {
                 nOfPages++;
             }
-            request.setAttribute(NUMBER_OF_PAGES, nOfPages);
+            request.setAttribute(RequestAttribute.NUMBER_OF_PAGES, nOfPages);
 
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "Command  initStartPage invalid", e);
             throw new CommandException("Command  initStartPage invalid", e);
         }
-        request.setAttribute(CURRENT_FILM_PAGE, currentPage);
-        request.setAttribute(FILMS_ON_PAGE, filmsOnPage);
-        request.setAttribute(LIST, films);
-        request.setAttribute(COMMAND, "init_start_page");
-        return new Router(page, Router.Type.FORWARD);
+        request.setAttribute(RequestAttribute.CURRENT_FILM_PAGE, currentPage);
+        request.setAttribute(RequestAttribute.FILMS_ON_PAGE, filmsOnPage);
+        request.setAttribute(RequestAttribute.LIST_FILMS, films);
+        request.setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND,
+                RequestAttribute.COMMAND_INIT_START_PAGE);
+        return new Router(page);
     }
 }
 

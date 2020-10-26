@@ -1,19 +1,21 @@
 package by.epam.project.command.impl;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.entity.Router;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.Router;
 
 
 import javax.servlet.http.HttpServletRequest;
 
 
+/**
+ * The type Forward command.
+ */
 public class ForwardCommand implements Command {
-    private static final String PAGE = "page";
 
     @Override
     public Router execute(HttpServletRequest request) {
-        String page = ConfigurationManager.getProperty(request.getParameter(PAGE));
-        return new Router(page, Router.Type.FORWARD);
+        String page = request.getParameter(PathToPage.NEXT_PAGE);
+        return new Router(page);
     }
 }

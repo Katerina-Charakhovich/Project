@@ -2,10 +2,10 @@ package by.epam.project.controller;
 
 import by.epam.project.command.Command;
 import by.epam.project.command.exception.CommandException;
-import by.epam.project.command.manager.ConfigurationManager;
-import by.epam.project.command.manager.MessageManager;
+import by.epam.project.command.PathToPage;
+import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.factory.ActionFactory;
-import by.epam.project.entity.Router;
+import by.epam.project.command.Router;
 import by.epam.project.pool.ConnectionPool;
 import by.epam.project.pool.exception.PoolException;
 import org.apache.logging.log4j.Level;
@@ -27,40 +27,39 @@ public class ControllerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (CommandException e) {
-            LOGGER.log(Level.ERROR, e);
-        }
+        processRequest(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (CommandException e) {
-            LOGGER.log(Level.ERROR, e);
-
-
-        }
+        processRequest(request, response);
     }
 
     private void processRequest(HttpServletRequest request
-            , HttpServletResponse response) throws ServletException, IOException, CommandException {
-        Command command = ActionFactory.defineCommand(request);
-        Router router = command.execute(request);
-        request.getSession().setAttribute("currentPage", router.getPage());
-        if (router.getPage() == null) {
-            router.setPage(ConfigurationManager.getProperty("path.page.index"));
-            request.getSession().setAttribute("nullPage",
-                    MessageManager.getProperty("message.nullpage"));
-            response.sendRedirect(request.getContextPath() + router.getPage());
-        }
-        if (Router.Type.FORWARD.equals(router.getType())) {
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(router.getPage());
-            dispatcher.forward(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath() + router.getPage());
+            , HttpServletResponse response) throws ServletException, IOException {
+        try {
+            Command command = ActionFactory.defineCommand(request);
+            Router router;
+            RequestDispatcher dispatcher;
+
+            router = command.execute(request);
+            String currentPage = router.getPage();
+            if (currentPage == null) {
+                router.setPage(PathToPage.ERROR_PAGE);
+                response.sendRedirect(request.getContextPath() + router.getPage());
+            }
+            if (Router.Type.FORWARD == router.getType()) {
+                dispatcher = getServletContext().getRequestDispatcher(router.getPage());
+                dispatcher.forward(request, response);
+            } else {
+                response.sendRedirect(request.getContextPath() + router.getPage());
+            }
+            request.getSession().setAttribute(RequestAttribute.CURRENT_PAGE, currentPage);
+        } catch (CommandException e) {
+            String error = e.getMessage();
+            request.setAttribute(RequestAttribute.ERROR, error);
+            LOGGER.log(Level.ERROR, e);
+            request.getRequestDispatcher(PathToPage.ERROR_PAGE).forward(request, response);
         }
     }
 

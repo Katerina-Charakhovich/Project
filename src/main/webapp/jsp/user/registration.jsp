@@ -22,7 +22,8 @@ ${language}
             <div class="col">
             </div>
             <div class="col-4">
-                <form name="registrationForm" method="post" action="controller" class="needs-validation" novalidate>
+                <form name="registrationForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller"
+                      class="needs-validation" novalidate>
                     <fieldset disabled class="create_your_account">
                         <legend><fmt:message key="Label.Registration"/></legend>
                     </fieldset>
@@ -39,7 +40,6 @@ ${language}
                                    required>
                         </div>
                     </div>
-                    ${registrationErrorLogin}<br/>
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="validationTooltip02" class="validationTooltip"><fmt:message
@@ -66,10 +66,19 @@ ${language}
                                    required>
                         </div>
                     </div>
-                    <div class="validation">${wrongAction}</div>
-                    <div class="validation">${nullPage}</div>
-                    <div class="validation">${registrationError}</div>
-                    <br/><br/>
+                    <c:if test="${registrationErrorSymbols == false}">
+                        <div class="validation"> <fmt:message key="Message.incorrectLoginAndPassword"/></div>
+                    </c:if>
+                    <c:if test="${registrationError == false}">
+                        <div class="validation"> <fmt:message key="Message.thisUserExists"/></div>
+                    </c:if>
+                    <c:if test="${registrationErrorPasswords == false}">
+                        <div class="validation"> <fmt:message key="Message.passwordsDoNotMatch"/></div>
+                    </c:if>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                     <div class="submit-registration">
                         <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Submit"/>">
                     </div>

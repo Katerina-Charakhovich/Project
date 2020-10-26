@@ -17,24 +17,4 @@ public interface BaseDao<T> {
     boolean create(T t) throws DaoException;
 
     T update(T t) throws DaoException;
-
-    default void close(Statement statement) throws DaoException {
-        try {
-            if (statement != null) {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            throw new DaoException(" ", e);
-        }
-    }
-
-    default void close(Connection connection) throws DaoException {
-        try {
-            if (connection != null) {
-                connection.close(); // or connection return code to the pool
-            }
-        } catch (SQLException e) {
-            throw new DaoException(" ", e);
-        }
-    }
 }

@@ -20,7 +20,8 @@
             <div class="col">
             </div>
             <div class="col-4">
-                <form name="loginForm" method="post" action="controller" class="needs-validation" novalidate>
+                <form name="loginForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller"
+                      class="needs-validation" novalidate>
                     <fieldset disabled class="sign_in">
                         <legend><fmt:message key="Label.Sign"/></legend>
                     </fieldset>
@@ -50,48 +51,51 @@
                                    required>
                         </div>
                     </div>
-                    <div class="validation">${wrongAction}</div>
-                    <div class="validation">${nullPage}</div>
-                    <div class="validation">${errorLoginPassMessage}</div>
-                    <div class="validation">${UserIsLocked}</div>
-                    <br/><br/>
-                    <div class="submit-login">
-                        <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Login"/>">
-                    </div>
-                </form>
-                <script>
-                    (function () {
-                        'use strict';
-                        window.addEventListener('load', function () {
-                            var forms = document.getElementsByClassName('needs-validation');
-                            var validation = Array.prototype.filter.call(forms, function (form) {
-                                form.addEventListener('submit', function (event) {
-                                    if (form.checkValidity() === false) {
-                                        event.preventDefault();
-                                        event.stopPropagation();
-                                    }
-                                    form.classList.add('was-validated');
-                                }, false);
-                            });
-                        }, false);
-                    })();
-                </script>
-                <form name="registrationSubmit" method="post" action="controller" class="register-button">
-                    <input class="btn btn-outline-primary" type="submit"
-                           value="<fmt:message key="Submit.Registration"/>">
-                    <input type="hidden" name="command" value="forward"/>
-                    <input type="hidden" name="page" value="path.page.registration"/>
-                </form>
-            </div>
-            <div class="col">
-            </div>
-        </div>
-    </div>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <c:import url="../common/footer.jsp"/>
+                    <c:if test="${errorLoginPassMessage == false}">
+                    <div class="validation"> <fmt:message key="Message.loginerror"/></div>
+            </c:if>
+            <c:if test="${UserIsLocked == false}">
+            <div class="validation"> <fmt:message key="Message.locked"/></div>
+        </c:if>
+<br/><br/>
+<div class="submit-login">
+    <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Login"/>">
+</div>
+</form>
+<script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+<form name="registrationSubmit" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller"
+      class="register-button">
+    <input class="btn btn-outline-primary" type="submit"
+           value="<fmt:message key="Submit.Registration"/>">
+    <input type="hidden" name="command" value="forward"/>
+    <input type="hidden" name="page" value="/jsp/user/registration.jsp"/>
+</form>
+</div>
+<div class="col">
+</div>
+</div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<c:import url="../common/footer.jsp"/>
 </div>
 </html>

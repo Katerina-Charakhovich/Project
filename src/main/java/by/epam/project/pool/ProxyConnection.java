@@ -1,6 +1,5 @@
 package by.epam.project.pool;
 
-import by.epam.project.command.manager.MessageManager;
 import by.epam.project.pool.exception.PoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -60,11 +59,11 @@ public class ProxyConnection implements Connection {
     }
 
     @Override
-    public void close() throws SQLException {
+    public void close() {
         try {
             ConnectionPool.getInstance().releaseConnection(this);
         } catch (PoolException e) {
-            LOGGER.log(Level.ERROR, MessageManager.getProperty("message.getconnection"), e);
+            LOGGER.log(Level.ERROR, "Connection is already closed", e);
         }
     }
 

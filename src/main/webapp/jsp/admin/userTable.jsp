@@ -30,13 +30,13 @@
                         aria-haspopup="true" aria-expanded="false">
                     ${usersOnPage}
                 </button>
-                <form method="post" action="controller">
+                <form method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
                     <input type="hidden" name="command" value="admin_page"/>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <button class="dropdown-item" type="input" name="usersOnPage" value="5">5</button>
-                        <button class="dropdown-item" type="input" name="usersOnPage" value="10">10</button>
-                        <button class="dropdown-item" type="input" name="usersOnPage" value="15">15</button>
-                        <button class="dropdown-item" type="input" name="usersOnPage" value="20">20</button>
+                        <button class="dropdown-item" type="input" name="usersOnPage" value="4">4</button>
+                        <button class="dropdown-item" type="input" name="usersOnPage" value="8">8</button>
+                        <button class="dropdown-item" type="input" name="usersOnPage" value="12">12</button>
+                        <button class="dropdown-item" type="input" name="usersOnPage" value="16">16</button>
                     </div>
                 </form>
             </div>
@@ -48,6 +48,7 @@
                     <th scope="col"><fmt:message key="Label.User_name"/></th>
                     <th scope="col"><fmt:message key="Label.Sex"/></th>
                     <th scope="col"><fmt:message key="Label.Country"/></th>
+                    <th scope="col"><fmt:message key="Label.Role"/></th>
                     <th scope="col"><fmt:message key="Label.Locked"/></th>
                     <th scope="col"><fmt:message key="Label.Action"/></th>
                 </tr>
@@ -55,22 +56,23 @@
                 <tbody>
                 <c:forEach items="${users}" var="user">
                     <tr>
-                        <td>${user.id}</td>
+                        <td>${user.userId}</td>
                         <td>${user.email}</td>
                         <td>${user.name}</td>
-                        <td>${user.gender}</td>
+                        <td>${user.userGender}</td>
                         <td>${user.country}</td>
+                        <td>${user.userRole}</td>
                         <td>${user.locked}</td>
                         <td>
                                 <div class="dropdown">
-                                    <a class="btn btn-info dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         ...
                                     </a>
 
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="controller?command=action_lock_user&lock=${user.locked}&email=${user.email}">
+                                        <a class="dropdown-item" href="controller?command=admin_page&lock=${user.locked}&email=${user.email}&currentUsersPage=${currentUsersPage}&usersOnPage=${usersOnPage}">
                                             <c:choose>
-                                            <c:when test="${user.locked eq 'no'}">
+                                            <c:when test="${user.locked eq 'false'}">
                                                 <fmt:message key="Locked.Lock"/>
                                             </c:when>
                                             <c:otherwise>
@@ -81,7 +83,9 @@
                                         <a class="dropdown-item" href="controller?command=view_profile&email=${user.email}">
                                                 <fmt:message key="View.profile"/>
                                         </a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
+                                        <a class="dropdown-item" href="controller?command=admin_page&make_admin=${make_admin}&email=${user.email}&currentUsersPage=${currentUsersPage}&usersOnPage=${usersOnPage}">
+                                            <fmt:message key="Label.Appoint_admin"/>
+                                        </a>
                                     </div>
                                 </div>
                         </td>
@@ -108,8 +112,8 @@
 
                     <c:if test="${currentUsersPage lt noOfPages}">
                         <li class="page-item"><a class="page-link"
-                                                 href="controller?command=admin_page&usersOnPage=${usersOnPage}&currentUsersPage=${currentUsersPage+1}"><fmt:message
-                                key="Label.next"/></a>
+                                                 href="controller?command=admin_page&usersOnPage=${usersOnPage}&currentUsersPage=${currentUsersPage+1}">
+                            <fmt:message key="Label.next"/></a>
                         </li>
                     </c:if>
                 </ul>
