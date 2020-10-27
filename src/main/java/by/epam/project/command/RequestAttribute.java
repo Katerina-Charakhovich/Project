@@ -58,6 +58,19 @@ public class RequestAttribute {
     public static final String FILM_NAME = "filmName";
     public static final String FILM_NAME_FOR_PROP_EN = "filmNameForPropEn";
     public static final String FILM_NAME_FOR_PROP_RU = "filmNameForPropRu";
+    public static final String FILM_REAL_NAME = "realName";
+    public static final String FILM_GENRE_FOR_PROP_EN = "genreOfFilmEnglish";
+    public static final String FILM_GENRE_FOR_PROP_RU = "genreOfFilmRussian";
+    public static final String FILM_DESCRIPTION_EN = "descriptionEn";
+    public static final String FILM_DESCRIPTION_RU = "descriptionRu";
+    public static final String LINK_OF_FILM_ENGLISH = "linkOfFilmEnglish";
+    public static final String LINK_OF_FILM_RUSSIAN = "linkOfFilmRussian";
+    public static final String COMMAND_CREATE_FILM_INFO_EN = "create_film_info_en";
+
+
+
+
+
 
     private RequestAttribute() {
     }

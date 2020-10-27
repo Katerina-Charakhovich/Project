@@ -15,6 +15,12 @@ public class PathToPage {
     public static final String NEXT_PAGE = "page";
     public static final String ADMIN_TABLE_PAGE = "/jsp/admin/adminTable.jsp";
     public static final String FILM_CREATOR = "/jsp/admin/filmCreator.jsp";
+    public static final String PATH_TO_SERVER_PROP_EN = "prop/pagecontent_en.properties";
+    public static final String PATH_TO_SERVER_PROP_RU = "prop/pagecontent_ru.properties";
+    public static final String PATH_TO_PROP_EN = "C:\\Kristina\\TaskWebLogin\\src\\main\\resources\\prop\\pagecontent_en.properties";
+    public static final String PATH_TO_PROP_RU = "C:\\Kristina\\TaskWebLogin\\src\\main\\resources\\prop\\pagecontent_ru.properties";
+    public static final String FILM_INFO_CREATOR_EN = "/jsp/admin/filmInfoCreatorEn.jsp";
+    public static final String FILM_INFO_CREATOR_RU = "/jsp/admin/filmInfoCreatorRu.jsp";
 
     private PathToPage() {
     }

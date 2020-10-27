@@ -14,64 +14,55 @@
         <%@include file="/css/style.css" %>
     </style>
 </head>
+<c:import url="/jsp/common/header.jsp"/>
 <div class="container-sm">
     <div class="row">
-        <div class="col">
-            <form action="${request.getContextPath()}/TaskWebLogin_war/upload" enctype="multipart/form-data"
-                  method="post">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="content" id="validatedCustomFile"
-                           required>
-                    <label class="custom-file-label" for="validatedCustomFile"><fmt:message
-                            key="Film.ChooseEnglishPhoto"/></label>
-                </div>
-                <div class="button-save">
-                    <button class="btn btn-outline-primary " type="submit"><fmt:message
-                            key="Submit.Save"/></button>
-                </div>
-            </form>
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <fieldset disabled class="sign_in">
+                <legend><fmt:message key="Label.createFilm"/></legend>
+            </fieldset>
             <form name="filmCreatorForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
                 <input type="hidden" name="command" value="film_creator"/>
-                <input type="text" name="filmName" pattern="^[a-zA-Z0-9]+$"
+                <input type="text" name="filmName"
                        maxlength="50" value="Film." id="nameForProfile"
                        class="form-control"
                        aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-large">
-                <input type="text" name="filmNameForPropEn" pattern="^[a-zA-Z0-9]+$"
-                       maxlength="50" value=" " id="nameForProperty"
+                <label for="nameForProperty" class="validationTooltip"><fmt:message
+                        key="Label.filmNameEnglish"/></label>
+                <input type="text" name="filmNameForPropEn"
+                       maxlength="50" value="" id="nameForProperty"
                        class="form-control"
                        aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-large">
+                <label for="nameForPropertyRu" class="validationTooltip"><fmt:message
+                        key="Label.filmNameRussian"/></label>
+                <input type="text" name="filmNameForPropRu"
+                       maxlength="50" value="" id="nameForPropertyRu"
+                       class="form-control"
+                       aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-large">
+                <br>
+                <div class="submit-login">
+                    <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Submit"/>">
+                </div>
+
+            </form>
+            <form name="registrationSubmit" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller"
+                  class="register-button">
+                <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Next"/>">
+                <input type="hidden" name="command" value="forward"/>
+                <input type="hidden" name="page" value="/jsp/admin/filmInfoCreatorEn.jsp"/>
             </form>
             <div>
                 <div class="col">
-                    <div class="upload text-info">
-                        <form action="upload" enctype="multipart/form-data" method="post">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="content" id="validatedCustomFile2"
-                                       required>
-                                <label class="custom-file-label" for="validatedCustomFile2"><fmt:message
-                                        key="Film.ChooseRussianPhoto"/></label>
-                            </div>
-                            <div class="button-save">
-                                <button class="btn btn-outline-primary " type="submit"><fmt:message
-                                        key="Submit.Save"/></button>
-                            </div>
-                        </form>
-                    </div>
-                    <form name="filmCreatorForm" method="post"
-                          action="${request.getContextPath()}/TaskWebLogin_war/controller">
-                        <input type="hidden" name="command" value="film_creator"/>
-                        <input type="text" name="filmNameForPropRu" pattern="^[a-zA-Z0-9]+$"
-                               maxlength="50" value=" " id="nameForPropertyRu"
-                               class="form-control"
-                               aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-large">
-                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
     <c:import url="/jsp/common/footer.jsp"/>
 </div>
 </html>

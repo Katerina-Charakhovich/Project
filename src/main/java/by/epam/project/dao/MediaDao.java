@@ -17,4 +17,7 @@ public interface MediaDao extends BaseDao<Film> {
 
     FilmInfo findInfoById(long filmId) throws DaoException;
 
+    boolean isFilmExist(String filmName) throws DaoException;
+
+    public boolean createFilmInfo(FilmInfo filminfo) throws DaoException;
 }

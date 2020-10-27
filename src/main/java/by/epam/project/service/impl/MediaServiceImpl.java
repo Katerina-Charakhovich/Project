@@ -32,14 +32,15 @@ public class MediaServiceImpl implements MediaService {
         return instance;
     }
 
-    public Film isFilmExist(String name) throws ServiceException {
-        Film film;
+    public boolean isFilmExist(String name) throws ServiceException {
+        boolean result;
         try {
-            film = mediaDao.findFilmByName(name);
+           result = mediaDao.isFilmExist(name);
+
         } catch (DaoException e) {
             throw new ServiceException();
         }
-        return film;
+        return result;
     }
 
     public List<Film> findAllUndeletedFilms(int currentPage, int filmsOnPage) throws ServiceException {
@@ -87,6 +88,39 @@ public class MediaServiceImpl implements MediaService {
             LOGGER.log(Level.ERROR, "Film not found", e);
             throw new ServiceException("Film not found", e);
         }
+    }
+
+    @Override
+    public boolean createFilm(String filmName) throws ServiceException {
+        boolean result = false;
+        try {
+            if (!isFilmExist(filmName)) {
+                Film film = new Film();
+                film.setFilmName(filmName);
+                result = mediaDao.create(film);
+            }
+            } catch (DaoException e) {
+                LOGGER.log(Level.ERROR, "Creation failed", e);
+                throw new ServiceException("Creation failed", e);
+            }
+        return result;
+    }
+
+    @Override
+    public boolean createFilmInfo(String link, String genre, String description, int yearOfCreation, long filmId) throws ServiceException {
+        boolean result = false;
+        try {
+                Film film = findFilmById(filmId);
+                if (film != null){
+                    FilmInfo filmInfo = new FilmInfo(description,yearOfCreation,genre,
+                            filmId,link);
+                    result = mediaDao.createFilmInfo(filmInfo);
+            }
+        } catch (DaoException e) {
+            LOGGER.log(Level.ERROR, "Creation failed", e);
+            throw new ServiceException("Creation failed", e);
+        }
+        return result;
     }
 }
 

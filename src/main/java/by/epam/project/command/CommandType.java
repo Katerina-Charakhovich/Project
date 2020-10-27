@@ -85,7 +85,17 @@ public enum CommandType {
     },
     FILM_CREATOR{
         {
-            this.command = new FilmCreator();
+            this.command = new CreateFilmCommand();
+        }
+    },
+    CREATE_FILM_INFO_EN{
+        {
+            this.command = new CreateFilmInfoEnCommand();
+        }
+    },
+    CREATE_FILM_INFO_RU{
+        {
+            this.command = new CreateFilmInfoRuCommand();
         }
     };
 

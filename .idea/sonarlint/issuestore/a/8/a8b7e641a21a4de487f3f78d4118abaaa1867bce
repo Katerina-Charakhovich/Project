@@ -1,0 +1,23 @@
+
+m
+java:S1192†"PDefine a constant instead of duplicating this literal "Films not found" 4 times.(Ë“É;8×ÜˆÆÏ.
+N
+java:S1481¨"+Remove this unused "filmId" local variable.(œ‚›Èÿÿÿÿÿ8¹„‘±Ö.
+Y
+java:S1068$"=Remove this unused "SQL_SELECT_ALL_FILMS_INFO" private field.(úÈ³	8¹„‘±Ö.
+d
+java:S2095}"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8×ÜˆÆÏ.
+e
+java:S2095¥"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8×ÜˆÆÏ.
+q
+java:S1192n"ODefine a constant instead of duplicating this literal "Film not Found" 3 times.(‘ ‡òüÿÿÿÿ8é”‚ÇÏ.
+e
+java:S2095»"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8é”‚ÇÏ.
+q
+java:S1192m"ODefine a constant instead of duplicating this literal "Film not found" 3 times.(ˆÔ·úÿÿÿÿ8é”‚ÇÏ.
+d
+java:S2095d"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8×ÜˆÆÏ.
+m
+java:S1192O"PDefine a constant instead of duplicating this literal "Creation failed" 4 times.(ÆîÑ÷8Øæ±Ö.
+e
+java:S2095Ò"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8€€¬«Ö.

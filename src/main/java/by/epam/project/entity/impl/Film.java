@@ -15,6 +15,10 @@ public class Film implements Entity {
         this.filmInfo=filmInfo;
     }
 
+    public Film(){
+
+    }
+
     public String getFilmName() {
         return filmName;
     }

@@ -1,0 +1,21 @@
+
+W
+java:S1854";Remove this useless assignment to local variable "context".(ªÆš8´£óÕ.
+H
+java:S1481",Remove this unused "context" local variable.(ªÆš8´£óÕ.
+c
+java:S3457"AFormat specifiers should be used instead of string concatenation.(ŒÛãÿÿÿÿÿ8´£óÕ.
+c
+java:S3457"AFormat specifiers should be used instead of string concatenation.(şÑ·¦úÿÿÿÿ8´£óÕ.
+_
+java:S2254"=Remove use of this unsecured "getRequestedSessionId()" method(ùà˜°ÿÿÿÿÿ8´£óÕ.
+Y
+java:S2629"7Use the built-in formatting to construct this argument.(şÑ·¦úÿÿÿÿ8´£óÕ.
+W
+java:S1161":Add the "@Override" annotation above this method signature(›ò¬8´£óÕ.
+]
+java:S3457"AFormat specifiers should be used instead of string concatenation.(¦´Ùl8´£óÕ.
+\
+java:S1161":Add the "@Override" annotation above this method signature(¦Ó†„úÿÿÿÿ8´£óÕ.
+Y
+java:S2629"7Use the built-in formatting to construct this argument.(ŒÛãÿÿÿÿÿ8´£óÕ.

@@ -1,0 +1,13 @@
+
+e
+java:S2095#"HUse try-with-resources or close this "Connection" in a "finally" clause.(õÃ¤Ö8ı­®¸Ô.
+c
+java:S2142B"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8¯Æª±Ê.
+[	java:S899%":Do something with the "boolean" value returned by "offer".(®Áíåøÿÿÿÿ8Õ×ç»Ô.
+c
+java:S2142^"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8Ñ§Ç¶É.
+c
+java:S2142N"FEither re-interrupt this method or rethrow the "InterruptedException".(ä ¹€8áëÎĞÔ.
+L
+java:S1066K"/Merge this if statement with the enclosing one.(íÎ¸®8šãà»Ô.
+g	java:S112)"FDefine and throw a dedicated exception instead of using a generic one.(¯åÕøÿÿÿÿ8ÎÛ°¸Ô.

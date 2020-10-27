@@ -7,7 +7,7 @@ import by.epam.project.service.exception.ServiceException;
 import java.util.List;
 
 public interface MediaService {
-    Film isFilmExist(String name) throws ServiceException;
+    boolean isFilmExist(String name) throws ServiceException;
 
     List<Film> findAllUndeletedFilms(int currentPage, int filmsOnPage) throws ServiceException;
 
@@ -18,4 +18,11 @@ public interface MediaService {
     Film findFilmById(long id) throws ServiceException;
 
     FilmInfo findInfoById(long filmId) throws ServiceException;
+
+    boolean createFilm(String filmName) throws ServiceException;
+
+    boolean createFilmInfo(String link, String genre, String description,
+                           int yearOfCreation, long filmId) throws ServiceException;
+
+
 }

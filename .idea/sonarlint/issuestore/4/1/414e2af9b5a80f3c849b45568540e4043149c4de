@@ -1,0 +1,28 @@
+
+m
+java:S1192K"PDefine a constant instead of duplicating this literal "User not found" 16 times.(ì²çù8‘‰¢úÕ.
+e
+java:S2095¥"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8‘‰¢úÕ.
+e
+java:S2095á"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8‘‰¢úÕ.
+€
+java:S1488Y"^Immediately return this expression instead of assigning it to the temporary variable "result".(ĞĞî…ıÿÿÿÿ8‘‰¢úÕ.
+Z
+java:S1854X"8Remove this useless assignment to local variable "user".(Ì«ƒúÿÿÿÿ8±Î°úÕ.
+t
+java:S1192†"QDefine a constant instead of duplicating this literal "Role not updated" 4 times.(°ÆÏĞûÿÿÿÿ8‘‰¢úÕ.
+K
+java:S1481X")Remove this unused "user" local variable.(Ì«ƒúÿÿÿÿ8±Î°úÕ.
+e
+java:S2095’"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8‘‰¢úÕ.
+e
+java:S2095Š"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8‘‰¢úÕ.
+M
+java:S1066ó"/Merge this if statement with the enclosing one.(íæî8‘‰¢úÕ.
+]	java:S125Z"<This block of commented-out lines of code should be removed.(åìœÇıÿÿÿÿ8±Î°úÕ.
+e
+java:S2095Ô"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8ç¤µúÕ.
+e
+java:S2095í"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8‘‰¢úÕ.
+e
+java:S2095«"GUse try-with-resources or close this "ResultSet" in a "finally" clause.(„‡–8‘‰¢úÕ.

@@ -35,6 +35,12 @@ public class MediaDaoImpl implements MediaDao {
             "SELECT id_films_info, description, year_of_creation, genre, link, film_id FROM testlogin.films_info WHERE film_id = ?";
     private static final String SQL_SELECT_ALL_FILMS_INFO =
             "SELECT id, description, year_of_creation, genre, link, film_id FROM testlogin.films_info ORDER BY id DESC LIMIT ?,? ";
+    private static final String INSERT_NEW_FILM =
+            "INSERT INTO testlogin.films(film_name) VALUES(?)";
+    private static final String SQL_SELECT_COUNT_FILMS =
+            "SELECT count(*) FROM testlogin.films WHERE film_name = ?";
+    private static final String INSERT_NEW_FILMINFO =
+            "INSERT INTO testlogin.films_info(description,year_of_creation, genre, link, film_id) VALUES(?,?,?,?,?)";
 
     private MediaDaoImpl() {
     }
@@ -63,7 +69,17 @@ public class MediaDaoImpl implements MediaDao {
 
     @Override
     public boolean create(Film film) throws DaoException {
-        return false;
+        boolean result;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_NEW_FILM)
+        ) {
+            statement.setString(1, film.getFilmName());
+            result = statement.executeUpdate() > 0;
+        } catch (SQLException | PoolException e) {
+            LOGGER.log(Level.ERROR, "Creation failed", e);
+            throw new DaoException("Creation failed", e);
+        }
+        return result;
     }
 
     @Override
@@ -150,7 +166,7 @@ public class MediaDaoImpl implements MediaDao {
             while (resultSet.next()) {
                 String realName = resultSet.getString("real_name");
                 long filmId = resultSet.getLong("film_id");
-                String filmName = resultSet.getString("file_name");
+                String filmName = resultSet.getString("film_name");
                 filmInfo = findInfoById(id);
                 film = new Film(id, filmName, realName,filmInfo);
             }
@@ -182,6 +198,46 @@ public class MediaDaoImpl implements MediaDao {
             throw new DaoException("Film not Found", e);
         }
         return filmInfo;
+    }
+
+    @Override
+    public boolean isFilmExist(String filmName) throws DaoException {
+        boolean result = true;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_COUNT_FILMS);
+        ) {
+            statement.setString(1, filmName);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int countFilms = resultSet.getInt(1);
+                if (countFilms == 0) {
+                    result = false;
+                }
+            }
+        } catch (SQLException | PoolException e) {
+            LOGGER.log(Level.ERROR, "User not found", e);
+            throw new DaoException("User not found", e);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean createFilmInfo(FilmInfo filminfo) throws DaoException {
+        boolean result;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_NEW_FILMINFO)
+        ) {
+            statement.setString(1, filminfo.getDescription());
+            statement.setInt(2,filminfo.getYearOfCreation());
+            statement.setString(3,filminfo.getGenre());
+            statement.setString(4,filminfo.getLink());
+            statement.setLong(5,filminfo.getFilmId());
+            result = statement.executeUpdate() > 0;
+        } catch (SQLException | PoolException e) {
+            LOGGER.log(Level.ERROR, "Creation failed", e);
+            throw new DaoException("Creation failed", e);
+        }
+        return result;
     }
 }
 
