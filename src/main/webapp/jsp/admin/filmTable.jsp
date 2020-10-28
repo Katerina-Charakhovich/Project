@@ -69,10 +69,10 @@
                 <c:forEach items="${films}" var="film">
                     <tr>
                         <td>${film.filmId}</td>
-                        <td><fmt:message key="${film.filmName}"/></td>
-                        <td><fmt:message key="${film.filmInfo.description}"/></td>
+                        <td>${film.filmName}</td>
+                        <td>${film.filmInfo.description}</td>
                         <td>${film.filmInfo.yearOfCreation}</td>
-                        <td><fmt:message key="${film.filmInfo.genre}"/></td>
+                        <td>${film.filmInfo.genre}</td>
                         <td>
                             <div class="dropdown">
                                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

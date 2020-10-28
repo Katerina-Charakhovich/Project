@@ -11,13 +11,14 @@ public class ColumnName {
     public static final String ABOUT_ME = "about_me";
     public static final String AVATAR = "avatar";
     public static final String LOCKED = "locked";
-    public static final String REAL_NAME = "real_name";
+    public static final String FILM_AVATAR = "film_avatar_";
+    public static final String STATUS = "status";
     public static final String FILM_ID = "film_id";
-    public static final String FILM_NAME = "film_name";
-    public static final String FILM_DESCRIPTION = "description";
+    public static final String FILM_NAME = "film_name_";
+    public static final String FILM_DESCRIPTION = "description_";
     public static final String FILM_YEAR_OF_CREATION = "year_of_creation";
-    public static final String FILM_GENRE = "genre";
-    public static final String FILM_LINK = "link";
+    public static final String FILM_GENRE = "genre_";
+    public static final String FILM_LINK = "link_";
     public static final String FILM_INFO_FILM_ID = "film_id";
 
     private ColumnName() {

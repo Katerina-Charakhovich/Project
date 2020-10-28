@@ -25,18 +25,13 @@ public class InitFilmTableCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.FILM_TABLE_PAGE;
         String current = request.getParameter(RequestAttribute.CURRENT_FILM_PAGE) == null ? "1" : request.getParameter(RequestAttribute.CURRENT_FILM_PAGE);
-        ;
         String countOfFilms = request.getParameter(RequestAttribute.FILMS_ON_PAGE) == null ? "8" : request.getParameter(RequestAttribute.FILMS_ON_PAGE);
+        String language = (String) request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         int currentPage = Integer.parseInt(current);
         int filmsOnPage = Integer.parseInt(countOfFilms);
         List<Film> films;
-        List<FilmInfo> filmsInfo = new ArrayList<>();
         try {
-            films = mediaServiceImpl.findAllUndeletedFilms(currentPage, filmsOnPage);
-            for (Film film : films) {
-                FilmInfo filmInfo = mediaServiceImpl.findInfoById(film.getFilmId());
-                filmsInfo.add(filmInfo);
-            }
+            films = mediaServiceImpl.findAllUndeletedFilms(currentPage, filmsOnPage,language.toLowerCase());
             int rows = mediaServiceImpl.calculateNumberOfRows();
             int nOfPages = rows / filmsOnPage;
             if (nOfPages % filmsOnPage > 0) {

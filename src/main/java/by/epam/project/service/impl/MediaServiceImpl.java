@@ -43,10 +43,10 @@ public class MediaServiceImpl implements MediaService {
         return result;
     }
 
-    public List<Film> findAllUndeletedFilms(int currentPage, int filmsOnPage) throws ServiceException {
+    public List<Film> findAllUndeletedFilms(int currentPage, int filmsOnPage,String language) throws ServiceException {
         List<Film> films;
         try {
-            films = mediaDao.findAllUndeletedFilms(currentPage, filmsOnPage);
+            films = mediaDao.findAllUndeletedFilms(currentPage, filmsOnPage,language);
         } catch (DaoException e) {
             LOGGER.log(Level.ERROR, "Film not found");
             throw new ServiceException("Film not found", e);
@@ -63,27 +63,27 @@ public class MediaServiceImpl implements MediaService {
         }
     }
 
-    public Film findFilmByName(String name) throws ServiceException {
+    public Film findFilmByName(String name,String language) throws ServiceException {
         try {
-            return mediaDao.findFilmByName(name);
+            return mediaDao.findFilmByName(name,language);
         } catch (DaoException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
             throw new ServiceException("Film not found", e);
         }
     }
 
-    public Film findFilmById(long id) throws ServiceException {
+    public Film findFilmById(long id,String language) throws ServiceException {
         try {
-            return mediaDao.findFilmById(id);
+            return mediaDao.findFilmById(id,language);
         } catch (DaoException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
             throw new ServiceException("Film not found", e);
         }
     }
 
-    public FilmInfo findInfoById(long filmId) throws ServiceException {
+    public FilmInfo findInfoById(long filmId,String language) throws ServiceException {
         try {
-            return mediaDao.findInfoById(filmId);
+            return mediaDao.findInfoById(filmId,language);
         } catch (DaoException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
             throw new ServiceException("Film not found", e);
@@ -107,10 +107,10 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public boolean createFilmInfo(String link, String genre, String description, int yearOfCreation, long filmId) throws ServiceException {
+    public boolean createFilmInfo(String link, String genre, String description, int yearOfCreation, long filmId, String language) throws ServiceException {
         boolean result = false;
         try {
-                Film film = findFilmById(filmId);
+                Film film = findFilmById(filmId, language);
                 if (film != null){
                     FilmInfo filmInfo = new FilmInfo(description,yearOfCreation,genre,
                             filmId,link);

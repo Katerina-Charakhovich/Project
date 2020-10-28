@@ -2,7 +2,7 @@ package by.epam.project.command;
 
 import by.epam.project.command.impl.*;
 import by.epam.project.command.impl.admin.*;
-import by.epam.project.command.impl.film.FilmCommand;
+import by.epam.project.command.impl.film.InitFilmCommand;
 import by.epam.project.command.impl.film.InitStartPageCommand;
 import by.epam.project.command.impl.user.*;
 
@@ -40,7 +40,7 @@ public enum CommandType {
     },
     FILM {
         {
-            this.command = new FilmCommand();
+            this.command = new InitFilmCommand();
         }
     },
     PROFILE {

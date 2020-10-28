@@ -19,7 +19,7 @@
     <div class="container-sm">
         <div class="row">
             <div class="col">
-                <div><span class="font-weight-bold text-uppercase text-info"><fmt:message key="${filmName}"/></span>
+                <div><span class="font-weight-bold text-uppercase text-info">${filmName}</span>
                 </div>
                 <br/>
                 <div><img src="pictures_for_project/posters_${language}/${realName}" alt="" width="250">
@@ -27,18 +27,18 @@
                 <br/>
                 <div><span class="font-weight-normal text-secondary">${yearOfCreation}</span>
                 </div>
-                <div id="genre"><span class="font-weight-normal text-secondary"><fmt:message key="${genre}"/></span>
+                <div id="genre"><span class="font-weight-normal text-secondary">${genre}</span>
                 </div>
             </div>
             <div class="col-7" id="trailer">
                 <br/>
                 <br/>
                 <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="<fmt:message key="${link}"/>" allowfullscreen></iframe>
+                    <iframe class="embed-responsive-item" src="${link}" allowfullscreen></iframe>
                 </div>
                 <br/>
                 <br/>
-                <div><span class="font-weight-bold text-info"><fmt:message key="${description}"/></span>
+                <div><span class="font-weight-bold text-info">${description}</span>
                 </div>
             </div>
         </div>

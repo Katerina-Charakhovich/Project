@@ -24,11 +24,12 @@ public class InitStartPageCommand implements Command {
         String page = PathToPage.START_PAGE;
         String current = request.getParameter(RequestAttribute.CURRENT_FILM_PAGE)== null ? "1" : request.getParameter(RequestAttribute.CURRENT_FILM_PAGE);
         String countOfFilms = request.getParameter(RequestAttribute.FILMS_ON_PAGE)== null ? "8" : request.getParameter(RequestAttribute.FILMS_ON_PAGE);
+        String language = (String)request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         int currentPage = Integer.parseInt(current);
         int filmsOnPage = Integer.parseInt(countOfFilms);
         List<Film> films;
         try {
-            films = mediaService.findAllUndeletedFilms(currentPage, filmsOnPage);
+            films = mediaService.findAllUndeletedFilms(currentPage, filmsOnPage,language.toLowerCase());
             int rows = mediaService.calculateNumberOfRows();
             int nOfPages = rows / filmsOnPage;
             if (nOfPages * filmsOnPage < rows) {

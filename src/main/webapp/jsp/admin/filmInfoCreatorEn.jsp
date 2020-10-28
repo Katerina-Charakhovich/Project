@@ -16,22 +16,7 @@
 </head>
 <c:import url="/jsp/common/header.jsp"/>
 <div class="container-sm">
-    <div class="row">
-        <div class="col-6">
-            <form action="${request.getContextPath()}/TaskWebLogin_war/upload" enctype="multipart/form-data"
-                  method="post">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="content" id="validatedCustomFile"
-                           required>
-                    <label class="custom-file-label" for="validatedCustomFile"><fmt:message
-                            key="Film.ChooseEnglishPhoto"/></label>
-                </div>
-                <div class="button-save">
-                    <button class="btn btn-outline-primary " type="submit"><fmt:message
-                            key="Submit.Save"/></button>
-                </div>
-            </form>
-        </div>
+
         <div class="col-6">
             <div class="upload text-info">
                 <form action="upload" enctype="multipart/form-data" method="post">
@@ -55,49 +40,14 @@
         <div class="col">
             <form name="filmCreatorForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
                 <input type="hidden" name="command" value="create_film_info_en"/>
-                <input type="text" name="description"
-                       maxlength="50" value="Description." id="descriptionOfFilm"
+                <label for="nameForPropertyRu" class="validationTooltip"><fmt:message
+                        key="Label.filmNameRussian"/></label>
+                <input type="text" name="filmNameForPropRu"
+                       maxlength="50" value="" id="nameForPropertyRu"
                        class="form-control"
                        aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-large">
-                <label for="nameForProperty" class="validationTooltip"><fmt:message
-                        key="Label.filmDescriptionEnglish"/></label>
-                <input type="text" name="descriptionEn"
-                       maxlength="300" value="" id="nameForProperty"
-                       class="form-control"
-                       aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-large">
-                <input type="text" name="genre"
-                       maxlength="50" value="Genre." id="genreOfFilm"
-                       class="form-control"
-                       aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-large">
-                <label for="nameForPropertyGenreEnglish" class="validationTooltip"><fmt:message
-                        key="Label.filmGenreEnglish"/></label>
-                <input type="text" name="genreOfFilmEnglish"
-                       maxlength="500" value="" id="nameForPropertyGenreEnglish"
-                       class="form-control"
-                       aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-large">
-                <input type="text" name="link"
-                       maxlength="50" value="Link." id="linkOfFilm"
-                       class="form-control"
-                       aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-large">
-                <label for="nameForPropertyGenreEnglish" class="validationTooltip"><fmt:message
-                        key="Label.filmLinkEnglish"/></label>
-                <input type="text" name="linkOfFilmEnglish"
-                       maxlength="300" value="" id="nameForPropertyLinkEnglish"
-                       class="form-control"
-                       aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-large">
-                <label for="FormYearOfCreation" class="validationTooltip"><fmt:message
-                        key="Film.YearOfCreation"/></label>
-                <input type="number" name="yearOfCreation"
-                       maxlength="4" value="" id="FormYearOfCreation"
-                       class="form-control"
-                       aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-large">
+                <br>
                 <div class="submit-login">
                     <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Submit"/>">
                 </div>

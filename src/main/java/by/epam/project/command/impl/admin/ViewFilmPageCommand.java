@@ -26,8 +26,9 @@ public class ViewFilmPageCommand implements Command {
         long filmId = Long.parseLong(currentFilmId);
         String filmName = request.getParameter(RequestAttribute.CURRENT_FILM_NAME);
         String realName = request.getParameter(RequestAttribute.CURRENT_REAL_FILM_NAME);
+        String language = (String)request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         try {
-            filmInfo = mediaServiceImpl.findInfoById(filmId);
+            filmInfo = mediaServiceImpl.findInfoById(filmId,language.toLowerCase());
             request.getSession().setAttribute(RequestAttribute.CURRENT_DESCRIPTION, filmInfo.getDescription());
             request.getSession().setAttribute(RequestAttribute.CURRENT_YEAR_OF_CREATION, filmInfo.getYearOfCreation());
             request.getSession().setAttribute(RequestAttribute.CURRENT_GENRE, filmInfo.getGenre());

@@ -31,7 +31,7 @@
         <div class="col">
         </div>
     </div>
-    <c:import url="/jsp/common/footer.jsp"/>
 </div>
+    <c:import url="/jsp/common/footer.jsp"/>
 </div>
 </html>

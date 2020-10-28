@@ -17,15 +17,15 @@ public class ValidationUser {
         return instance;
     }
 
-    public Boolean isRightLogin(String enteredLogin) {
+    public boolean isRightLogin(String enteredLogin) {
         return enteredLogin.matches(LOGIN_EXPRESSION);
     }
 
-    public Boolean isRightPassword(String enteredPassword) {
+    public boolean isRightPassword(String enteredPassword) {
         return enteredPassword.matches(PASSWORD_EXPRESSION);
     }
 
-    public Boolean isRightName(String name) {
+    public boolean isRightName(String name) {
         return name.matches(NAME_EXPRESSION);
     }
 

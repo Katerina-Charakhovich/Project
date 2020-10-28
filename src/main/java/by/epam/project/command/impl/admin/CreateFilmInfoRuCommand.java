@@ -29,7 +29,7 @@ public class CreateFilmInfoRuCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.FILM_INFO_CREATOR_RU;
         String genre = (String)request.getSession().getAttribute(RequestAttribute.CURRENT_GENRE);
-        String genreForPropRu = request.getParameter(RequestAttribute.FILM_GENRE_FOR_PROP_RU);
+        String genreForPropRu = request.getParameter(RequestAttribute.FILM_GENRE_RU);
         String description = (String)request.getSession().getAttribute(RequestAttribute.CURRENT_DESCRIPTION);
         String descriptionForPropRu = request.getParameter(RequestAttribute.FILM_DESCRIPTION_RU);
         String link = (String)request.getSession().getAttribute(RequestAttribute.CURRENT_LINK);

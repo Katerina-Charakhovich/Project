@@ -103,7 +103,7 @@
                         <br/>
                         <div><img src="pictures_for_project/posters_${language}/${film.realName}" alt="" width="200">
                         </div>
-                        <span class="font-weight-bold text-info"><fmt:message key="${film.filmName}"/></span>
+                        <span class="font-weight-bold text-info">${film.filmName}</span>
                     </div>
                 </a>
             </c:forEach>

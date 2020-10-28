@@ -38,12 +38,6 @@
             </div>
         </div>
     </div>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
     <c:import url="/jsp/common/footer.jsp"/>
 </div>
 </html>

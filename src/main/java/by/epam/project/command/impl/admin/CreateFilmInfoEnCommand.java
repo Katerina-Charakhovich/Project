@@ -30,17 +30,18 @@ public class CreateFilmInfoEnCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.FILM_INFO_CREATOR_EN;
         String genre = request.getParameter(RequestAttribute.CURRENT_GENRE);
-        String genreForPropEn = request.getParameter(RequestAttribute.FILM_GENRE_FOR_PROP_EN);
+        String genreForPropEn = request.getParameter(RequestAttribute.FILM_GENRE_EN);
         String description = request.getParameter(RequestAttribute.CURRENT_DESCRIPTION);
         String descriptionForPropEn = request.getParameter(RequestAttribute.FILM_DESCRIPTION_EN);
         String link = request.getParameter(RequestAttribute.CURRENT_LINK);
         String linkForPropEn = request.getParameter(RequestAttribute.LINK_OF_FILM_ENGLISH);
+        String language = (String)request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         String currentYearOfCreation = request.getParameter(RequestAttribute.CURRENT_YEAR_OF_CREATION);
         int yearOfCreation = Integer.parseInt(currentYearOfCreation);
         try {
             String filmName = (String)request.getSession().getAttribute(RequestAttribute.FILM_NAME);
-            Film film = mediaService.findFilmByName(filmName);
-            if (mediaService.createFilmInfo(link,genre,description,yearOfCreation,film.getFilmId())) {
+            Film film = mediaService.findFilmByName(filmName,language.toLowerCase());
+            if (mediaService.createFilmInfo(link,genre,description,yearOfCreation,film.getFilmId(),language.toLowerCase())) {
                 writeToProperties(genre, genreForPropEn, PathToPage.PATH_TO_SERVER_PROP_EN, PathToPage.PATH_TO_PROP_EN);
                 writeToProperties(description, descriptionForPropEn, PathToPage.PATH_TO_SERVER_PROP_EN, PathToPage.PATH_TO_PROP_EN);
                 writeToProperties(link, linkForPropEn, PathToPage.PATH_TO_SERVER_PROP_EN, PathToPage.PATH_TO_PROP_EN);
