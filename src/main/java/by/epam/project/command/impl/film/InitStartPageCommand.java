@@ -18,18 +18,22 @@ import java.util.List;
 public class InitStartPageCommand implements Command {
     public static final Logger LOGGER = LogManager.getLogger();
     private MediaServiceImpl mediaService = MediaServiceImpl.getInstance();
+    private static final String DEFAULT_VALUE_OF_FILM_PAGE = "1";
+    private static final String DEFAULT_VALUE_OF_FILMS_ON_PAGES = "8";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.START_PAGE;
-        String current = request.getParameter(RequestAttribute.CURRENT_FILM_PAGE)== null ? "1" : request.getParameter(RequestAttribute.CURRENT_FILM_PAGE);
-        String countOfFilms = request.getParameter(RequestAttribute.FILMS_ON_PAGE)== null ? "8" : request.getParameter(RequestAttribute.FILMS_ON_PAGE);
+        String current = request.getParameter(RequestAttribute.CURRENT_FILM_PAGE)
+                == null ? DEFAULT_VALUE_OF_FILM_PAGE : request.getParameter(RequestAttribute.CURRENT_FILM_PAGE);
+        String countOfFilms = request.getParameter(RequestAttribute.FILMS_ON_PAGE)
+                == null ? DEFAULT_VALUE_OF_FILMS_ON_PAGES : request.getParameter(RequestAttribute.FILMS_ON_PAGE);
         String language = (String)request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         int currentPage = Integer.parseInt(current);
         int filmsOnPage = Integer.parseInt(countOfFilms);
         List<Film> films;
         try {
-            films = mediaService.findAllUndeletedFilms(currentPage, filmsOnPage,language.toLowerCase());
+            films = mediaService.findAllActiveFilms(currentPage, filmsOnPage,language.toLowerCase(),true);
             int rows = mediaService.calculateNumberOfRows();
             int nOfPages = rows / filmsOnPage;
             if (nOfPages * filmsOnPage < rows) {

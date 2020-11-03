@@ -23,8 +23,10 @@ public class SecurityFilter implements Filter {
         HttpSession session = request.getSession();
         String userRole = (String) session.getAttribute(RequestAttribute.ROLE);
         if (!userRole.equals("ADMIN")) {
-            RequestDispatcher dispatcher = request.getServletContext()
-                    .getRequestDispatcher("/index.jsp");
+            String language = (String) request.getSession().getAttribute(RequestAttribute.LANGUAGE);            RequestDispatcher dispatcher = request.getServletContext()
+                    .getRequestDispatcher("/jsp/user/login.jsp");
+            request.getSession().invalidate();
+            request.getSession().setAttribute(RequestAttribute.LANGUAGE, language);
             dispatcher.forward(req, resp);
             return;
         }

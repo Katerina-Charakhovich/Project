@@ -20,22 +20,41 @@
         <fieldset disabled class="sign_in">
             <legend><fmt:message key="Label.Profile"/>:</legend>
         </fieldset>
-            <div class="card" style="width: 18rem;">
-                <img src="pictures_for_project/picturesForAvatar/${avatar}" class="card-img-top"
-                     alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">${name}</h5>
-                    <p class="card-text">${about_me}</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">${gender}</li>
-                    <li class="list-group-item">${country}</li>
-                </ul>
+        <div class="card" style="width: 18rem;">
+            <img src="pictures_for_project/picturesForAvatar/<c:out value="${avatar}"/>" class="card-img-top"
+                 alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><c:out value="${name}"/></h5>
+                <p class="card-text"><c:out value="${about_me}"/></p>
             </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><c:out value="${gender}"/></li>
+                <li class="list-group-item"><c:out value="${country}"/></li>
+            </ul>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col-4">
+            </div>
+            <div class="col-4">
+                <div class="Sub_films" id="myFilms">
+                    <form class="form-inline my-2 my-lg-0" method="post"
+                          action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                        <input class="btn btn-primary btn-lg btn-block" type="submit"
+                               value="<fmt:message key="Label.ViewFilms"/>">
+                        <input type="hidden" name="command" value="view_purchased_film"/>
+                        <input type="hidden" name="command" value="view_purchased_film"/>
+                    </form>
+                </div>
+            </div>
+            <div class="col-4">
+            </div>
+        </div>
     </div>
-<br/>
-<br/>
-<c:import url="/jsp/common/footer.jsp"/>
-<br/>
+    <br/>
+    <br/>
+    <c:import url="/jsp/common/footer.jsp"/>
+    <br/>
 </div>
 </html>

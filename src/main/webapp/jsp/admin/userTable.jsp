@@ -56,13 +56,13 @@
                 <tbody>
                 <c:forEach items="${users}" var="user">
                     <tr>
-                        <td>${user.userId}</td>
-                        <td>${user.email}</td>
-                        <td>${user.name}</td>
-                        <td>${user.userGender}</td>
-                        <td>${user.country}</td>
-                        <td>${user.userRole}</td>
-                        <td>${user.locked}</td>
+                        <td><c:out value="${user.userId}"/></td>
+                        <td><c:out value="${user.email}"/></td>
+                        <td><c:out value="${user.name}"/></td>
+                        <td><c:out value="${user.userGender}"/></td>
+                        <td><c:out value="${user.country}"/></td>
+                        <td><c:out value="${user.userRole}"/></td>
+                        <td><c:out value="${user.locked}"/></td>
                         <td>
                                 <div class="dropdown">
                                     <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

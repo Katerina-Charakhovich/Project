@@ -21,7 +21,7 @@
             <br/>
             <br/>
             <div class="col">
-                <p class="font-weight-bold text-info">${name}</p>
+                <p class="font-weight-bold text-info"><c:out value="${name}"/></p>
                 <div><img src="pictures_for_project/picturesForAvatar/${avatar}"
                           alt="" width="200"/></div>
                 <br/>
@@ -29,7 +29,7 @@
                 <div class="upload text-info">
                     <fmt:message key="Label.SelectFileUpload"/>
                     <br/>
-                    <form action="${request.getContextPath()}/TaskWebLogin_war/upload" enctype="multipart/form-data" method="post">
+                    <form action="${request.getContextPath()}/TaskWebLogin_war/upload?avatar=user" enctype="multipart/form-data" method="post">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="content" id="validatedCustomFile"
                                    required>
@@ -51,15 +51,15 @@
                     <tbody>
                     <tr>
                         <td class="active"><strong><fmt:message key="Label.Sex"/></strong></td>
-                        <td>${gender}</td>
+                        <td><c:out value="${gender}"/></td>
                     </tr>
                     <tr>
                         <td class="active"><strong><fmt:message key="Label.Country"/></strong></td>
-                        <td>${country}</td>
+                        <td><c:out value="${country}"/></td>
                     </tr>
                     <tr>
                         <td class="active"><strong><fmt:message key="Label.About_me"/></strong></td>
-                        <td>${about_me}</td>
+                        <td><c:out value="${about_me}"/></td>
                     </tr>
                     </tbody>
                 </table>

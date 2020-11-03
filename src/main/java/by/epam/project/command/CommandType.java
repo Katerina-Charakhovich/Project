@@ -83,25 +83,39 @@ public enum CommandType {
             this.command = new InitAdminTableCommand();
         }
     },
-    FILM_CREATOR{
+    FILM_CREATOR {
         {
             this.command = new CreateFilmCommand();
         }
     },
-    CREATE_FILM_INFO_EN{
+    EDIT_FILM {
         {
-            this.command = new CreateFilmInfoEnCommand();
+            this.command = new EditFilmCommand();
         }
     },
-    CREATE_FILM_INFO_RU{
+    FORWARD_TO_EDIT_FILM {
         {
-            this.command = new CreateFilmInfoRuCommand();
+            this.command = new ForwardToEditFilmCommand();
+        }
+    },
+    PURCHASE_FILM {
+        {
+            this.command = new PurchaseFilmCommand();
+        }
+    },
+    VIEW_PURCHASED_FILM {
+        {
+            this.command = new ViewPurchasedFilmCommand();
+        }
+    },
+    PURCHASED_FILM_TABLE {
+        {
+            this.command = new InitPurchasedFilmTableCommand();
         }
     };
-
     Command command;
 
     public Command getCurrentCommand() {
         return command;
     }
-}
+    }

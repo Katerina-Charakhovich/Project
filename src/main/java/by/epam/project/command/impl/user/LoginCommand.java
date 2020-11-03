@@ -30,7 +30,7 @@ public class LoginCommand implements Command {
         try {
             if (userService.isLoginAndPasswordValid(email, password)) {
                 if (userService.isUserLocked(email)) {
-                    errorLoginPassMessage = false;
+                    errorLoginPassMessage = true;
                     request.setAttribute(RequestAttribute.USER_IS_LOCKED, errorLoginPassMessage);
                     page = PathToPage.LOGIN_PAGE;
                     return new Router(page);
@@ -47,7 +47,7 @@ public class LoginCommand implements Command {
                         RequestAttribute.COMMAND_PROFILE );
                 page = PathToPage.PROFILE_PAGE;
             }  else {
-                errorLoginPassMessage = false;
+                errorLoginPassMessage = true;
                 request.setAttribute(RequestAttribute.INCORRECT_LOGIN_AND_PASSWORD,
                         errorLoginPassMessage);
                 page = PathToPage.LOGIN_PAGE;

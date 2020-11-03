@@ -18,12 +18,16 @@ import java.util.List;
 public class InitUserTableCommand implements Command {
     public static final Logger LOGGER = LogManager.getLogger();
     private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
+    private static final String DEFAULT_VALUE_OF_FILM_PAGE = "1";
+    private static final String DEFAULT_VALUE_OF_FILMS_ON_PAGES = "8";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.USER_TABLE_PAGE;
-        String current = request.getParameter(RequestAttribute.CURRENT_USERS_PAGE) == null ? "1" : request.getParameter(RequestAttribute.CURRENT_USERS_PAGE);
-        String countOfUsers = request.getParameter(RequestAttribute.USERS_ON_PAGE) == null ? "8" : request.getParameter(RequestAttribute.USERS_ON_PAGE);
+        String current = request.getParameter(RequestAttribute.CURRENT_USERS_PAGE)
+                == null ? DEFAULT_VALUE_OF_FILM_PAGE : request.getParameter(RequestAttribute.CURRENT_USERS_PAGE);
+        String countOfUsers = request.getParameter(RequestAttribute.USERS_ON_PAGE)
+                == null ? DEFAULT_VALUE_OF_FILMS_ON_PAGES : request.getParameter(RequestAttribute.USERS_ON_PAGE);
         int currentPage = Integer.parseInt(current);
         int usersOnPage = Integer.parseInt(countOfUsers);
         List<User> users;

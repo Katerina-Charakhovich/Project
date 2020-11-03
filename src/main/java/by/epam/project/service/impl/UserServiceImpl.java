@@ -1,6 +1,7 @@
 package by.epam.project.service.impl;
 
 import by.epam.project.dao.impl.UserDaoImpl;
+import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.User;
 import by.epam.project.dao.exception.DaoException;
 import by.epam.project.service.UserService;
@@ -204,6 +205,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         return user;
+    }
+
+    @Override
+    public long findUserIdByLogin(String email) throws ServiceException {
+        try {
+            return userDao.findUserIdByLogin(email);
+        } catch (DaoException e) {
+            LOGGER.log(Level.ERROR, "UserId not found",e);
+            throw new ServiceException("UserId not found", e);
+        }
     }
 }
 

@@ -30,14 +30,17 @@
                         <div class="form-group">
                             <label for="nameForProfile" class="profileType"><fmt:message
                                     key="Label.User_name"/></label>
-                            <input type="text" name="name" pattern="[A-Za-zА-Яа-яЁё]+(\s+[A-Za-zА-Яа-яЁё]+)?"
+                            <input type="text" name="name"
+                                   pattern="[A-Za-zА-Яа-яЁё]+(\s+[A-Za-zА-Яа-яЁё]+)?"
                                    maxlength="50" value="${name}" id="nameForProfile"
                                    class="form-control"
                                    aria-label="Sizing example input"
                                    aria-describedby="inputGroup-sizing-large">
                         </div>
                     </div>
-                    <div class="validation">${errorData}</div>
+                    <c:if test="${errorData == true}">
+                        <div class="validation"> <fmt:message key="Message.data"/></div>
+                    </c:if>
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="inputGroupSelect02" class="profileType"><fmt:message
@@ -119,7 +122,11 @@
                                       aria-describedby="inputGroup-sizing-default"
                                       id="exampleFormControlTextarea1"><c:out value="${about_me}"/></textarea>
                         </div>
-                        <div class="validation">${errorData}</div>
+                        <br>
+                        <br>
+                        <c:if test="${errorData == true}">
+                            <div class="validation"> <fmt:message key="Message.data"/></div>
+                        </c:if>
                     </div>
                     <div class="submit-edit">
                         <input class="btn btn-outline-primary btn-lg" type="submit" name="Submit_edit"

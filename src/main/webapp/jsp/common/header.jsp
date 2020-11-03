@@ -19,7 +19,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="controller?command=init_start_page">Home <span
+                <a class="nav-link" href="controller?command=init_start_page"><fmt:message key="Label.Home"/><span
                         class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
@@ -36,21 +36,25 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="controller?command=admin_page"><fmt:message key="Page.Users"/></a>
                     <a class="dropdown-item" href="controller?command=admin_page_films"><fmt:message key="Page.Films"/></a>
-
+                    <a class="dropdown-item" href="controller?command=purchased_film_table"><fmt:message key="Page.PurchasedFilms"/></a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="controller?command=init_admin_table"><fmt:message key="Page.Admins"/></a>
                 </div>
             </li>
     </c:when>
 </c:choose>
+<c:choose>
+    <c:when test="${role == 'USER'}">
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+                <a class="nav-link" href="controller?command=view_purchased_film"><fmt:message key="Label.MyFilms"/></a>
             </li>
+    </c:when>
+</c:choose>
         </ul>
         <c:choose>
             <c:when test="${role != null}">
-                <form class="form-inline my-2 my-lg-0" id="profileForm" >
-                    <input class="btn btn-outline-secondary" type="submit" method="post" action="controller"
+                <form class="form-inline my-2 my-lg-0" id="profileForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                    <input class="btn btn-outline-secondary" type="submit"
                            value="<fmt:message key="Label.Profile"/>">
                     <input type="hidden" name="command" value="profile"/>
                 </form>
@@ -60,15 +64,15 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <form class="form-inline my-2 my-lg-0" id="headerForm">
-                    <input class="btn btn-outline-secondary" type="submit" method="post" action="controller"
+                <form class="form-inline my-2 my-lg-0" id="headerForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                    <input class="btn btn-outline-secondary" type="submit"
                            value="<fmt:message key="Label.Sign"/>">
                     <input type="hidden" name="command" value="forward"/>
                     <input type="hidden" name="page" value="path.page.login"/>
                 </form>
             </c:otherwise>
         </c:choose>
-        <form class="form-inline my-2 my-lg-0" method="post" action="controller">
+        <form class="form-inline my-2 my-lg-0" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
             <input type="hidden" name="command" value="language"/>
             <input type="hidden" name="langChangeProcessCommand" value="${langChangeProcessCommand}"/>
             <input class="btn btn-outline-secondary" type="submit" name="currentNavLocale" value="${language}">

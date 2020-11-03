@@ -30,9 +30,11 @@ public interface UserService {
 
     boolean isUserLocked(String name) throws ServiceException;
 
-    public User changeRoleToAdmin(User user) throws ServiceException;
+    User changeRoleToAdmin(User user) throws ServiceException;
 
     List<User> findAllAdmins(int currentPage, int adminsOnPage) throws ServiceException;
 
-    public User changeRoleToUser(String email) throws ServiceException;
+    User changeRoleToUser(String email) throws ServiceException;
+
+    long findUserIdByLogin(String email) throws ServiceException;
 }

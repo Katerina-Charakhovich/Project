@@ -30,15 +30,14 @@ public class RegistrationCommand implements Command {
         String password = request.getParameter(RequestAttribute.PASSWORD);
         String repeatPassword = request.getParameter(RequestAttribute.REPEAT_PASSWORD);
         if (!password.equals(repeatPassword)) {
-           boolean registrationErrorPasswords = false;
+           boolean registrationErrorPasswords = true;
             request.setAttribute(RequestAttribute.PASSWORDS_DO_NOT_MATCH,
                     registrationErrorPasswords);
             page = PathToPage.REGISTRATION_PAGE;
             router = new Router(page);
         }
         if (!validationUser.isRightPassword(password) && !validationUser.isRightLogin(email)) {
-            boolean registrationErrorSymbols = false;
-
+            boolean registrationErrorSymbols = true;
             request.setAttribute(RequestAttribute.INCORRECT_ERROR_SYMBOLS, registrationErrorSymbols);
             page = PathToPage.REGISTRATION_PAGE;
             router = new Router(page);
@@ -52,7 +51,7 @@ public class RegistrationCommand implements Command {
                 router = new Router(page);
                 router.useRedirect();
             } else {
-                boolean registrationError = false;
+                boolean registrationError = true;
                 request.setAttribute(RequestAttribute.REGISTRATION_ERROR, registrationError);
                 page = PathToPage.REGISTRATION_PAGE;
                 router = new Router(page);

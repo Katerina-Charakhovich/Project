@@ -18,12 +18,16 @@ import java.util.List;
 public class InitAdminTableCommand implements Command {
     public static final Logger LOGGER = LogManager.getLogger();
     private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
+    private static final String DEFAULT_VALUE_OF_FILM_PAGE = "1";
+    private static final String DEFAULT_VALUE_OF_FILMS_ON_PAGES = "8";
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.ADMIN_TABLE_PAGE;
-        String current = request.getParameter(RequestAttribute.CURRENT_ADMIN_PAGE) == null ? "1" : request.getParameter(RequestAttribute.CURRENT_ADMIN_PAGE);
-        String countOfAdmins = request.getParameter(RequestAttribute.ADMINS_ON_PAGE) == null ? "8" : request.getParameter(RequestAttribute.ADMINS_ON_PAGE);
+        String current = request.getParameter(RequestAttribute.CURRENT_ADMIN_PAGE)
+                == null ? DEFAULT_VALUE_OF_FILM_PAGE : request.getParameter(RequestAttribute.CURRENT_ADMIN_PAGE);
+        String countOfAdmins = request.getParameter(RequestAttribute.ADMINS_ON_PAGE)
+                == null ? DEFAULT_VALUE_OF_FILMS_ON_PAGES : request.getParameter(RequestAttribute.ADMINS_ON_PAGE);
         int currentPage = Integer.parseInt(current);
         int adminsOnPage = Integer.parseInt(countOfAdmins);
         List<User> admins;

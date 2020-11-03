@@ -37,8 +37,8 @@ public class ConnectionPool {
                 freeConnections.offer(new ProxyConnection(connection));
             }
         } catch (SQLException e) {
-            LOGGER.log(Level.FATAL, "");
-            throw new RuntimeException();
+            LOGGER.log(Level.FATAL, "ConnectionPool was not initialized",e);
+            throw new RuntimeException("ConnectionPool was not initialized",e);
         }
         return freeConnections;
     }
@@ -58,14 +58,13 @@ public class ConnectionPool {
         return instance;
     }
 
-    public Connection getConnection() throws PoolException {
-        ProxyConnection connection;
+    public Connection getConnection() {
+        ProxyConnection connection = null;
         try {
             connection = freeConnections.take();
             givenAwayConnections.put(connection);
         } catch (InterruptedException e) {
             LOGGER.log(Level.ERROR, "Impossible to create Connection", e);
-            throw new PoolException("Impossible to create Connection", e);
         }
         return connection;
     }

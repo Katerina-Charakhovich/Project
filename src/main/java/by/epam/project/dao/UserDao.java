@@ -29,6 +29,10 @@ public interface UserDao extends BaseDao<User> {
     List<User> findAdminsOnPage(int currentPage, int adminsOnPage) throws DaoException;
 
     User changeRoleToUser(User user) throws DaoException;
+
     int calculateNumberOfRowsByAdmin() throws DaoException;
+
+    long findUserIdByLogin(String email) throws DaoException;
+
 }
 

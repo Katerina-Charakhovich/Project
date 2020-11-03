@@ -15,6 +15,7 @@
     </style>
 </head>
 <c:import url="/jsp/common/header.jsp"/>
+<div class="filmCreator">
 <div class="container-sm">
     <div class="row">
         <div class="col-3">
@@ -23,19 +24,6 @@
             <fieldset disabled class="sign_in">
                 <legend><fmt:message key="Label.createFilm"/></legend>
             </fieldset>
-            <form action="${request.getContextPath()}/TaskWebLogin_war/upload" enctype="multipart/form-data"
-                  method="post">
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="content" id="validatedCustomFile"
-                           required>
-                    <label class="custom-file-label" for="validatedCustomFile"><fmt:message
-                            key="Film.ChooseEnglishPhoto"/></label>
-                </div>
-                <div class="button-save">
-                    <button class="btn btn-outline-primary " type="submit"><fmt:message
-                            key="Submit.Save"/></button>
-                </div>
-            </form>
         </div>
         <div class="col-3">
         </div>
@@ -50,42 +38,52 @@
             <form name="filmCreatorForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
                 <input type="hidden" name="command" value="film_creator"/>
                 <label for="nameForProperty" class="validationTooltip"><fmt:message
-                        key="Label.filmNameEnglish"/></label>
-                <input type="text" name="filmNameEn"
-                       maxlength="50" value="" id="nameForProperty"
+                        key="Label.filmName"/></label>
+                <input type="text" name="filmName"
+                       pattern="^[a-zA-Z0-9\s?!,.:'\-]+$"
+                       maxlength="50" minlength="0" value="${filmName}" id="nameForProperty"
                        class="form-control"
                        aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-large">
+                       aria-describedby="inputGroup-sizing-large" required>
                 <label for="descriptionEn" class="validationTooltip"><fmt:message
-                        key="Label.filmDescriptionEnglish"/></label>
-                <input type="text" name="descriptionEn"
-                       maxlength="1000" value="" id="descriptionEn"
+                        key="Label.filmDescription"/></label>
+                <textarea type="text" name="description" maxlength="1000" class="form-control"
+                          minlength="0" aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-default"
+                          id="descriptionEn">${description}</textarea>
+                <label for="nameForPropertyGenreEnglish" class="validationTooltip"><fmt:message
+                        key="Label.filmGenre"/></label>
+                <input type="text" name="genre"
+                       pattern="^[a-zA-Z0-9\s?!,.:'\-]+$"
+                       maxlength="50" value="${genre}" id="nameForPropertyGenreEnglish"
                        class="form-control"
                        aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-large">
                 <label for="nameForPropertyGenreEnglish" class="validationTooltip"><fmt:message
-                        key="Label.filmGenreEnglish"/></label>
-                <input type="text" name="genreEn"
-                       maxlength="200" value="" id="nameForPropertyGenreEnglish"
+                        key="Label.filmLink"/></label>
+                <input type="text" name="link"
+                       maxlength="300" minlength="0"
+                       value="${link}" id="nameForPropertyLinkEnglish"
                        class="form-control"
-                       aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-large">
-                <label for="nameForPropertyGenreEnglish" class="validationTooltip"><fmt:message
-                        key="Label.filmLinkEnglish"/></label>
-                <input type="text" name="linkEn"
-                       maxlength="300" value="" id="nameForPropertyLinkEnglish"
-                       class="form-control"
+                       pattern="(https?://)?(www\.)?(yotu\.be/|youtube\.com/)?((.+/)?(watch(\?v=|.+&v=))?(v=)?)([\w_-]{11})(&.+)?"
                        aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-large">
                 <label for="FormYearOfCreation" class="validationTooltip"><fmt:message
                         key="Film.YearOfCreation"/></label>
                 <input type="number" name="yearOfCreation"
-                       maxlength="4" value="" id="FormYearOfCreation"
+                       maxlength="4" minlength="0"
+                       value="${yearOfCreation}" id="FormYearOfCreation"
                        class="form-control"
+                       pattern="^\d{0,4}$"
                        aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-large">
-                <div class="submit-login">
-                    <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Submit"/>">
+                <br>
+                <br>
+                <c:if test="${errorData == true}">
+                    <div class="validation"><fmt:message key="${field}"/>: <fmt:message key="Message.data"/></div>
+                </c:if>
+                <div class="submit-create">
+                    <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Save"/>">
                 </div>
             </form>
             <div>

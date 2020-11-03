@@ -9,7 +9,7 @@
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title><fmt:message key="Label.Admin"/></title>
+    <title><fmt:message key="Label.PurchasedFilms"/></title>
     <style>
         <%@include file="/css/style.css" %>
     </style>
@@ -18,68 +18,52 @@
 <div class="Admin_Page">
     <div class="container-sm">
         <fieldset disabled class="sign_in">
-            <legend><fmt:message key="Label.Admins"/></legend>
+            <legend><fmt:message key="Label.PurchasedFilms"/></legend>
         </fieldset>
         <div class="row">
             <div class="dropdown">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="dropDownGroup"><fmt:message key="Label.chooseAdmins"/></label>
+                    <label class="input-group-text" for="dropDownGroup"><fmt:message key="Label.chooseUsers"/></label>
                 </div>
                 <button class="btn btn-secondary dropdown-toggle" id="dropDownGroup" type="button"
                         data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                    ${adminsOnPage}
+                    ${purchasedFilmsOnPage}
                 </button>
                 <form method="post" action="controller">
-                    <input type="hidden" name="command" value="init_admin_table"/>
+                    <input type="hidden" name="command" value="purchased_film_table"/>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <button class="dropdown-item" type="input" name="adminsOnPage" value="4">4</button>
-                        <button class="dropdown-item" type="input" name="adminsOnPage" value="8">8</button>
-                        <button class="dropdown-item" type="input" name="adminsOnPage" value="12">12</button>
-                        <button class="dropdown-item" type="input" name="adminsOnPage" value="16">16</button>
+                        <button class="dropdown-item" type="input" name="purchasedFilmsOnPage" value="4">4</button>
+                        <button class="dropdown-item" type="input" name="purchasedFilmsOnPage" value="8">8</button>
+                        <button class="dropdown-item" type="input" name="purchasedFilmsOnPage" value="12">12</button>
+                        <button class="dropdown-item" type="input" name="purchasedFilmsOnPage" value="16">16</button>
                     </div>
                 </form>
             </div>
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
                     <th scope="col">Email</th>
                     <th scope="col"><fmt:message key="Label.User_name"/></th>
                     <th scope="col"><fmt:message key="Label.Sex"/></th>
                     <th scope="col"><fmt:message key="Label.Country"/></th>
-                    <th scope="col"><fmt:message key="Label.Role"/></th>
-                    <th scope="col"><fmt:message key="Label.Locked"/></th>
-                    <th scope="col"><fmt:message key="Label.Action"/></th>
+                    <th scope="col"><fmt:message key="Label.FilmName"/></th>
+                    <th scope="col"><fmt:message key="Film.Description"/></th>
+                    <th scope="col"><fmt:message key="Film.YearOfCreation"/></th>
+                    <th scope="col"><fmt:message key="Film.genre"/></th>
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${admins}" var="admin">
+                <c:forEach items="${purchasedFilms}" var="purchasedFilm">
                     <tr>
-                        <td><c:out value="${admin.userId}"/></td>
-                        <td><c:out value="${admin.email}"/></td>
-                        <td><c:out value="${admin.name}"/></td>
-                        <td><c:out value="${admin.userGender}"/></td>
-                        <td><c:out value="${admin.country}"/></td>
-                        <td><c:out value="${admin.userRole}"/></td>
-                        <td><c:out value="${admin.locked}"/></td>
-
-                        <td>
-                            <div class="dropdown">
-                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    ...
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="controller?command=view_profile&email=${admin.email}">
-                                        <fmt:message key="View.profile"/>
-                                    </a>
-                                    <a class="dropdown-item" href="controller?command=init_admin_table&make_user=${make_user}&email=${admin.email}&currentAdminsPage=${currentAdminsPage}&adminsOnPage=${adminsOnPage}">
-                                        <fmt:message key="Label.RemoveAdmin"/>
-                                    </a>
-                                </div>
-                            </div>
-                        </td>
+                        <td><c:out value="${purchasedFilm.key.email}"/></td>
+                        <td><c:out value="${purchasedFilm.key.name}"/></td>
+                        <td><c:out value="${purchasedFilm.key.userGender}"/></td>
+                        <td><c:out value="${purchasedFilm.key.country}"/></td>
+                        <td><c:out value="${purchasedFilm.value.filmName}"/></td>
+                        <td><c:out value="${purchasedFilm.value.filmInfo.description}"/></td>
+                        <td><c:out value="${purchasedFilm.value.filmInfo.yearOfCreation}"/></td>
+                        <td><c:out value="${purchasedFilm.value.filmInfo.genre}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -88,22 +72,22 @@
                 <ul class="pagination pg-blue">
                     <c:forEach begin="1" end="${noOfPages}" var="i">
                         <c:choose>
-                            <c:when test="${currentAdminsPage eq i}">
+                            <c:when test="${currentPurchasedFilmPage eq i}">
                                 <li class="page-item active"><span class="page-link">
                                     ${i} <span class="sr-only">(current)</span>
                                 </li>
                             </c:when>
                             <c:otherwise>
                                 <li class="page-item"><a class="page-link"
-                                                         href="controller?command=init_admin_table&adminsOnPage=${adminsOnPage}&currentAdminsPage=${i}">${i}</a>
+                                                         href="controller?command=purchased_film_table&purchasedFilmsOnPage=${purchasedFilmsOnPage}&currentPurchasedFilmPage=${i}">${i}</a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
 
-                    <c:if test="${currentAdminsPage lt noOfPages}">
+                    <c:if test="${currentPurchasedFilmPage lt noOfPages}">
                         <li class="page-item"><a class="page-link"
-                                                 href="controller?command=init_admin_table&adminsOnPage=${adminsOnPage}&currentAdminsPage=${currentAdminsPage+1}">
+                                                 href="controller?command=purchased_film_table&purchasedFilmsOnPage=${purchasedFilmsOnPage}&currentPurchasedFilmPage=${currentPurchasedFilmPage+1}">
                             <fmt:message key="Label.next"/></a>
                         </li>
                     </c:if>

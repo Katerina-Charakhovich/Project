@@ -18,12 +18,15 @@
 <div class="Admin_Page">
     <div class="container-sm">
         <div class="row">
-            <div class="col-5">
+            <div class="col-4">
             </div>
-            <div class="col-5">
+            <div class="col-4">
             </div>
-            <div class="col-2">
-                <form name="creatorSubmit" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller"
+            <div class="col-4">
+                <br>
+                <br>
+                <form name="creatorSubmit" method="post"
+                      action="${request.getContextPath()}/TaskWebLogin_war/controller"
                       class="register-button">
                     <button type="submit" class="btn btn-primary btn-circle"><i class="fas fa-map"></i>+</button>
                     <input type="hidden" name="command" value="forward"/>
@@ -62,31 +65,35 @@
                     <th scope="col"><fmt:message key="Film.Description"/></th>
                     <th scope="col"><fmt:message key="Film.YearOfCreation"/></th>
                     <th scope="col"><fmt:message key="Film.genre"/></th>
+                    <th scope="col"><fmt:message key="Film.active"/></th>
                     <th scope="col"><fmt:message key="Label.Action"/></th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach items="${films}" var="film">
                     <tr>
-                        <td>${film.filmId}</td>
-                        <td>${film.filmName}</td>
-                        <td>${film.filmInfo.description}</td>
-                        <td>${film.filmInfo.yearOfCreation}</td>
-                        <td>${film.filmInfo.genre}</td>
+                        <td><c:out value="${film.filmId}"/></td>
+                        <td><c:out value="${film.filmName}"/></td>
+                        <td><c:out value="${film.filmInfo.description}"/></td>
+                        <td><c:out value="${film.filmInfo.yearOfCreation}"/></td>
+                        <td><c:out value="${film.filmInfo.genre}"/></td>
+                        <td><c:out value="${film.active}"/></td>
                         <td>
                             <div class="dropdown">
-                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     ...
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="controller?command=view_film_page&filmId=${film.filmId}&filmName=${film.filmName}&realName=${film.realName}">
+                                    <a class="dropdown-item"
+                                       href="controller?command=view_film_page&filmId=${film.filmId}&filmName=${film.filmName}&filmAvatar=${film.filmAvatar}">
                                         <fmt:message key="View.film"/>
                                     </a>
-                                    <a class="dropdown-item" href="controller?command=view_profile&email=${user.email}">
-                                        <fmt:message key="View.profile"/>
+                                    <a class="dropdown-item"
+                                       href="controller?command=forward_to_edit_film&filmId=${film.filmId}&currentFilmLang=en&yearOfCreation=${film.filmInfo.yearOfCreation}&active=${film.active}">
+                                        <fmt:message key="Label.Edit_film"/>
                                     </a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
                                 </div>
                             </div>
                         </td>

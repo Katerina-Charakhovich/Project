@@ -157,6 +157,27 @@ input[type=email], input[type=password] {
     font-size: 30px;
     white-space: normal;
 }
+.filmCreator{
+    background-image: url("pictures_for_project/svet_nebo_zvezdy_fon_85555_1920x1080.jpg");
+}
+#nameForPropertyRu,#descriptionOfFilmRussian,#nameForPropertyGenreRussian,#nameForPropertyLinkRussian
+,#nameForProperty,#descriptionEn,#nameForPropertyGenreEnglish,#nameForPropertyLinkEnglish
+,#FormYearOfCreation{
+    border: 1px solid #ccc;
+    border-radius: 50px;
+}
+.butt-save{
+    margin-top: 30px;
+    padding-right: 60px;
+}
+.submit-create{
+    margin-top: 30px;
+    margin-right: -60px;
+}
+.submit-next{
+    margin-top: 30px;
+    margin-right: -60px;
+}
 
 
 

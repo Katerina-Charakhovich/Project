@@ -20,12 +20,12 @@ public class ViewFilmPageCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        String page = PathToPage.FILM_PAGE;
+        String page = PathToPage.INIT_FILM_PAGE;
         FilmInfo filmInfo;
         String currentFilmId = request.getParameter(RequestAttribute.FILM_ID);
         long filmId = Long.parseLong(currentFilmId);
         String filmName = request.getParameter(RequestAttribute.CURRENT_FILM_NAME);
-        String realName = request.getParameter(RequestAttribute.CURRENT_REAL_FILM_NAME);
+        String realName = request.getParameter(RequestAttribute.CURRENT_FILM_AVATAR);
         String language = (String)request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         try {
             filmInfo = mediaServiceImpl.findInfoById(filmId,language.toLowerCase());
@@ -34,7 +34,7 @@ public class ViewFilmPageCommand implements Command {
             request.getSession().setAttribute(RequestAttribute.CURRENT_GENRE, filmInfo.getGenre());
             request.getSession().setAttribute(RequestAttribute.CURRENT_LINK, filmInfo.getLink());
             request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_NAME, filmName);
-            request.getSession().setAttribute(RequestAttribute.CURRENT_REAL_FILM_NAME, realName);
+            request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_AVATAR, realName);
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
             throw new CommandException("Film not found", e);

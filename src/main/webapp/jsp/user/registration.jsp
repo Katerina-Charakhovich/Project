@@ -66,13 +66,13 @@ ${language}
                                    required>
                         </div>
                     </div>
-                    <c:if test="${registrationErrorSymbols == false}">
+                    <c:if test="${registrationErrorSymbols == true}">
                         <div class="validation"> <fmt:message key="Message.incorrectLoginAndPassword"/></div>
                     </c:if>
-                    <c:if test="${registrationError == false}">
+                    <c:if test="${registrationError == true}">
                         <div class="validation"> <fmt:message key="Message.thisUserExists"/></div>
                     </c:if>
-                    <c:if test="${registrationErrorPasswords == false}">
+                    <c:if test="${registrationErrorPasswords == true}">
                         <div class="validation"> <fmt:message key="Message.passwordsDoNotMatch"/></div>
                     </c:if>
                     <br/>

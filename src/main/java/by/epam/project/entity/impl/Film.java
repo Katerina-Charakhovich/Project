@@ -5,17 +5,18 @@ import by.epam.project.entity.Entity;
 public class Film implements Entity {
     private long filmId;
     private String filmName;
-    private String realName;
+    private String filmAvatar;
     private FilmInfo filmInfo;
+    private boolean active;
 
-    public Film(long filmId, String filmName, String realName,FilmInfo filmInfo) {
+    public Film(long filmId, String filmName, String filmAvatar, FilmInfo filmInfo) {
         this.filmId = filmId;
         this.filmName = filmName;
-        this.realName = realName;
-        this.filmInfo=filmInfo;
+        this.filmAvatar = filmAvatar;
+        this.filmInfo = filmInfo;
     }
 
-    public Film(){
+    public Film() {
 
     }
 
@@ -27,12 +28,12 @@ public class Film implements Entity {
         this.filmName = filmName;
     }
 
-    public String getRealName() {
-        return realName;
+    public String getFilmAvatar() {
+        return filmAvatar;
     }
 
-    public void setRealName(String realName) {
-        this.realName = realName;
+    public void setFilmAvatar(String filmAvatar) {
+        this.filmAvatar = filmAvatar;
     }
 
     public long getFilmId() {
@@ -51,6 +52,14 @@ public class Film implements Entity {
         this.filmInfo = filmInfo;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,9 +68,10 @@ public class Film implements Entity {
         Film film = (Film) o;
 
         if (getFilmId() != film.getFilmId()) return false;
+        if (isActive() != film.isActive()) return false;
         if (getFilmName() != null ? !getFilmName().equals(film.getFilmName()) : film.getFilmName() != null)
             return false;
-        if (getRealName() != null ? !getRealName().equals(film.getRealName()) : film.getRealName() != null)
+        if (getFilmAvatar() != null ? !getFilmAvatar().equals(film.getFilmAvatar()) : film.getFilmAvatar() != null)
             return false;
         return getFilmInfo() != null ? getFilmInfo().equals(film.getFilmInfo()) : film.getFilmInfo() == null;
     }
@@ -70,8 +80,9 @@ public class Film implements Entity {
     public int hashCode() {
         int result = (int) (getFilmId() ^ (getFilmId() >>> 32));
         result = 31 * result + (getFilmName() != null ? getFilmName().hashCode() : 0);
-        result = 31 * result + (getRealName() != null ? getRealName().hashCode() : 0);
+        result = 31 * result + (getFilmAvatar() != null ? getFilmAvatar().hashCode() : 0);
         result = 31 * result + (getFilmInfo() != null ? getFilmInfo().hashCode() : 0);
+        result = 31 * result + (isActive() ? 1 : 0);
         return result;
     }
 
@@ -79,9 +90,10 @@ public class Film implements Entity {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         return stringBuilder.append("Film{").append("filmName='").append(filmName).append('\'')
-                .append(", realName='").append(realName).append('\'')
+                .append(", realName='").append(filmAvatar).append('\'')
                 .append(", filmId='").append(filmId).append('\'')
                 .append(", filmInfo='").append(filmInfo).append('\'')
+                .append(", active='").append(active).append('\'')
                 .append('\'').append('}').toString();
     }
 }

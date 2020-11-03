@@ -12,7 +12,7 @@ public class ColumnName {
     public static final String AVATAR = "avatar";
     public static final String LOCKED = "locked";
     public static final String FILM_AVATAR = "film_avatar_";
-    public static final String STATUS = "status";
+    public static final String ACTIVE = "active";
     public static final String FILM_ID = "film_id";
     public static final String FILM_NAME = "film_name_";
     public static final String FILM_DESCRIPTION = "description_";

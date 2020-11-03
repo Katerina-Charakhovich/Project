@@ -37,7 +37,7 @@ public class EditProfileCommand implements Command {
         String email = (String) request.getSession().getAttribute(RequestAttribute.EMAIL);
         try {
             User user = userServiceImpl.updateInfo(email, name, aboutMe, country, gender);
-            if (validationUser.isRightName(name)) {
+            if (validationUser.isRightName(name) && validationUser.isRightAboutMe(aboutMe)) {
                 page = PathToPage.PROFILE_PAGE;
                 request.setAttribute(RequestAttribute.GENDER, user.getUserGender());
                 request.setAttribute(RequestAttribute.COUNTRY, user.getCountry());
@@ -45,7 +45,7 @@ public class EditProfileCommand implements Command {
                 request.setAttribute(RequestAttribute.NAME_USER, user.getName());
                 request.setAttribute(RequestAttribute.AVATAR, user.getAvatar());
                 request.setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND,
-                        RequestAttribute.COMMAND_EDIT_PROFILE);
+                        RequestAttribute.COMMAND_PROFILE);
             } else {
                 boolean errorData = false;
                 request.setAttribute(RequestAttribute.ERROR_DATA, errorData);

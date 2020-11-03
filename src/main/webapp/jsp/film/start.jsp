@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="prop.pagecontent"/>
+<c:set var="lang" value="${language}"/>
 <html>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -56,19 +58,19 @@
                 </div>
                 <div class="col">
                     <div class="row" id="poster-row1">
-                        <div class="col"><img src="pictures_for_project/posters_EN/inception.jpg" alt=""
+                        <div class="col"><img src="pictures_for_project/posters_en/inception.jpg" alt=""
                                               width="131">
                         </div>
-                        <div class="col"><img src="pictures_for_project/posters_EN/john_wick2.jpg" alt=""
+                        <div class="col"><img src="pictures_for_project/posters_ru/john_wick2.jpg" alt=""
                                               width="131">
                         </div>
                         <div class="col-3"></div>
                     </div>
                     <div class="row">
                         <div class="col"><img
-                                src="pictures_for_project/posters_EN/three_billboards_outside_ebbing_missouri.jpg"
+                                src="pictures_for_project/posters_ru/three_billboards_outside_ebbing_missouri.jpg"
                                 alt="" width="131"></div>
-                        <div class="col"><img src="pictures_for_project/posters_RU/Tenet.jpg" alt="" width="131">
+                        <div class="col"><img src="pictures_for_project/posters_ru/Tenet.jpg" alt="" width="131">
                         </div>
                         <div class="col-3"></div>
                     </div>
@@ -98,17 +100,18 @@
         </div>
         <div class="row row-cols-4">
             <c:forEach items="${films}" var="film">
-                <a href="controller?command=film&filmId=${film.filmId}&filmName=${film.filmName}&realName=${film.realName}">
+                <a href="controller?command=film&filmId=${film.filmId}&filmName=${film.filmName}&filmAvatar=${film.filmAvatar}">
                     <div class="col-10">
                         <br/>
-                        <div><img src="pictures_for_project/posters_${language}/${film.realName}" alt="" width="200">
+                        <div><img src="pictures_for_project/posters_${fn:toLowerCase(lang)}/${film.filmAvatar}" alt="" width="200">
                         </div>
-                        <span class="font-weight-bold text-info">${film.filmName}</span>
+                        <span class="font-weight-bold text-info"><c:out value="${film.filmName}"/></span>
                     </div>
                 </a>
             </c:forEach>
         </div>
-
+<br>
+        <br>
         <nav aria-label="Page navigation example">
             <ul class="pagination pg-blue">
                 <c:forEach begin="1" end="${noOfPages}" var="i">

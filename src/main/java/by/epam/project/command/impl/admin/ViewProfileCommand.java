@@ -33,8 +33,8 @@ public class ViewProfileCommand implements Command {
             request.setAttribute(RequestAttribute.NAME_USER, user.getName());
             request.setAttribute(RequestAttribute.AVATAR, user.getAvatar());
 
-            request.getSession().setAttribute("chosenUserEmail", email);
-            request.setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND, "view_profile");
+            request.getSession().setAttribute(RequestAttribute.CHOSEN_USER_EMAIL, email);
+            request.setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND, RequestAttribute.COMMAND_VIEW_PROFILE);
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "User not found", e);
             throw new CommandException("User not found", e);

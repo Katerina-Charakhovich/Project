@@ -51,10 +51,10 @@
                                    required>
                         </div>
                     </div>
-                    <c:if test="${errorLoginPassMessage == false}">
+                    <c:if test="${errorLoginPassMessage == true}">
                     <div class="validation"> <fmt:message key="Message.loginerror"/></div>
             </c:if>
-            <c:if test="${UserIsLocked == false}">
+            <c:if test="${UserIsLocked == true}">
             <div class="validation"> <fmt:message key="Message.locked"/></div>
         </c:if>
 <br/><br/>

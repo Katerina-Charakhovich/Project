@@ -4,16 +4,23 @@ import by.epam.project.entity.Entity;
 
 public class FilmInfo implements Entity {
     private String description;
-    private int yearOfCreation;
+    private String yearOfCreation;
     private String genre;
     private String link;
     private long filmId;
 
-    public FilmInfo(String description, int yearOfCreation, String genre, long filmId, String link) {
+    public FilmInfo(String description, String yearOfCreation, String genre, long filmId, String link) {
         this.description = description;
         this.yearOfCreation = yearOfCreation;
         this.genre = genre;
         this.filmId = filmId;
+        this.link = link;
+    }
+
+    public FilmInfo(String description, String yearOfCreation, String genre, String link) {
+        this.description = description;
+        this.yearOfCreation = yearOfCreation;
+        this.genre = genre;
         this.link = link;
     }
 
@@ -25,11 +32,11 @@ public class FilmInfo implements Entity {
         this.description = description;
     }
 
-    public int getYearOfCreation() {
+    public String getYearOfCreation() {
         return yearOfCreation;
     }
 
-    public void setYearOfCreation(int yearOfCreation) {
+    public void setYearOfCreation(String yearOfCreation) {
         this.yearOfCreation = yearOfCreation;
     }
 
@@ -77,7 +84,6 @@ public class FilmInfo implements Entity {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
-        result = 31 * result + getYearOfCreation();
         result = 31 * result + (getGenre() != null ? getGenre().hashCode() : 0);
         result = 31 * result + (getLink() != null ? getLink().hashCode() : 0);
         result = 31 * result + (int) (getFilmId() ^ (getFilmId() >>> 32));

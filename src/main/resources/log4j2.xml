@@ -11,7 +11,7 @@
             <PatternLayout pattern="${pattern}"/>
         </Console>
         <File name="potapovich"
-              fileName="logs/text.log">
+              fileName="C:\Kristina\TaskWebLogin\logs\log.txt">
             <PatternLayout pattern="${pattern}"/>
         </File>
     </Appenders>

@@ -49,17 +49,20 @@ public class ControllerServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + router.getPage());
             }
             if (Router.Type.FORWARD == router.getType()) {
+                if (request.getSession().getAttribute(RequestAttribute.REDIRECTED_PAGE) != null) {
+                    router.setPage((String) request.getSession().getAttribute(RequestAttribute.REDIRECTED_PAGE));
+                    request.getSession().removeAttribute(RequestAttribute.REDIRECTED_PAGE);
+                }
                 dispatcher = getServletContext().getRequestDispatcher(router.getPage());
                 dispatcher.forward(request, response);
             } else {
+                request.getSession().setAttribute(RequestAttribute.REDIRECTED_PAGE, router.getPage());
                 response.sendRedirect(request.getContextPath() + router.getPage());
             }
             request.getSession().setAttribute(RequestAttribute.CURRENT_PAGE, currentPage);
         } catch (CommandException e) {
-            String error = e.getMessage();
-            request.setAttribute(RequestAttribute.ERROR, error);
             LOGGER.log(Level.ERROR, e);
-            request.getRequestDispatcher(PathToPage.ERROR_PAGE).forward(request, response);
+            response.sendRedirect(PathToPage.ERROR_PAGE);
         }
     }
 

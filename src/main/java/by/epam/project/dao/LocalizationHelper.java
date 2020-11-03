@@ -1,4 +1,4 @@
-package by.epam.project.dao.impl;
+package by.epam.project.dao;
 
 import by.epam.project.entity.impl.Film;
 
