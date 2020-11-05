@@ -1,7 +1,7 @@
 package by.epam.project.command.impl.user;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
@@ -14,10 +14,15 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 public class LoginCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private UserServiceImpl userService = UserServiceImpl.getInstance();
 
+    /**
+     * The type Login command.
+     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -44,9 +49,9 @@ public class LoginCommand implements Command {
                 request.setAttribute(RequestAttribute.ABOUT_ME, user.getAboutMe());
                 request.setAttribute(RequestAttribute.AVATAR, user.getAvatar());
                 request.setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND,
-                        RequestAttribute.COMMAND_PROFILE );
+                        RequestAttribute.COMMAND_PROFILE);
                 page = PathToPage.PROFILE_PAGE;
-            }  else {
+            } else {
                 errorLoginPassMessage = true;
                 request.setAttribute(RequestAttribute.INCORRECT_LOGIN_AND_PASSWORD,
                         errorLoginPassMessage);

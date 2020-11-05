@@ -28,9 +28,8 @@
                 <button class="btn btn-secondary dropdown-toggle" id="dropDownGroup" type="button"
                         data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                    ${adminsOnPage}
                 </button>
-                <form method="post" action="controller">
+                <form method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
                     <input type="hidden" name="command" value="init_admin_table"/>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                         <button class="dropdown-item" type="input" name="adminsOnPage" value="4">4</button>
@@ -62,19 +61,28 @@
                         <td><c:out value="${admin.userGender}"/></td>
                         <td><c:out value="${admin.country}"/></td>
                         <td><c:out value="${admin.userRole}"/></td>
-                        <td><c:out value="${admin.locked}"/></td>
-
+                        <c:choose>
+                            <c:when test="${admin.locked == true}">
+                                <td><fmt:message key="Label.Yes"/></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td><fmt:message key="Label.No"/></td>
+                            </c:otherwise>
+                        </c:choose>
                         <td>
                             <div class="dropdown">
-                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     ...
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="controller?command=view_profile&email=${admin.email}">
+                                    <a class="dropdown-item"
+                                       href="controller?command=view_profile&email=${admin.email}">
                                         <fmt:message key="View.profile"/>
                                     </a>
-                                    <a class="dropdown-item" href="controller?command=init_admin_table&make_user=${make_user}&email=${admin.email}&currentAdminsPage=${currentAdminsPage}&adminsOnPage=${adminsOnPage}">
+                                    <a class="dropdown-item"
+                                       href="controller?command=init_admin_table&make_user=${make_user}&email=${admin.email}&currentAdminsPage=${currentAdminsPage}&adminsOnPage=${adminsOnPage}">
                                         <fmt:message key="Label.RemoveAdmin"/>
                                     </a>
                                 </div>

@@ -4,8 +4,8 @@ package by.epam.project.entity.impl;
 import by.epam.project.entity.Entity;
 
 public class PurchasedFilm implements Entity {
-  private long idUser;
-  private long filmId;
+    private long idUser;
+    private long filmId;
 
     public PurchasedFilm(long idUser, long filmId) {
         this.idUser = idUser;

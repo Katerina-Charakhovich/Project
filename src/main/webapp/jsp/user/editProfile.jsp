@@ -21,7 +21,8 @@
             <div class="col-4">
             </div>
             <div class="col-4">
-                <form name="editProfileForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                <form name="editProfileForm" method="post"
+                      action="${request.getContextPath()}/TaskWebLogin_war/controller">
                     <fieldset disabled class="edit_profile">
                         <legend><fmt:message key="Label.Edit_profile"/></legend>
                     </fieldset>
@@ -39,7 +40,7 @@
                         </div>
                     </div>
                     <c:if test="${errorData == true}">
-                        <div class="validation"> <fmt:message key="Message.data"/></div>
+                        <div class="validation"><fmt:message key="Message.data"/></div>
                     </c:if>
                     <div class="mb-3">
                         <div class="form-group">
@@ -125,7 +126,7 @@
                         <br>
                         <br>
                         <c:if test="${errorData == true}">
-                            <div class="validation"> <fmt:message key="Message.data"/></div>
+                            <div class="validation"><fmt:message key="Message.data"/></div>
                         </c:if>
                     </div>
                     <div class="submit-edit">

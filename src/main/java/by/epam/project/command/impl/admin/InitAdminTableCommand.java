@@ -2,7 +2,7 @@ package by.epam.project.command.impl.admin;
 
 import by.epam.project.command.Command;
 import by.epam.project.command.Router;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.entity.impl.User;
@@ -15,12 +15,17 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+
 public class InitAdminTableCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
     private static final String DEFAULT_VALUE_OF_FILM_PAGE = "1";
     private static final String DEFAULT_VALUE_OF_FILMS_ON_PAGES = "8";
 
+    /**
+     * The type Init admin table command.
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.ADMIN_TABLE_PAGE;
@@ -49,13 +54,18 @@ public class InitAdminTableCommand implements Command {
         return new Router(page);
     }
 
+    /**
+     * Counting the number of rows
+     */
+
     private int calcNumberOfPages(int adminsOnPage) throws ServiceException {
         int rows = userServiceImpl.calculateNumberOfRowsByAdmin();
-        double numberOfPage = (double)rows / adminsOnPage;
-        int nOfPages = (int)Math.ceil(numberOfPage);
-        return nOfPages;
+        double numberOfPage = (double) rows / adminsOnPage;
+        return (int) Math.ceil(numberOfPage);
     }
-
+    /**
+     * Make admin user
+     */
     private void resolveAction(HttpServletRequest request, List<User> admins) throws ServiceException {
         String email = request.getParameter(RequestAttribute.EMAIL);
         if (email != null) {

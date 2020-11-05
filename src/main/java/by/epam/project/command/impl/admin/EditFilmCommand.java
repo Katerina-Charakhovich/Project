@@ -1,7 +1,7 @@
 package by.epam.project.command.impl.admin;
 
 import by.epam.project.command.*;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.service.MediaService;
 import by.epam.project.service.exception.ServiceException;
@@ -12,9 +12,15 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 public class EditFilmCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private MediaService mediaService = MediaServiceImpl.getInstance();
+
+    /**
+     * The type Edit film command.
+     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -59,15 +65,22 @@ public class EditFilmCommand implements Command {
         return response;
     }
 
+    /**
+     * Movie status change
+     */
     private void changeActiveFilm(HttpServletRequest request, String filmName, String currentFilmLang) throws ServiceException {
         Film film = mediaService.findFilmByName(filmName, currentFilmLang);
-        if (request.getSession().getAttribute(RequestAttribute.FILM_ACTIVE) != null){
+        if (request.getSession().getAttribute(RequestAttribute.FILM_ACTIVE) != null) {
             film = mediaService.changeActiveFilm(film);
-            request.setAttribute(RequestAttribute.FILM_ACTIVE,film.isActive());
+            request.setAttribute(RequestAttribute.FILM_ACTIVE, film.isActive());
         }
     }
 
-    private Router processFilmUpdate(HttpServletRequest request, String filmName,String description,
+    /**
+     * Preparing to edit a movie
+     */
+
+    private Router processFilmUpdate(HttpServletRequest request, String filmName, String description,
                                      String genre, String link, String currentYearOfCreation) throws ServiceException {
         String currentFilmId = request.getParameter(RequestAttribute.FILM_ID) == null ? (String) request.getSession().getAttribute(RequestAttribute.FILM_ID) : request.getParameter(RequestAttribute.FILM_ID);
         long filmId = Long.parseLong(currentFilmId);
@@ -82,6 +95,9 @@ public class EditFilmCommand implements Command {
         return new Router(page);
     }
 
+    /**
+     * English movie update
+     */
     private String filmUpdateRu(HttpServletRequest request, String filmName, String description,
                                 String genre, String link, long filmId, String currentFilmLang) throws ServiceException {
         Film film;
@@ -97,6 +113,9 @@ public class EditFilmCommand implements Command {
         return page;
     }
 
+    /**
+     * Russian movie update
+     */
     private String filmUpdateEn(HttpServletRequest request, String filmName, String description, String genre, String link, String currentYearOfCreation, long filmId, String currentFilmLang) throws ServiceException {
         Film film;
         String page;

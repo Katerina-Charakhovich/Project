@@ -1,7 +1,7 @@
 package by.epam.project.command.impl.user;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
@@ -17,11 +17,15 @@ import javax.servlet.http.HttpServletRequest;
 
 
 public class RegistrationCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private ValidationUser validationUser = ValidationUser.getInstance();
-    private  UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
+    private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
     private Router router;
 
+    /**
+     * The type Registration command.
+     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -30,7 +34,7 @@ public class RegistrationCommand implements Command {
         String password = request.getParameter(RequestAttribute.PASSWORD);
         String repeatPassword = request.getParameter(RequestAttribute.REPEAT_PASSWORD);
         if (!password.equals(repeatPassword)) {
-           boolean registrationErrorPasswords = true;
+            boolean registrationErrorPasswords = true;
             request.setAttribute(RequestAttribute.PASSWORDS_DO_NOT_MATCH,
                     registrationErrorPasswords);
             page = PathToPage.REGISTRATION_PAGE;
@@ -57,8 +61,8 @@ public class RegistrationCommand implements Command {
                 router = new Router(page);
             }
         } catch (ServiceException e) {
-            LOGGER.log(Level.ERROR,"Registration failed",e);
-            throw new CommandException("Registration failed",e);
+            LOGGER.log(Level.ERROR, "Registration failed", e);
+            throw new CommandException("Registration failed", e);
         }
         return router;
     }

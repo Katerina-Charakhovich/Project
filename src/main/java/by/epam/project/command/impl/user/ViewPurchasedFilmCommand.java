@@ -4,7 +4,7 @@ import by.epam.project.command.Command;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.User;
 import by.epam.project.service.PurchasedFilmService;
@@ -17,9 +17,15 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+
 public class ViewPurchasedFilmCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private PurchasedFilmService purchasedFilmService = PurchasedFilmServiceImpl.getInstance();
+
+    /**
+     * The type View purchased film command.
+     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

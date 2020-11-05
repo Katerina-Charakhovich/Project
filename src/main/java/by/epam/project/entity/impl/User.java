@@ -1,4 +1,5 @@
 package by.epam.project.entity.impl;
+
 import by.epam.project.entity.Entity;
 
 
@@ -140,6 +141,7 @@ public class User implements Entity {
                 .append(name).append('\'').append(", locked='")
                 .append(locked).append('\'').append('}').toString();
     }
+
     public enum UserRole {
         USER,
         ADMIN;

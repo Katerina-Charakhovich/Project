@@ -4,7 +4,7 @@ import by.epam.project.command.Command;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.service.MediaService;
 import by.epam.project.service.exception.ServiceException;
@@ -16,10 +16,15 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 
+
 public class ForwardToEditFilmCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private MediaService mediaService = MediaServiceImpl.getInstance();
 
+    /**
+     * Forward to edit film command.
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.FILM_EDIT_EN;
@@ -45,7 +50,7 @@ public class ForwardToEditFilmCommand implements Command {
             request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_LANG, currentFilmLang);
             request.getSession().setAttribute(RequestAttribute.CURRENT_YEAR_OF_CREATION, currentYearOfCreation);
             request.getSession().setAttribute(RequestAttribute.FILM_ID, String.valueOf(film.getFilmId()));
-            request.getSession().setAttribute(RequestAttribute.FILM_ACTIVE,active);
+            request.getSession().setAttribute(RequestAttribute.FILM_ACTIVE, active);
             request.setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND, RequestAttribute.COMMAND_FORWARD_TO_FILM_EDIT);
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "Command  ForwardToEditProfile invalid", e);

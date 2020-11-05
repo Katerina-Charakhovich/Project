@@ -14,12 +14,14 @@ public class HashPassword {
     private static final String ALGORITHM_FOR_HASH = "SHA-512";
     private static final int MAX_LENGTH_PASSWORD = 32;
     private static final int DEFAULT_LENGTH_HASH_PASSWORD = 16;
+    private static final String SALT = "0";
+
+    private HashPassword() {
+    }
 
     /**
      * Algorithm for hash password
      */
-    private HashPassword() {
-    }
 
     public static String hash(String password) {
         String hashPassword = null;
@@ -29,7 +31,7 @@ public class HashPassword {
             BigInteger no = new BigInteger(1, messageDigest);
             hashPassword = no.toString(DEFAULT_LENGTH_HASH_PASSWORD);
             while (hashPassword.length() < MAX_LENGTH_PASSWORD) {
-                hashPassword = "0" + hashPassword;
+                hashPassword = SALT.concat(hashPassword);
             }
 
         } catch (NoSuchAlgorithmException e) {

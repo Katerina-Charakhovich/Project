@@ -1,7 +1,7 @@
 package by.epam.project.command.impl.admin;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
@@ -14,10 +14,15 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 public class ViewFilmPageCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private MediaServiceImpl mediaServiceImpl = MediaServiceImpl.getInstance();
 
+    /**
+     * The type View film page command.
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.INIT_FILM_PAGE;
@@ -26,9 +31,9 @@ public class ViewFilmPageCommand implements Command {
         long filmId = Long.parseLong(currentFilmId);
         String filmName = request.getParameter(RequestAttribute.CURRENT_FILM_NAME);
         String realName = request.getParameter(RequestAttribute.CURRENT_FILM_AVATAR);
-        String language = (String)request.getSession().getAttribute(RequestAttribute.LANGUAGE);
+        String language = (String) request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         try {
-            filmInfo = mediaServiceImpl.findInfoById(filmId,language.toLowerCase());
+            filmInfo = mediaServiceImpl.findInfoById(filmId, language.toLowerCase());
             request.getSession().setAttribute(RequestAttribute.CURRENT_DESCRIPTION, filmInfo.getDescription());
             request.getSession().setAttribute(RequestAttribute.CURRENT_YEAR_OF_CREATION, filmInfo.getYearOfCreation());
             request.getSession().setAttribute(RequestAttribute.CURRENT_GENRE, filmInfo.getGenre());

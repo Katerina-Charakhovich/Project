@@ -1,5 +1,9 @@
 package by.epam.project.command;
 
+/**
+ * Jsp page path
+ */
+
 public class PathToPage {
     public static final String INDEX_PAGE = "/index.jsp";
     public static final String LOGIN_PAGE = "/jsp/user/login.jsp";
@@ -18,6 +22,7 @@ public class PathToPage {
     public static final String FILM_EDIT_EN = "/jsp/admin/editFilm.jsp";
     public static final String PURCHASED_FILMS = "/jsp/user/purchasedFilms.jsp";
     public static final String PURCHASED_FILMS_TABLE = "/jsp/admin/purchasedFilmsTable.jsp";
+    public static final String SEARCH_RESULT = "/jsp/user/searchResult.jsp";
 
     private PathToPage() {
     }

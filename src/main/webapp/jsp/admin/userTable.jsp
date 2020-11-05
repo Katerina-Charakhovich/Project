@@ -62,16 +62,25 @@
                         <td><c:out value="${user.userGender}"/></td>
                         <td><c:out value="${user.country}"/></td>
                         <td><c:out value="${user.userRole}"/></td>
-                        <td><c:out value="${user.locked}"/></td>
+                        <c:choose>
+                            <c:when test="${user.locked == true}">
+                        <td><fmt:message key="Label.Yes"/></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td><fmt:message key="Label.No"/></td>
+                            </c:otherwise>
+                        </c:choose>
                         <td>
-                                <div class="dropdown">
-                                    <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        ...
-                                    </a>
+                            <div class="dropdown">
+                                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    ...
+                                </a>
 
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" href="controller?command=admin_page&lock=${user.locked}&email=${user.email}&currentUsersPage=${currentUsersPage}&usersOnPage=${usersOnPage}">
-                                            <c:choose>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item"
+                                       href="controller?command=admin_page&lock=${user.locked}&email=${user.email}&currentUsersPage=${currentUsersPage}&usersOnPage=${usersOnPage}">
+                                        <c:choose>
                                             <c:when test="${user.locked eq 'false'}">
                                                 <fmt:message key="Locked.Lock"/>
                                             </c:when>
@@ -79,15 +88,16 @@
                                                 <fmt:message key="Locked.Unlock"/>
                                             </c:otherwise>
                                         </c:choose>
-                                        </a>
-                                        <a class="dropdown-item" href="controller?command=view_profile&email=${user.email}">
-                                                <fmt:message key="View.profile"/>
-                                        </a>
-                                        <a class="dropdown-item" href="controller?command=admin_page&make_admin=${make_admin}&email=${user.email}&currentUsersPage=${currentUsersPage}&usersOnPage=${usersOnPage}">
-                                            <fmt:message key="Label.Appoint_admin"/>
-                                        </a>
-                                    </div>
+                                    </a>
+                                    <a class="dropdown-item" href="controller?command=view_profile&email=${user.email}">
+                                        <fmt:message key="View.profile"/>
+                                    </a>
+                                    <a class="dropdown-item"
+                                       href="controller?command=admin_page&make_admin=${make_admin}&email=${user.email}&currentUsersPage=${currentUsersPage}&usersOnPage=${usersOnPage}">
+                                        <fmt:message key="Label.Appoint_admin"/>
+                                    </a>
                                 </div>
+                            </div>
                         </td>
                     </tr>
                 </c:forEach>

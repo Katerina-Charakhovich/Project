@@ -3,17 +3,19 @@ package by.epam.project.command.impl;
 import by.epam.project.command.Command;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.factory.ActionFactory;
 import by.epam.project.command.Router;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * The type Language command.
- */
+
 public class LanguageCommand implements Command {
     private static final String LOCALE = "en";
+
+    /**
+     * The type Language command.
+     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

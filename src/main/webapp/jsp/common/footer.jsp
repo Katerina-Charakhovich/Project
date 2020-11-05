@@ -8,7 +8,9 @@
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <title><fmt:message key="Label.Footer"/></title>
 </head>
-<style><%@include file="/css/style.css"%></style>
+<style>
+    <%@include file="/css/style.css" %>
+</style>
 <footer class="page-footer font-small blue">
     <div class="footer-copyright text-center py-3"><fmt:message key="Label.FooterCopyright"/></div>
 

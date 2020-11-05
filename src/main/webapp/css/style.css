@@ -116,6 +116,12 @@ input[type=email], input[type=password] {
     position: relative;
     left: -40px;
 }
+#searchForm{
+    position: relative;
+    margin: -60px;
+    /*margin: 30px;*/
+
+}
 .profile_edit{
     background-image: url("pictures_for_project/planeta_oblaka_svet_zvezdy_94996_1920x1080.jpg");
 }
@@ -177,6 +183,13 @@ input[type=email], input[type=password] {
 .submit-next{
     margin-top: 30px;
     margin-right: -60px;
+}
+#inputState {
+    width: 130px;
+}
+.message-errorSearch{
+    text-align: center;
+    color: #cccccc;
 }
 
 

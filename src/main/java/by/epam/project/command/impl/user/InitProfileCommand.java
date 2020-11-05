@@ -1,7 +1,7 @@
 package by.epam.project.command.impl.user;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
@@ -14,10 +14,15 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 public class InitProfileCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
 
+    /**
+     * The type Init profile command.
+     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

@@ -1,6 +1,5 @@
 package by.epam.project.pool;
 
-import by.epam.project.pool.exception.PoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,10 +9,19 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+/**
+ * The type Proxy connection.
+ */
 public class ProxyConnection implements Connection {
     private Connection connection;
+
     public static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * Instantiates a new Proxy connection.
+     *
+     * @param connection the connection
+     */
     ProxyConnection(Connection connection) {
         this.connection = connection;
     }
@@ -67,6 +75,9 @@ public class ProxyConnection implements Connection {
         }
     }
 
+    /**
+     * True close.
+     */
     void trueClose() {
         try {
             connection.close();

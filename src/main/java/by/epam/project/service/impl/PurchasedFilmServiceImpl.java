@@ -1,7 +1,7 @@
 package by.epam.project.service.impl;
 
 import by.epam.project.dao.PurchasedFilmDao;
-import by.epam.project.dao.exception.DaoException;
+import by.epam.project.dao.DaoException;
 import by.epam.project.dao.impl.PurchasedDaoImpl;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.FilmInfo;
@@ -40,12 +40,12 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
         List<Film> films = new ArrayList<>();
         try {
             long userId = userService.findUserIdByLogin(email);
-                filmsId = purchasedFilmDao.findAllPurchasedFilmsByUser(userId);
-                for (Long filmId : filmsId) {
-                    Film film = mediaService.findFilmById(filmId, language);
-                    FilmInfo filmInfo = mediaService.findInfoById(filmId, language);
-                    film.setFilmInfo(filmInfo);
-                    films.add(film);
+            filmsId = purchasedFilmDao.findAllPurchasedFilmsByUser(userId);
+            for (Long filmId : filmsId) {
+                Film film = mediaService.findFilmById(filmId, language);
+                FilmInfo filmInfo = mediaService.findInfoById(filmId, language);
+                film.setFilmInfo(filmInfo);
+                films.add(film);
             }
         } catch (DaoException e) {
             LOGGER.log(Level.ERROR, "Purchased Films not found");
@@ -69,14 +69,14 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
         boolean result = false;
         try {
             long userId = userService.findUserIdByLogin(email);
-            PurchasedFilm purchasedFilm = new PurchasedFilm(userId,filmId);
-            if (purchasedFilmDao.create(purchasedFilm)){
+            PurchasedFilm purchasedFilm = new PurchasedFilm(userId, filmId);
+            if (purchasedFilmDao.create(purchasedFilm)) {
                 result = true;
             }
 
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Failed to buy movie",e);
-            throw new ServiceException("Failed to buy movie",e);
+            LOGGER.log(Level.ERROR, "Failed to buy movie", e);
+            throw new ServiceException("Failed to buy movie", e);
         }
         return result;
     }
@@ -88,8 +88,8 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
             long userId = userService.findUserIdByLogin(name);
             List<Long> filmsId = purchasedFilmDao.findAllPurchasedFilmsByUser(userId);
             for (Long idFilm : filmsId) {
-                if (filmId == idFilm){
-                    purchasedFilm = new PurchasedFilm(userId,filmId);
+                if (filmId == idFilm) {
+                    purchasedFilm = new PurchasedFilm(userId, filmId);
                 }
             }
         } catch (DaoException e) {
@@ -104,7 +104,7 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
             (int currentPage, int purchasedFilmsOnPage, String language) throws ServiceException {
         try {
             return purchasedFilmDao.findAllInfoAboutUsersAndPurchasedFilms
-                    (currentPage,purchasedFilmsOnPage,language);
+                    (currentPage, purchasedFilmsOnPage, language);
         } catch (DaoException e) {
             LOGGER.log(Level.ERROR, "Purchased Films not found");
             throw new ServiceException();
@@ -120,5 +120,4 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
             throw new ServiceException("Purchased film not found", e);
         }
     }
-
 }

@@ -1,9 +1,8 @@
 package by.epam.project.service.impl;
 
 import by.epam.project.dao.impl.UserDaoImpl;
-import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.User;
-import by.epam.project.dao.exception.DaoException;
+import by.epam.project.dao.DaoException;
 import by.epam.project.service.UserService;
 import by.epam.project.service.exception.ServiceException;
 import by.epam.project.util.HashPassword;
@@ -42,7 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public boolean create(String enteredLogin, String enteredPassword) throws ServiceException {
-        boolean result =    false;
+        boolean result = false;
         if (!isLoginExists(enteredLogin)) {
             String hashPassword = HashPassword.hash(enteredPassword);
             try {
@@ -115,7 +114,7 @@ public class UserServiceImpl implements UserService {
         try {
             users = userDao.findUsersOnPage(currentPage, usersOnPage);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "User not found",e);
+            LOGGER.log(Level.ERROR, "User not found", e);
             throw new ServiceException("User not found", e);
         }
         return users;
@@ -141,18 +140,18 @@ public class UserServiceImpl implements UserService {
     }
 
     public User lockUser(User user) throws ServiceException {
-        if (isLoginExists(user.getEmail())) {
-            if (!user.isLocked()) {
-                user.setLocked(true);
-            } else {
-                user.setLocked(false);
+        try {
+            if (isLoginExists(user.getEmail())) {
+                if (!user.isLocked()) {
+                    user.setLocked(true);
+                } else {
+                    user.setLocked(false);
+                }
+                userDao.lockUser(user);
             }
-            try {
-               userDao.lockUser(user);
-            } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "User not found", e);
-                throw new ServiceException("User not found", e);
-            }
+        } catch (DaoException e) {
+            LOGGER.log(Level.ERROR, "User not found", e);
+            throw new ServiceException("User not found", e);
         }
         return user;
     }
@@ -167,11 +166,11 @@ public class UserServiceImpl implements UserService {
         if (isLoginExists(user.getEmail())) {
             try {
                 if (User.UserRole.USER == user.getUserRole()) {
-                   userDao.changeRoleToAdmin(user);
-                   user.setUserRole(User.UserRole.ADMIN.name());
+                    userDao.changeRoleToAdmin(user);
+                    user.setUserRole(User.UserRole.ADMIN.name());
                 }
             } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "Impossible to appoint as admin",e);
+                LOGGER.log(Level.ERROR, "Impossible to appoint as admin", e);
                 throw new ServiceException("Impossible to appoint as admin", e);
             }
         }
@@ -184,7 +183,7 @@ public class UserServiceImpl implements UserService {
         try {
             admins = userDao.findAdminsOnPage(currentPage, adminsOnPage);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Admin not found",e);
+            LOGGER.log(Level.ERROR, "Admin not found", e);
             throw new ServiceException("Admin not found", e);
         }
         return admins;
@@ -200,7 +199,7 @@ public class UserServiceImpl implements UserService {
                     userDao.changeRoleToUser(user);
                 }
             } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "Impossible to appoint as admin",e);
+                LOGGER.log(Level.ERROR, "Impossible to appoint as admin", e);
                 throw new ServiceException("Impossible to appoint as admin", e);
             }
         }
@@ -212,7 +211,7 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.findUserIdByLogin(email);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "UserId not found",e);
+            LOGGER.log(Level.ERROR, "UserId not found", e);
             throw new ServiceException("UserId not found", e);
         }
     }

@@ -1,7 +1,7 @@
 package by.epam.project.command.impl.admin;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
@@ -15,11 +15,17 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+
 public class InitFilmTableCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private MediaServiceImpl mediaServiceImpl = MediaServiceImpl.getInstance();
     private static final String DEFAULT_VALUE_OF_FILM_PAGE = "1";
     private static final String DEFAULT_VALUE_OF_FILMS_ON_PAGES = "8";
+
+    /**
+     * The type Init film table command.
+     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

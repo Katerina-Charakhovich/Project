@@ -22,38 +22,62 @@
                 <a class="nav-link" href="controller?command=init_start_page"><fmt:message key="Label.Home"/><span
                         class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-<c:choose>
-    <c:when test="${role == 'ADMIN'}">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-        role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-        <fmt:message key="Label.Admin"/>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="controller?command=admin_page"><fmt:message key="Page.Users"/></a>
-                    <a class="dropdown-item" href="controller?command=admin_page_films"><fmt:message key="Page.Films"/></a>
-                    <a class="dropdown-item" href="controller?command=purchased_film_table"><fmt:message key="Page.PurchasedFilms"/></a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="controller?command=init_admin_table"><fmt:message key="Page.Admins"/></a>
+            <c:choose>
+                <c:when test="${role == 'ADMIN'}">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                           role="button" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            <fmt:message key="Label.Admin"/>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="controller?command=admin_page"><fmt:message
+                                    key="Page.Users"/></a>
+                            <a class="dropdown-item" href="controller?command=admin_page_films"><fmt:message
+                                    key="Page.Films"/></a>
+                            <a class="dropdown-item" href="controller?command=purchased_film_table"><fmt:message
+                                    key="Page.PurchasedFilms"/></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="controller?command=init_admin_table"><fmt:message
+                                    key="Page.Admins"/></a>
+                        </div>
+                    </li>
+
+                </c:when>
+            </c:choose>
+            <c:choose>
+                <c:when test="${role == 'USER'}">
+                    <li class="nav-item">
+                        <a class="nav-link" href="controller?command=view_purchased_film"><fmt:message
+                                key="Label.MyFilms"/></a>
+                    </li>
+                </c:when>
+            </c:choose>
+        </ul>
+        <ul class="nav navbar-nav flex-fill justify-content-center">
+            <form class="form-inline my-2 my-lg-0 " id="searchForm" method="post"
+                  action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                <input type="hidden" name="command" value="search"/>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <select id="inputState" class="form-control" name="searchRequest">
+                            <option value="filmName" selected><fmt:message key="Label.FilmName"/></option>
+                            <option value="description"><fmt:message key="Film.Description"/></option>
+                            <option value="genre"><fmt:message key="Film.genre"/></option>
+                        </select>
+                    </div>
+                    <input class="form-control mr-sm-2" type="search" name="searchContent" value=""
+                           placeholder="<fmt:message key="Label.FindFilm"/>" aria-label="Search" size="35">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">
+                        <fmt:message key="Label.Search"/>
+                    </button>
                 </div>
-            </li>
-    </c:when>
-</c:choose>
-<c:choose>
-    <c:when test="${role == 'USER'}">
-            <li class="nav-item">
-                <a class="nav-link" href="controller?command=view_purchased_film"><fmt:message key="Label.MyFilms"/></a>
-            </li>
-    </c:when>
-</c:choose>
+            </form>
         </ul>
         <c:choose>
             <c:when test="${role != null}">
-                <form class="form-inline my-2 my-lg-0" id="profileForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                <form class="form-inline my-2 my-lg-0" id="profileForm" method="post"
+                      action="${request.getContextPath()}/TaskWebLogin_war/controller">
                     <input class="btn btn-outline-secondary" type="submit"
                            value="<fmt:message key="Label.Profile"/>">
                     <input type="hidden" name="command" value="profile"/>
@@ -64,18 +88,21 @@
                 </div>
             </c:when>
             <c:otherwise>
-                <form class="form-inline my-2 my-lg-0" id="headerForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                <form class="form-inline my-2 my-lg-0" id="headerForm" method="post"
+                      action="${request.getContextPath()}/TaskWebLogin_war/controller">
                     <input class="btn btn-outline-secondary" type="submit"
                            value="<fmt:message key="Label.Sign"/>">
                     <input type="hidden" name="command" value="forward"/>
-                    <input type="hidden" name="page" value="path.page.login"/>
+                    <input type="hidden" name="page" value="/jsp/user/login.jsp"/>
                 </form>
             </c:otherwise>
         </c:choose>
-        <form class="form-inline my-2 my-lg-0" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
+        <form class="form-inline my-2 my-lg-0" method="post"
+              action="${request.getContextPath()}/TaskWebLogin_war/controller">
             <input type="hidden" name="command" value="language"/>
             <input type="hidden" name="langChangeProcessCommand" value="${langChangeProcessCommand}"/>
-            <input class="btn btn-outline-secondary" type="submit" name="currentNavLocale" value="${language}">
+            <input class="btn btn-outline-secondary" type="submit"
+                   name="currentNavLocale" value="${language}">
         </form>
     </div>
 </nav>

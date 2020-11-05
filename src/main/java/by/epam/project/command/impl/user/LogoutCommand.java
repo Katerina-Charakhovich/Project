@@ -7,7 +7,12 @@ import by.epam.project.command.RequestAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 public class LogoutCommand implements Command {
+    /**
+     * The type Logout command.
+     */
+
     @Override
     public Router execute(HttpServletRequest request) {
         String page = PathToPage.LOGIN_PAGE;

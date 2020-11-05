@@ -8,10 +8,11 @@ import by.epam.project.command.Router;
 import javax.servlet.http.HttpServletRequest;
 
 
-/**
- * The type Forward command.
- */
 public class ForwardCommand implements Command {
+
+    /**
+     * The type Forward command.
+     */
 
     @Override
     public Router execute(HttpServletRequest request) {

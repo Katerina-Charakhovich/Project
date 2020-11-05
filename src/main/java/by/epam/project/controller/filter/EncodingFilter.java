@@ -10,6 +10,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 
+
 @WebFilter(urlPatterns = {"/*"},
         initParams = {
                 @WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
@@ -21,6 +22,9 @@ public class EncodingFilter implements Filter {
         code = fConfig.getInitParameter("encoding");
     }
 
+    /**
+     * The type Encoding filter.
+     */
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         String codeRequest = request.getCharacterEncoding();

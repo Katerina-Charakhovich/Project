@@ -1,12 +1,11 @@
 package by.epam.project.command.impl.admin;
 
 import by.epam.project.command.*;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.service.MediaService;
 import by.epam.project.service.exception.ServiceException;
 import by.epam.project.service.impl.MediaServiceImpl;
-import by.epam.project.util.ValidationMedia;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +17,10 @@ public class CreateFilmCommand implements Command {
     public static final Logger LOGGER = LogManager.getLogger();
     private MediaService mediaService = MediaServiceImpl.getInstance();
     private static String FILM_LANG = "en";
+
+    /**
+     * Init Create profile page
+     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -48,6 +51,9 @@ public class CreateFilmCommand implements Command {
         return router;
     }
 
+    /**
+     * Film making process
+     */
     private Router processFilmCreation(HttpServletRequest request, String filmName,
                                        String description, String language, String genre, String link, String yearOfCreation) throws ServiceException {
         Film film;

@@ -1,13 +1,13 @@
 package by.epam.project.controller;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.factory.ActionFactory;
 import by.epam.project.command.Router;
 import by.epam.project.pool.ConnectionPool;
-import by.epam.project.pool.exception.PoolException;
+import by.epam.project.pool.PoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,8 +23,12 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/controller")
 public class ControllerServlet extends HttpServlet {
+
     public static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * The main servlet.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);

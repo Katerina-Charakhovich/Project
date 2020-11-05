@@ -1,7 +1,7 @@
 package by.epam.project.command.impl.user;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
@@ -15,18 +15,17 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * The type Edit profile command.
- */
+
 public class EditProfileCommand implements Command {
-    /**
-     * The constant LOGGER.
-     */
+
     public static final Logger LOGGER = LogManager.getLogger();
     private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
     private ValidationUser validationUser = ValidationUser.getInstance();
     private Router router;
 
+    /**
+     * The type Edit profile command.
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page;

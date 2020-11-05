@@ -22,6 +22,7 @@ import java.util.UUID;
 
 import static by.epam.project.command.RequestAttribute.*;
 
+
 @WebServlet(urlPatterns = {"/upload/*"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024
         , maxFileSize = 1024 * 1024 * 5
@@ -32,22 +33,25 @@ public class FileUploadingServlet extends HttpServlet {
     private UserService userService = UserServiceImpl.getInstance();
     private MediaService mediaService = MediaServiceImpl.getInstance();
 
+    /**
+     * Servlet for loading avatars
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getServletContext().getRealPath("/");
+        request.getServletContext().getRealPath(ADD_FOR_PATH_AVATAR);
         for (Part part : request.getParts()) {
             try {
                 String path = part.getSubmittedFileName();
                 String randFilename = UUID.randomUUID() + path.substring(path.lastIndexOf("."));
-                String avatar = request.getParameter("avatar");
-                switch (avatar){
-                    case "user":{
+                String avatar = request.getParameter(AVATAR);
+                switch (avatar) {
+                    case USER: {
                         initUserAvatar(request, part, randFilename);
                         request.getRequestDispatcher(PathToPage.PROFILE_PAGE).forward(request, response);
                         break;
                     }
-                    case "film_en":{
+                    case FILM_EN: {
                         String filmName = (String) request.getSession().getAttribute(FILM_NAME);
                         String language = (String) request.getSession().getAttribute(LANGUAGE);
                         initFilmEn(request, part, randFilename, filmName, language);
@@ -55,15 +59,15 @@ public class FileUploadingServlet extends HttpServlet {
                         request.getRequestDispatcher(PathToPage.FILM_EDIT_EN).forward(request, response);
                         break;
                     }
-                    case "film_ru":{
+                    case FILM_RU: {
                         String filmName = (String) request.getSession().getAttribute(FILM_NAME);
                         String language = (String) request.getSession().getAttribute(LANGUAGE);
-                        initFilmRu(request, part, randFilename, filmName, language);
+                        initFilmRu(part, randFilename, filmName, language);
                         request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_AVATAR, randFilename);
                         request.getRequestDispatcher(PathToPage.FILM_EDIT_EN).forward(request, response);
                         break;
                     }
-                    default:{
+                    default: {
                         throw new ServiceException("Failed photo upload attempt");
                     }
                 }
@@ -77,24 +81,24 @@ public class FileUploadingServlet extends HttpServlet {
         }
     }
 
-    private void initFilmRu(HttpServletRequest request, Part part, String randFilename, String filmName, String language) throws IOException, ServiceException {
-            File fileSaveDirForFilmAvatarRu = new File(UPLOAD_DIR_FOR_FILM_AVATAR_RU);
-            if (!fileSaveDirForFilmAvatarRu.exists()) {
-                fileSaveDirForFilmAvatarRu.mkdirs();
-            }
-            part.write(UPLOAD_DIR_FOR_FILM_AVATAR_RU + randFilename);
-            part.write(SERVER_UPLOAD_DIR_FOR_FILM_RU + randFilename);
-            mediaService.updateAvatarRu(filmName, randFilename, language.toLowerCase());
+    private void initFilmRu(Part part, String randFilename, String filmName, String language) throws IOException, ServiceException {
+        File fileSaveDirForFilmAvatarRu = new File(UPLOAD_DIR_FOR_FILM_AVATAR_RU);
+        if (!fileSaveDirForFilmAvatarRu.exists()) {
+            fileSaveDirForFilmAvatarRu.mkdirs();
+        }
+        part.write(UPLOAD_DIR_FOR_FILM_AVATAR_RU + randFilename);
+        part.write(SERVER_UPLOAD_DIR_FOR_FILM_RU + randFilename);
+        mediaService.updateAvatarRu(filmName, randFilename, language.toLowerCase());
     }
 
     private void initFilmEn(HttpServletRequest request, Part part, String randFilename, String filmName, String language) throws IOException, ServiceException {
-            File fileSaveDirForFilmAvatarEn = new File(UPLOAD_DIR_FOR_FILM_AVATAR_EN);
-            if (!fileSaveDirForFilmAvatarEn.exists()) {
-                fileSaveDirForFilmAvatarEn.mkdirs();
-            }
-            part.write(UPLOAD_DIR_FOR_FILM_AVATAR_EN + randFilename);
-            part.write(SERVER_UPLOAD_DIR_FOR_FILM_EN + randFilename);
-            mediaService.updateAvatarEn(filmName, randFilename, language.toLowerCase());
+        File fileSaveDirForFilmAvatarEn = new File(UPLOAD_DIR_FOR_FILM_AVATAR_EN);
+        if (!fileSaveDirForFilmAvatarEn.exists()) {
+            fileSaveDirForFilmAvatarEn.mkdirs();
+        }
+        part.write(UPLOAD_DIR_FOR_FILM_AVATAR_EN + randFilename);
+        part.write(SERVER_UPLOAD_DIR_FOR_FILM_EN + randFilename);
+        mediaService.updateAvatarEn(filmName, randFilename, language.toLowerCase());
     }
 
     private void initUserAvatar(HttpServletRequest request, Part part, String randFilename) throws

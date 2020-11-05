@@ -3,7 +3,7 @@ package by.epam.project.dao.impl;
 
 import by.epam.project.dao.ColumnName;
 import by.epam.project.dao.MediaDao;
-import by.epam.project.dao.exception.DaoException;
+import by.epam.project.dao.DaoException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.FilmInfo;
 import by.epam.project.pool.ConnectionPool;
@@ -19,35 +19,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static by.epam.project.dao.LocalizationHelper.buildLocalizedColumn;
+import static by.epam.project.dao.SearchHelper.buildAppealForDataBase;
 
 
 public class MediaDaoImpl implements MediaDao {
     private static MediaDaoImpl instance;
+
     public static final Logger LOGGER = LogManager.getLogger();
     private static final String SQL_SELECT_BY_NAME_EN =
-            "SELECT film_id, film_name_en, film_avatar_en, active FROM testlogin.films WHERE film_name_en = ?";
+            "SELECT film_id, film_name_en, film_avatar_en, active FROM testlogin.films " +
+                    "WHERE film_name_en = ?";
     private static final String SQL_SELECT_BY_NAME_RU =
-            "SELECT film_id, film_name_ru, film_avatar_ru, active FROM testlogin.films WHERE film_name_ru = ?";
+            "SELECT film_id, film_name_ru, film_avatar_ru, active FROM testlogin.films " +
+                    "WHERE film_name_ru = ?";
     private static final String SQL_SELECT_ALL_ACTIVE_FILMS_EN =
-            "SELECT film_id, film_name_en, film_avatar_en, active  FROM testlogin.films WHERE active=? ORDER BY film_id DESC LIMIT ?,?";
+            "SELECT film_id, film_name_en, film_avatar_en, active  FROM testlogin.films " +
+                    "WHERE active=? ORDER BY film_id DESC LIMIT ?,?";
     private static final String SQL_SELECT_ALL_ACTIVE_FILMS_RU =
-            "SELECT film_id, film_name_ru, film_avatar_ru, active  FROM testlogin.films WHERE active=? ORDER BY film_id DESC LIMIT ?,?";
+            "SELECT film_id, film_name_ru, film_avatar_ru, active  FROM testlogin.films " +
+                    "WHERE active=? ORDER BY film_id DESC LIMIT ?,?";
     private static final String SQL_SELECT_ALL_FILMS_EN =
-            "SELECT film_id, film_name_en, film_avatar_en, active  FROM testlogin.films ORDER BY film_id DESC LIMIT ?,?";
+            "SELECT film_id, film_name_en, film_avatar_en, active  FROM testlogin.films " +
+                    "ORDER BY film_id DESC LIMIT ?,?";
     private static final String SQL_SELECT_ALL_FILMS_RU =
-            "SELECT film_id, film_name_ru, film_avatar_ru, active  FROM testlogin.films ORDER BY film_id DESC LIMIT ?,?";
+            "SELECT film_id, film_name_ru, film_avatar_ru, active  FROM testlogin.films " +
+                    "ORDER BY film_id DESC LIMIT ?,?";
     private static final String SQL_SELECT_COUNT_OF_ROWS =
             "SELECT COUNT(film_id) FROM testlogin.films";
     private static final String SQL_SELECT_BY_ID_EN =
             "SELECT film_id, film_name_en, film_avatar_en FROM testlogin.films WHERE film_id = ?";
     private static final String SQL_SELECT_BY_ID_RU =
             "SELECT film_id, film_name_ru, film_avatar_ru FROM testlogin.films WHERE film_id = ?";
+    private static final String SQL_SELECT_ACTIVE_FILM_BY_ID_EN =
+            "SELECT film_id, film_name_en, film_avatar_en FROM testlogin.films WHERE film_id = ? " +
+                    "AND active = ?";
+    private static final String SQL_SELECT_ACTIVE_FILM_BY_ID_RU =
+            "SELECT film_id, film_name_ru, film_avatar_ru FROM testlogin.films WHERE film_id = ? " +
+                    "AND active = ?";
     private static final String SQL_SELECT_INFO_BY_ID_EN =
-            "SELECT id_films_info, description_en, year_of_creation, genre_en, link_en, film_id FROM testlogin.films_info WHERE film_id = ?";
+            "SELECT id_films_info, description_en, year_of_creation, genre_en, link_en, film_id " +
+                    "FROM testlogin.films_info WHERE film_id = ?";
     private static final String SQL_SELECT_INFO_BY_ID_RU =
-            "SELECT id_films_info, description_ru, year_of_creation, genre_ru, link_ru, film_id FROM testlogin.films_info WHERE film_id = ?";
-    private static final String SQL_SELECT_ALL_FILMS_INFO =
-            "SELECT id, description, year_of_creation, genre, link, film_id FROM testlogin.films_info ORDER BY id DESC LIMIT ?,? ";
+            "SELECT id_films_info, description_ru, year_of_creation, genre_ru, link_ru, film_id " +
+                    "FROM testlogin.films_info WHERE film_id = ?";
     private static final String INSERT_NEW_FILM =
             "INSERT INTO testlogin.films(film_name_en) VALUES(?)";
     private static final String UPDATE_NEW_FILM_RU =
@@ -55,9 +69,11 @@ public class MediaDaoImpl implements MediaDao {
     private static final String SQL_SELECT_COUNT_FILMS =
             "SELECT count(*) FROM testlogin.films WHERE film_name_en = ?";
     private static final String INSERT_NEW_FILM_INFO =
-            "INSERT INTO testlogin.films_info(description_en,year_of_creation, genre_en, link_en, film_id) VALUES(?,?,?,?,?)";
+            "INSERT INTO testlogin.films_info(description_en,year_of_creation, " +
+                    "genre_en, link_en, film_id) VALUES(?,?,?,?,?)";
     private static final String UPDATE_FILM_INFO_RU =
-            "UPDATE testlogin.films_info SET description_ru = ?, genre_ru= ?, link_ru= ? WHERE film_id = ?";
+            "UPDATE testlogin.films_info SET description_ru = ?, genre_ru= ?, link_ru= ? " +
+                    "WHERE film_id = ?";
     private static final String UPDATE_FILM_AVATAR_RU =
             "UPDATE testlogin.films SET film_avatar_ru = ? WHERE film_name_ru = ?";
     private static final String UPDATE_FILM_AVATAR_EN =
@@ -65,18 +81,40 @@ public class MediaDaoImpl implements MediaDao {
     private static final String CHANGE_NAME_FILM_EN =
             "UPDATE testlogin.films SET film_name_en = ? WHERE film_id = ?";
     private static final String CHANGE_FILM_INFO_EN =
-            "UPDATE testlogin.films_info SET description_en = ?, genre_en= ?, link_en= ?, year_of_creation = ? WHERE film_id = ?";
+            "UPDATE testlogin.films_info SET description_en = ?, genre_en= ?, link_en= ?, " +
+                    "year_of_creation = ? WHERE film_id = ?";
     private static final String SQL_CHANGE_ACTIVE_FILM =
             "UPDATE testlogin.films SET active = ? WHERE film_id = ?";
     private static final String SQL_SELECT_FILM_ID_BY_FILM_NAME =
             "SELECT film_id FROM testlogin.films  WHERE film_name = ?";
-
+    private static final String SQL_SELECT_LIKE_NAME_EN =
+            "SELECT film_id, film_name_en, film_avatar_en, active FROM testlogin.films " +
+                    "WHERE film_name_en LIKE ? AND active = ?";
+    private static final String SQL_SELECT_LIKE_NAME_RU =
+            "SELECT film_id, film_name_ru, film_avatar_ru, active FROM testlogin.films " +
+                    "WHERE film_name_ru LIKE ? AND active = ?";
     private static final String LANGUAGE_EN = "en";
-
+    private static final String SQL_SELECT_INFO_LIKE_DESCRIPTION_EN =
+            "SELECT id_films_info, description_en, year_of_creation, genre_en, link_en, " +
+                    "film_id FROM testlogin.films_info WHERE description_en LIKE ?";
+    private static final String SQL_SELECT_INFO_LIKE_DESCRIPTION_RU =
+            "SELECT id_films_info, description_ru, year_of_creation, genre_ru, link_ru, " +
+                    "film_id FROM testlogin.films_info WHERE description_ru LIKE ?";
+    private static final String SQL_SELECT_INFO_LIKE_GENRE_EN =
+            "SELECT id_films_info, description_en, year_of_creation, genre_en, link_en, " +
+                    "film_id FROM testlogin.films_info WHERE genre_en LIKE ?";
+    private static final String SQL_SELECT_INFO_LIKE_GENRE_RU =
+            "SELECT id_films_info, description_ru, year_of_creation, genre_ru, link_ru, " +
+                    "film_id FROM testlogin.films_info WHERE genre_ru LIKE ?";
 
     private MediaDaoImpl() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static MediaDaoImpl getInstance() {
         if (instance == null) {
             instance = new MediaDaoImpl();
@@ -86,17 +124,7 @@ public class MediaDaoImpl implements MediaDao {
 
     @Override
     public Film findEntityById(long id) throws DaoException {
-        return null;
-    }
-
-    @Override
-    public boolean delete(Film film) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public boolean delete(long id) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException("This operation is not supported");
     }
 
     @Override
@@ -105,14 +133,15 @@ public class MediaDaoImpl implements MediaDao {
         Connection connection = ConnectionPool.getInstance().getConnection();
         PreparedStatement statement = null;
         PreparedStatement statementForUpdateFilmInfo = null;
-        FilmInfo filmInfo = new FilmInfo(film.getFilmInfo().getDescription(),film.getFilmInfo().getYearOfCreation(),
-                film.getFilmInfo().getGenre(),film.getFilmInfo().getLink());
+        FilmInfo filmInfo = new FilmInfo(film.getFilmInfo().getDescription(),
+                film.getFilmInfo().getYearOfCreation(),
+                film.getFilmInfo().getGenre(), film.getFilmInfo().getLink());
         try {
             connection.setAutoCommit(false);
             statement = connection.prepareStatement(INSERT_NEW_FILM);
             statement.setString(1, film.getFilmName());
             result = statement.executeUpdate() > 0;
-            film = findFilmByName(film.getFilmName(),LANGUAGE_EN);
+            film = findFilmByName(film.getFilmName(), LANGUAGE_EN);
             statementForUpdateFilmInfo = connection.prepareStatement(INSERT_NEW_FILM_INFO);
             statementForUpdateFilmInfo.setString(1, filmInfo.getDescription());
             statementForUpdateFilmInfo.setString(2, filmInfo.getYearOfCreation());
@@ -188,9 +217,11 @@ public class MediaDaoImpl implements MediaDao {
             statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR, language));
+                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR,
+                        language));
                 long id = resultSet.getLong(ColumnName.FILM_ID);
-                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME, language));
+                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME,
+                        language));
                 boolean active = resultSet.getBoolean(ColumnName.ACTIVE);
                 filmInfo = findInfoById(id, language);
                 film = new Film(id, filmName, filmAvatar, filmInfo);
@@ -205,22 +236,26 @@ public class MediaDaoImpl implements MediaDao {
 
 
     @Override
-    public List<Film> findAllActiveFilms(int currentPage, int filmsOnPage, String language, boolean active) throws DaoException {
+    public List<Film> findAllActiveFilms(int currentPage, int filmsOnPage, String language,
+                                         boolean active) throws DaoException {
         List<Film> undeletedFilms = new ArrayList<>();
         FilmInfo filmInfo;
         int start = currentPage * filmsOnPage - filmsOnPage;
-        String query = language.equals(LANGUAGE_EN) ? SQL_SELECT_ALL_ACTIVE_FILMS_EN : SQL_SELECT_ALL_ACTIVE_FILMS_RU;
+        String query = language.equals(LANGUAGE_EN) ? SQL_SELECT_ALL_ACTIVE_FILMS_EN
+                : SQL_SELECT_ALL_ACTIVE_FILMS_RU;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(2, start);
             statement.setInt(3, filmsOnPage);
-            statement.setBoolean(1,active);
+            statement.setBoolean(1, active);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR, language));
+                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR,
+                        language));
                 long filmId = resultSet.getLong(ColumnName.FILM_ID);
                 boolean filmActive = resultSet.getBoolean(ColumnName.ACTIVE);
-                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME, language));
+                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME,
+                        language));
                 filmInfo = findInfoById(filmId, language);
                 Film film = new Film(filmId, filmName, filmAvatar, filmInfo);
                 film.setActive(filmActive);
@@ -259,9 +294,38 @@ public class MediaDaoImpl implements MediaDao {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR, language));
+                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR,
+                        language));
                 long filmId = resultSet.getLong(ColumnName.FILM_ID);
-                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME, language));
+                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME,
+                        language));
+                filmInfo = findInfoById(id, language);
+                film = new Film(filmId, filmName, filmAvatar, filmInfo);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, "Film not found", e);
+            throw new DaoException("Film not Found", e);
+        }
+        return film;
+    }
+
+    @Override
+    public Film findActiveFilmById(long id, String language) throws DaoException {
+        Film film = null;
+        FilmInfo filmInfo;
+        String query = language.equals(LANGUAGE_EN) ? SQL_SELECT_ACTIVE_FILM_BY_ID_EN
+                : SQL_SELECT_ACTIVE_FILM_BY_ID_RU;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            statement.setBoolean(2, true);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR,
+                        language));
+                long filmId = resultSet.getLong(ColumnName.FILM_ID);
+                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME,
+                        language));
                 filmInfo = findInfoById(id, language);
                 film = new Film(filmId, filmName, filmAvatar, filmInfo);
             }
@@ -275,13 +339,15 @@ public class MediaDaoImpl implements MediaDao {
     @Override
     public FilmInfo findInfoById(long filmId, String language) throws DaoException {
         FilmInfo filmInfo = null;
-        String query = language.equals(LANGUAGE_EN) ? SQL_SELECT_INFO_BY_ID_EN : SQL_SELECT_INFO_BY_ID_RU;
+        String query = language.equals(LANGUAGE_EN) ? SQL_SELECT_INFO_BY_ID_EN
+                : SQL_SELECT_INFO_BY_ID_RU;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, filmId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String description = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_DESCRIPTION, language));
+                String description = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_DESCRIPTION,
+                        language));
                 String yearOfCreation = resultSet.getString(ColumnName.FILM_YEAR_OF_CREATION);
                 String genre = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_GENRE, language));
                 String link = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_LINK, language));
@@ -397,10 +463,12 @@ public class MediaDaoImpl implements MediaDao {
             statement.setInt(2, filmsOnPage);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR, language));
+                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR,
+                        language));
                 long filmId = resultSet.getLong(ColumnName.FILM_ID);
                 boolean active = resultSet.getBoolean(ColumnName.ACTIVE);
-                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME, language));
+                String filmName = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME,
+                        language));
                 filmInfo = findInfoById(filmId, language);
                 Film film = new Film(filmId, filmName, filmAvatar, filmInfo);
                 film.setActive(active);
@@ -436,7 +504,7 @@ public class MediaDaoImpl implements MediaDao {
         ) {
             statement.setString(1, filmName);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 filmId = resultSet.getLong(ColumnName.FILM_ID);
             }
         } catch (SQLException e) {
@@ -444,6 +512,96 @@ public class MediaDaoImpl implements MediaDao {
             throw new DaoException("Film id not found", e);
         }
         return filmId;
+    }
+
+    @Override
+    public List<Film> findFilmByFilmName(String filmName, String language) throws DaoException {
+        Film film;
+        List<Film> films = new ArrayList<>();
+        FilmInfo filmInfo;
+        String query = language.equals(LANGUAGE_EN) ? SQL_SELECT_LIKE_NAME_EN : SQL_SELECT_LIKE_NAME_RU;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, buildAppealForDataBase(filmName));
+            statement.setBoolean(2, true);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String filmAvatar = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_AVATAR,
+                        language));
+                long id = resultSet.getLong(ColumnName.FILM_ID);
+                String name = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_NAME, language));
+                boolean active = resultSet.getBoolean(ColumnName.ACTIVE);
+                filmInfo = findInfoById(id, language);
+                film = new Film(id, name, filmAvatar, filmInfo);
+                film.setActive(active);
+                films.add(film);
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, "Film not found", e);
+            throw new DaoException("Film not Found", e);
+        }
+        return films;
+    }
+
+    @Override
+    public List<Film> findFilmByDescription(String description, String language) throws DaoException {
+        Film film;
+        List<Film> films = new ArrayList<>();
+        String query = language.equals(LANGUAGE_EN) ? SQL_SELECT_INFO_LIKE_DESCRIPTION_EN
+                : SQL_SELECT_INFO_LIKE_DESCRIPTION_RU;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, buildAppealForDataBase(description));
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String descriptionFilm = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_DESCRIPTION,
+                        language));
+                long id = resultSet.getLong(ColumnName.FILM_ID);
+                String genre = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_GENRE, language));
+                String yearOfCreation = resultSet.getString(ColumnName.FILM_YEAR_OF_CREATION);
+                String link = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_LINK, language));
+                film = findActiveFilmById(id, language);
+                if (film != null) {
+                    film.setFilmInfo(new FilmInfo(descriptionFilm, yearOfCreation, genre, link));
+                    films.add(film);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, "Film not found", e);
+            throw new DaoException("Film not Found", e);
+        }
+        return films;
+    }
+
+    @Override
+    public List<Film> findFilmByGenre(String genre, String language) throws DaoException {
+        Film film;
+        List<Film> films = new ArrayList<>();
+        String query = language.equals(LANGUAGE_EN) ? SQL_SELECT_INFO_LIKE_GENRE_EN
+                : SQL_SELECT_INFO_LIKE_GENRE_RU;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, buildAppealForDataBase(genre));
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String descriptionFilm = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_DESCRIPTION,
+                        language));
+                long id = resultSet.getLong(ColumnName.FILM_ID);
+                String genreFilm = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_GENRE,
+                        language));
+                String yearOfCreation = resultSet.getString(ColumnName.FILM_YEAR_OF_CREATION);
+                String link = resultSet.getString(buildLocalizedColumn(ColumnName.FILM_LINK, language));
+                film = findActiveFilmById(id, language);
+                if (film != null) {
+                    film.setFilmInfo(new FilmInfo(descriptionFilm, yearOfCreation, genreFilm, link));
+                    films.add(film);
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.log(Level.ERROR, "Film not found", e);
+            throw new DaoException("Film not Found", e);
+        }
+        return films;
     }
 }
 

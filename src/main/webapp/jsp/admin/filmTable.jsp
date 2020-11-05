@@ -77,7 +77,14 @@
                         <td><c:out value="${film.filmInfo.description}"/></td>
                         <td><c:out value="${film.filmInfo.yearOfCreation}"/></td>
                         <td><c:out value="${film.filmInfo.genre}"/></td>
-                        <td><c:out value="${film.active}"/></td>
+                        <c:choose>
+                            <c:when test="${film.active == true}">
+                                <td><fmt:message key="Label.Yes"/></td>
+                            </c:when>
+                            <c:otherwise>
+                                <td><fmt:message key="Label.No"/></td>
+                            </c:otherwise>
+                        </c:choose>
                         <td>
                             <div class="dropdown">
                                 <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"

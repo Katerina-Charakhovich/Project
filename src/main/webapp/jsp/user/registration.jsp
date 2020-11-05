@@ -22,7 +22,8 @@ ${language}
             <div class="col">
             </div>
             <div class="col-4">
-                <form name="registrationForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller"
+                <form name="registrationForm" method="post"
+                      action="${request.getContextPath()}/TaskWebLogin_war/controller"
                       class="needs-validation" novalidate>
                     <fieldset disabled class="create_your_account">
                         <legend><fmt:message key="Label.Registration"/></legend>
@@ -67,13 +68,13 @@ ${language}
                         </div>
                     </div>
                     <c:if test="${registrationErrorSymbols == true}">
-                        <div class="validation"> <fmt:message key="Message.incorrectLoginAndPassword"/></div>
+                        <div class="validation"><fmt:message key="Message.incorrectLoginAndPassword"/></div>
                     </c:if>
                     <c:if test="${registrationError == true}">
-                        <div class="validation"> <fmt:message key="Message.thisUserExists"/></div>
+                        <div class="validation"><fmt:message key="Message.thisUserExists"/></div>
                     </c:if>
                     <c:if test="${registrationErrorPasswords == true}">
-                        <div class="validation"> <fmt:message key="Message.passwordsDoNotMatch"/></div>
+                        <div class="validation"><fmt:message key="Message.passwordsDoNotMatch"/></div>
                     </c:if>
                     <br/>
                     <br/>

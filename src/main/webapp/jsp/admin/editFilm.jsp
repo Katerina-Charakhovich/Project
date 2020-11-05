@@ -56,9 +56,9 @@
                         </c:choose>
                     </div>
                     <div class="col-4">
-            </div>
+                    </div>
                 </div>
-        </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-4">
@@ -68,21 +68,21 @@
                 </div>
                 <br>
                 <br>
-                    <form action="${request.getContextPath()}/TaskWebLogin_war/upload?avatar=film_${currentFilmLang}"
-                          enctype="multipart/form-data"
-                          method="post">
-                        <div class="custom-file">
-                            <input type="file" size="30px" class="custom-file-input" name="content" id="validatedCustomFile"
-                                   required>
-                            <label class="custom-file-label"  for="validatedCustomFile"><fmt:message
-                                    key="Film.ChoosePhoto"/></label>
-                        </div>
-                        <div class="butt-save">
-                            <button class="btn btn-outline-primary " type="submit"><fmt:message
-                                    key="Submit.Save"/></button>
-                        </div>
-                    </form>
-                </div>
+                <form action="${request.getContextPath()}/TaskWebLogin_war/upload?avatar=film_${currentFilmLang}"
+                      enctype="multipart/form-data"
+                      method="post">
+                    <div class="custom-file">
+                        <input type="file" size="30px" class="custom-file-input" name="content" id="validatedCustomFile"
+                               required>
+                        <label class="custom-file-label" for="validatedCustomFile"><fmt:message
+                                key="Film.ChoosePhoto"/></label>
+                    </div>
+                    <div class="butt-save">
+                        <button class="btn btn-outline-primary " type="submit"><fmt:message
+                                key="Submit.Save"/></button>
+                    </div>
+                </form>
+            </div>
             <div class="col-3">
             </div>
             <div class="col-5">
@@ -98,7 +98,7 @@
                             </c:when>
                             <c:otherwise>
                                 <input type="checkbox" name="active" value="false" class="custom-control-input"
-                                       id="customSwitch1" >
+                                       id="customSwitch1">
                                 <input type="hidden" name="command" value="edit_film"/>
                             </c:otherwise>
                         </c:choose>

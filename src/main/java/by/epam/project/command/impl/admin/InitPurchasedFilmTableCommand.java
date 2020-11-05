@@ -4,7 +4,7 @@ import by.epam.project.command.Command;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.User;
 import by.epam.project.service.PurchasedFilmService;
@@ -17,12 +17,17 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
+
 public class InitPurchasedFilmTableCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private PurchasedFilmService purchasedFilmService = PurchasedFilmServiceImpl.getInstance();
     private static final String DEFAULT_VALUE_OF_PURCHASED_FILM_PAGE = "1";
     private static final String DEFAULT_VALUE_OF_PURCHASED_FILMS_ON_PAGES = "8";
 
+    /**
+     * The type Init purchased film table command.
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.PURCHASED_FILMS_TABLE;
@@ -33,12 +38,12 @@ public class InitPurchasedFilmTableCommand implements Command {
                 ? DEFAULT_VALUE_OF_PURCHASED_FILMS_ON_PAGES
                 : request.getParameter(RequestAttribute.PURCHASED_FILMS_ON_PAGE);
         int currentPage = Integer.parseInt(current);
-        String language = (String)request.getSession().getAttribute(RequestAttribute.LANGUAGE);
+        String language = (String) request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         int purchasedFilmsOnPage = Integer.parseInt(countOfPurchasedFilms);
         Map<User, Film> purchasedFilms;
         try {
             purchasedFilms = purchasedFilmService.findAllInfoAboutPurchasedFilms
-                    (currentPage,purchasedFilmsOnPage,language.toLowerCase());
+                    (currentPage, purchasedFilmsOnPage, language.toLowerCase());
             request.setAttribute(RequestAttribute.NUMBER_OF_PAGES, calcNumberOfPages(purchasedFilmsOnPage));
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "Command  initPurchasedFimTable invalid", e);
@@ -52,10 +57,12 @@ public class InitPurchasedFilmTableCommand implements Command {
         return new Router(page);
     }
 
+    /**
+     * Counting the number of rows
+     */
     private int calcNumberOfPages(int purchasedFilmsOnPage) throws ServiceException {
         int rows = purchasedFilmService.calculateNumberOfRowsByPurchasedFilms();
-        double numberOfPage = (double)rows / purchasedFilmsOnPage;
-        int nOfPages = (int)Math.ceil(numberOfPage);
-        return nOfPages;
+        double numberOfPage = (double) rows / purchasedFilmsOnPage;
+        return (int) Math.ceil(numberOfPage);
     }
 }

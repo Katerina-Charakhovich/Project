@@ -1,7 +1,7 @@
 package by.epam.project.command.impl.admin;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.exception.CommandException;
+import by.epam.project.command.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
@@ -15,12 +15,17 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+
 public class InitUserTableCommand implements Command {
+
     public static final Logger LOGGER = LogManager.getLogger();
     private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
     private static final String DEFAULT_VALUE_OF_FILM_PAGE = "1";
     private static final String DEFAULT_VALUE_OF_FILMS_ON_PAGES = "8";
 
+    /**
+     * The type Init user table command.
+     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.USER_TABLE_PAGE;
@@ -49,13 +54,18 @@ public class InitUserTableCommand implements Command {
         return new Router(page);
     }
 
+    /**
+     * Counting the number of rows
+     */
     private int calcNumberOfPages(int usersOnPage) throws ServiceException {
         int rows = userServiceImpl.calculateNumberOfRowsByUser();
-        double numberOfPage = (double)rows / usersOnPage;
-        int nOfPages = (int)Math.ceil(numberOfPage);
-        return nOfPages;
+        double numberOfPage = (double) rows / usersOnPage;
+        return (int) Math.ceil(numberOfPage);
     }
 
+    /**
+     * Make user admin
+     */
     private void resolveAction(HttpServletRequest request, List<User> users)
             throws ServiceException {
         String email = request.getParameter(RequestAttribute.EMAIL);
@@ -69,7 +79,7 @@ public class InitUserTableCommand implements Command {
                 throw new ServiceException("User not found");
             }
             if (request.getParameter(RequestAttribute.LOCK) != null) {
-               user =  userServiceImpl.lockUser(user);
+                user = userServiceImpl.lockUser(user);
                 request.setAttribute(RequestAttribute.LOCK, user.isLocked());
             }
             if (request.getParameter(RequestAttribute.MAKE_ADMIN) != null) {

@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="prop.pagecontent"/>
 <c:set var="lang" value="${language}"/>
@@ -21,6 +22,7 @@
 <div class="startPage">
     <div class="start_container">
         <div class="container-sm">
+            <ctg:hello role="${role}"/>
             <div class="row">
                 <div class="col-8">
                     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
@@ -103,14 +105,15 @@
                 <a href="controller?command=film&filmId=${film.filmId}&filmName=${film.filmName}&filmAvatar=${film.filmAvatar}">
                     <div class="col-10">
                         <br/>
-                        <div><img src="pictures_for_project/posters_${fn:toLowerCase(lang)}/${film.filmAvatar}" alt="" width="200">
+                        <div><img src="pictures_for_project/posters_${fn:toLowerCase(lang)}/${film.filmAvatar}" alt=""
+                                  width="200">
                         </div>
                         <span class="font-weight-bold text-info"><c:out value="${film.filmName}"/></span>
                     </div>
                 </a>
             </c:forEach>
         </div>
-<br>
+        <br>
         <br>
         <nav aria-label="Page navigation example">
             <ul class="pagination pg-blue">
