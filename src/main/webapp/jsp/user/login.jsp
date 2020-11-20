@@ -33,7 +33,7 @@
                             <input type="email" name="email"
                                    class="form-control"
                                    id="validationTooltip01"
-                                   pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
+                                   pattern="^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$"
                                    placeholder="<fmt:message key="Label.PlaceholderEmail"/>"
                                    required>
                         </div>

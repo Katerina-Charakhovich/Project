@@ -66,7 +66,7 @@ public class FileUploadingServlet extends HttpServlet {
                     }
                     case FILM_RU: {
                         String filmName = (String) request.getSession().getAttribute(FILM_NAME);
-                        initFilmRu(part, randFilename, filmName, "ru");
+                        initFilmRu(part, randFilename, filmName, RU);
                         request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_AVATAR, randFilename);
                         request.getSession().setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND, COMMAND_FORWARD_TO_FILM_EDIT);
                         request.getSession().setAttribute(RequestAttribute.CURRENT_PAGE, PathToPage.FILM_EDIT_EN);
