@@ -61,7 +61,6 @@ public class PurchaseFilmCommand implements Command {
             LOGGER.log(Level.ERROR, "Command  PurchaseFilm invalid", e);
             throw new CommandException("Command  PurchaseFilm invalid", e);
         }
-
         return router;
     }
 }
