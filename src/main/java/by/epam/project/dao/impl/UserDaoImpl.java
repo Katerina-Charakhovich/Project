@@ -67,7 +67,6 @@ public class UserDaoImpl implements UserDao {
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID);
              ResultSet resultSet = statement.executeQuery()) {
             statement.setLong(1, id);
-
             while (resultSet.next()) {
                 String email = resultSet.getString(ColumnName.EMAIL);
                 long userId = resultSet.getLong(ColumnName.ID_USER);
