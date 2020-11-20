@@ -1,15 +1,14 @@
 package by.epam.project.util;
 
 /**
- * The type Validation user.
+ * Class for validating user data
  */
 public class ValidationUser {
     private static ValidationUser instance = new ValidationUser();
-    private static final String LOGIN_EXPRESSION = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$";
+    private static final String LOGIN_EXPRESSION = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w]{2,4}$";
     private static final String PASSWORD_EXPRESSION = "^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{6,20}$";
     private static final String NAME_EXPRESSION = "[A-Za-zА-Яа-яЁё]+(\\s+[A-Za-zА-Яа-яЁё]+)?";
     private static final int MAX_LENGTH_ABOUT_ME = 300;
-
 
     private ValidationUser() {
     }

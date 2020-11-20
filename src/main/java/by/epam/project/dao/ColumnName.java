@@ -1,5 +1,8 @@
 package by.epam.project.dao;
 
+/**
+ * The class contains the names of the columns in the database
+ */
 public class ColumnName {
     public static final String EMAIL = "email";
     public static final String ID_USER = "id_user";

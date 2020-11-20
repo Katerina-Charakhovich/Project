@@ -36,7 +36,7 @@ ${language}
                             <input type="email" name="email"
                                    class="form-control"
                                    id="validationTooltip01"
-                                   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                   pattern="^[\w-\.]+@([\w-]+\.)+[\w]{2,4}$"
                                    placeholder="<fmt:message key="Label.PlaceholderEmail"/>"
                                    required>
                         </div>
@@ -51,8 +51,6 @@ ${language}
                                    pattern="^(?=.*[0-9])(?=.*[a-zа-я])(?=.*[A-ZА_Я]).{6,20}$"
                                    placeholder="<fmt:message key="Label.PlaceholderPassword"/>"
                                    required>
-                            <small id="passwordHelp" class="form-text text-muted">
-                                <fmt:message key="Label.PasswordHelp"/></small>
                         </div>
                     </div>
                     <div class="mb-3">

@@ -1,8 +1,7 @@
 package by.epam.project.dao;
 
-
 /**
- * The type Localization helper.
+ * Class that helps you resolve the correct localization of the movie
  */
 public class LocalizationHelper {
 

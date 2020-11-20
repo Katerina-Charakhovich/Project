@@ -2,37 +2,49 @@
 .container-sm_registration {
     padding-top: 60px;
 }
-.registration{
-    background-image: url("pictures_for_project/127304-nebo-fentezi-drakon-atmosfera-cifrovoe_iskusstvo-1920x1080.jpg");
+
+.registration {
+    background: url("pictures_for_project/127304-nebo-fentezi-drakon-atmosfera-cifrovoe_iskusstvo-1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
 }
 
 .create_your_account {
     text-align: center;
     color: #cccccc;
 }
+
 .submit-registration {
     margin-left: 150px;
 }
-.container-sm
-{
+
+.container-sm {
     padding-top: 120px;
     background-size: 100%;
 }
-.sign_in{
+
+.sign_in {
     text-align: center;
     color: #cccccc;
 }
+
 .register-button {
     margin-top: -54px;
     margin-left: 170px;
 }
+
 input[type=email], input[type=password] {
     border: 1px solid #ccc;
     border-radius: 50px;
 }
-.submit-login{
+
+.submit-login {
     margin-left: 60px;
 }
+
 .carousel-item {
     height: 400px;
     overflow: hidden;
@@ -45,7 +57,8 @@ input[type=email], input[type=password] {
     width: 100%;
     object-fit: cover;
 }
-.photos{
+
+.photos {
     margin-bottom: 30px;
     font-size: 14px;
     display: inline-block;
@@ -54,85 +67,147 @@ input[type=email], input[type=password] {
     padding-left: 10px;
     padding-right: 10px;
 }
+
 #poster-row1 {
     margin-bottom: 16px;
 }
-.startPage{
-   background-image: url(pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg);
+
+.startPage {
+    background: url("pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
 }
-.login{
-    background-image: url("pictures_for_project/127304-nebo-fentezi-drakon-atmosfera-cifrovoe_iskusstvo-1920x1080.jpg");
+
+.searchResult {
+    background: url("pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
+
 }
-.page-footer{
+
+.login {
+    background: url("pictures_for_project/127304-nebo-fentezi-drakon-atmosfera-cifrovoe_iskusstvo-1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
+}
+
+.page-footer {
     flex: 0 0 auto;
-    padding-top: 70px;
+    padding-top: 40px;
     color: aliceblue;
 }
-.validationTooltip{
+
+.validationTooltip {
     color: #cccccc;
 }
-#headerForm{
+
+#headerForm {
     position: relative;
     left: -20px;
 }
-#passwordHelp{
+
+#passwordHelp {
     color: #cccccc;
 }
-#dropDownGroup{
+
+#dropDownGroup {
     margin-top: -38px;
     margin-left: 300px;
 }
-.film{
-    background-image: url("pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
+
+.film {
+    background: url("pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
 }
-#trailer{
+
+#trailer {
     right: 40px;
 }
-#genre{
+
+#genre {
     right: 20px;
 }
-.edit_profile{
+
+.edit_profile {
     text-align: center;
     color: #cccccc;
 }
+
 .submit-edit {
     text-align: center;
 }
-#edit{
+
+#edit {
     margin-right: 100px;
 }
-.Profile{
-    background-image: url("pictures_for_project/planeta_oblaka_svet_zvezdy_94996_1920x1080.jpg");
+
+.Profile {
+    background: url("pictures_for_project/planeta_oblaka_svet_zvezdy_94996_1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
 }
-.table{
+
+.table {
     background: midnightblue;
     color: white;
     background: rgba(0, 0, 128, 0.5)
 }
-.button-save{
+
+.button-save {
     margin-top: 30px;
 }
-#profileForm{
+
+#profileForm {
     position: relative;
     left: -40px;
 }
-#searchForm{
+
+#searchForm {
     position: relative;
     margin: -60px;
     /*margin: 30px;*/
 
 }
-.profile_edit{
-    background-image: url("pictures_for_project/planeta_oblaka_svet_zvezdy_94996_1920x1080.jpg");
+
+.profile_edit {
+    background: url("pictures_for_project/planeta_oblaka_svet_zvezdy_94996_1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
 }
-.profileType{
+
+.profileType {
     color: #cccccc;
 }
-.Admin_Page{
-    background-image: url("pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
-}
-.validation {
 
+.Admin_Page {
+    background: url("pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg") no-repeat center center fixed;;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
+}
+
+.validation {
     background-repeat: no-repeat;
     background-position: 10px center;
     color: #D63301;
@@ -140,19 +215,33 @@ input[type=email], input[type=password] {
     background-image: url('pictures_for_project/msg/validation.png');
     text-align: center;
 }
+
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 300px;
     margin: auto;
     text-align: center;
 }
-.profileCard{
-    background-image: url("pictures_for_project/25311-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
+
+.profileCard {
+    background: url("pictures_for_project/25311-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
 }
-.error{
-    background-image: url("pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg");
+
+.error {
+    background: url("pictures_for_project/22001-noch-atmosfera-kosmicheskoe_prostranstvo-astronomicheskij_obekt-tumannost-1920x1080.jpg") no-repeat center center fixed;
     color: #cccccc;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
 }
+
 .btn-circle {
     width: 76px;
     height: 76px;
@@ -163,33 +252,48 @@ input[type=email], input[type=password] {
     font-size: 30px;
     white-space: normal;
 }
-.filmCreator{
-    background-image: url("pictures_for_project/svet_nebo_zvezdy_fon_85555_1920x1080.jpg");
+
+.filmCreator {
+    background: url("pictures_for_project/svet_nebo_zvezdy_fon_85555_1920x1080.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    min-height: 110%;
 }
-#nameForPropertyRu,#descriptionOfFilmRussian,#nameForPropertyGenreRussian,#nameForPropertyLinkRussian
-,#nameForProperty,#descriptionEn,#nameForPropertyGenreEnglish,#nameForPropertyLinkEnglish
-,#FormYearOfCreation{
+
+#nameForPropertyRu, #descriptionOfFilmRussian, #nameForPropertyGenreRussian, #nameForPropertyLinkRussian, #nameForProperty, #descriptionEn, #nameForPropertyGenreEnglish, #nameForPropertyLinkEnglish, #FormYearOfCreation {
     border: 1px solid #ccc;
     border-radius: 50px;
 }
-.butt-save{
+
+.butt-save {
     margin-top: 30px;
     padding-right: 60px;
 }
-.submit-create{
+
+.submit-create {
     margin-top: 30px;
     margin-right: -60px;
 }
-.submit-next{
+
+.submit-next {
     margin-top: 30px;
     margin-right: -60px;
 }
+
 #inputState {
     width: 130px;
 }
-.message-errorSearch{
+
+.message-errorSearch {
     text-align: center;
     color: #cccccc;
+    margin-bottom: 25%;
+}
+
+.app-pagination {
+    margin-bottom: 5%;
 }
 
 

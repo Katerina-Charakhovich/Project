@@ -28,6 +28,7 @@
                 <button class="btn btn-secondary dropdown-toggle" id="dropDownGroup" type="button"
                         data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
+                    ${adminsOnPage}
                 </button>
                 <form method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
                     <input type="hidden" name="command" value="init_admin_table"/>
@@ -76,7 +77,7 @@
                                     ...
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item"
                                        href="controller?command=view_profile&email=${admin.email}">
                                         <fmt:message key="View.profile"/>
@@ -92,9 +93,9 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
+            <nav class="app-pagination" aria-label="Page navigation example">
                 <ul class="pagination pg-blue">
-                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                    <c:forEach begin="1" end="${noOfPagesAdminTable}" var="i">
                         <c:choose>
                             <c:when test="${currentAdminsPage eq i}">
                                 <li class="page-item active"><span class="page-link">
@@ -109,7 +110,7 @@
                         </c:choose>
                     </c:forEach>
 
-                    <c:if test="${currentAdminsPage lt noOfPages}">
+                    <c:if test="${currentAdminsPage lt noOfPagesAdminTable}">
                         <li class="page-item"><a class="page-link"
                                                  href="controller?command=init_admin_table&adminsOnPage=${adminsOnPage}&currentAdminsPage=${currentAdminsPage+1}">
                             <fmt:message key="Label.next"/></a>

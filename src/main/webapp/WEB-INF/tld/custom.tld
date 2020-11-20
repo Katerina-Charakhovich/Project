@@ -5,18 +5,13 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
         version="2.1">
 
-<tlib-version>1.0</tlib-version>
-<short-name>ctg</short-name>
-<uri>custom_tags</uri>
+    <tlib-version>1.0</tlib-version>
+    <short-name>ctg</short-name>
+    <uri>custom_tags</uri>
 
-<tag>
-    <name>hello</name>
-    <tag-class>by.epam.project.tag.StartPageGreetingTag</tag-class>
-    <body-content>empty</body-content>
-    <attribute>
-        <name>role</name>
-        <required>true</required>
-        <rtexprvalue>true</rtexprvalue>
-    </attribute>
-</tag>
+    <tag>
+        <name>time</name>
+        <tag-class>by.epam.project.tag.CurrentDayTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 </taglib>

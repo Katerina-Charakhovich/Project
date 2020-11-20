@@ -33,7 +33,7 @@
                             <input type="email" name="email"
                                    class="form-control"
                                    id="validationTooltip01"
-                                   pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                   pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"
                                    placeholder="<fmt:message key="Label.PlaceholderEmail"/>"
                                    required>
                         </div>
@@ -92,11 +92,6 @@
             </div>
         </div>
     </div>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
-    <br/>
     <c:import url="../common/footer.jsp"/>
 </div>
 </html>

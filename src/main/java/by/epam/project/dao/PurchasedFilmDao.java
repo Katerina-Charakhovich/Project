@@ -1,12 +1,12 @@
 package by.epam.project.dao;
 
+import by.epam.project.dao.exception.DaoException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.PurchasedFilm;
 import by.epam.project.entity.impl.User;
 
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * The interface Purchased film dao.
@@ -31,7 +31,7 @@ public interface PurchasedFilmDao extends BaseDao<PurchasedFilm> {
      * @throws DaoException the dao exception
      */
     Map<User, Film> findAllInfoAboutUsersAndPurchasedFilms
-            (int currentPage, int purchasedFilmsOnPage, String language) throws DaoException;
+    (int currentPage, int purchasedFilmsOnPage, String language) throws DaoException;
 
     /**
      * Calculate number of rows by purchased films int.

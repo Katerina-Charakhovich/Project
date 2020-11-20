@@ -7,12 +7,10 @@ import by.epam.project.command.Router;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ * The command that helps to go to the specified page
+ */
 public class ForwardCommand implements Command {
-
-    /**
-     * The type Forward command.
-     */
 
     @Override
     public Router execute(HttpServletRequest request) {

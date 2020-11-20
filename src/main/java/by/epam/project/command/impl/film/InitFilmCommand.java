@@ -1,12 +1,10 @@
 package by.epam.project.command.impl.film;
 
-import by.epam.project.command.Command;
-import by.epam.project.command.CommandException;
-import by.epam.project.command.PathToPage;
-import by.epam.project.command.RequestAttribute;
-import by.epam.project.command.Router;
+import by.epam.project.command.*;
+import by.epam.project.command.exception.CommandException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.PurchasedFilm;
+import by.epam.project.service.MediaService;
 import by.epam.project.service.PurchasedFilmService;
 import by.epam.project.service.impl.MediaServiceImpl;
 import by.epam.project.service.exception.ServiceException;
@@ -17,25 +15,28 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ * This command initializes the movie page
+ */
 public class InitFilmCommand implements Command {
 
     public static final Logger LOGGER = LogManager.getLogger();
-    private MediaServiceImpl mediaService = MediaServiceImpl.getInstance();
+    private MediaService mediaService = MediaServiceImpl.getInstance();
     private PurchasedFilmService purchasedFilmService = PurchasedFilmServiceImpl.getInstance();
 
-    /**
-     * The type Init film command.
-     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.INIT_FILM_PAGE;
-        Film film;
-        String currentFilmId = request.getParameter(RequestAttribute.CURRENT_FILM_ID) == null ? (String) request.getSession().getAttribute(RequestAttribute.CURRENT_FILM_ID) : request.getParameter(RequestAttribute.CURRENT_FILM_ID);
+        String filmId = (String) request.getSession().getAttribute(RequestAttribute.CURRENT_FILM_ID);
+        String currentFilmId = request.getParameter(RequestAttribute.CURRENT_FILM_ID) == null ? filmId.toString() : request.getParameter(RequestAttribute.CURRENT_FILM_ID);
         String language = (String) request.getSession().getAttribute(RequestAttribute.LANGUAGE);
+        String currentPage = (String) request.getSession().getAttribute(RequestAttribute.CURRENT_PAGE);
+        if (currentFilmId == null) {
+            throw new CommandException("Film is broken. Please contact your system administrator");
+        }
         long id = Long.parseLong(currentFilmId);
         try {
-            film = mediaService.findFilmById(id, language.toLowerCase());
+            Film film = mediaService.findFilmById(id, language.toLowerCase());
             request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_ID, currentFilmId);
             String email = (String) request.getSession().getAttribute(RequestAttribute.EMAIL);
             request.setAttribute(RequestAttribute.CURRENT_DESCRIPTION, film.getFilmInfo().getDescription());
@@ -52,7 +53,14 @@ public class InitFilmCommand implements Command {
             } else {
                 request.getSession().setAttribute(RequestAttribute.BUY_FILM, RequestAttribute.FLAG_FOR_BUTTON_FALSE);
             }
-
+            String backButtonPageAddress = CommandType.INIT_START_PAGE.name();
+            if (PathToPage.FILM_TABLE_PAGE.equals(currentPage)) {
+                backButtonPageAddress = CommandType.ADMIN_PAGE_FILMS.name();
+            } else if (PathToPage.PURCHASED_FILMS.equals(currentPage)){
+                backButtonPageAddress = CommandType.VIEW_PURCHASED_FILM.name();
+            }
+            request.getSession().setAttribute(RequestAttribute.BACK_BUTTON_PAGE_ADDRESS,
+                    backButtonPageAddress);
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "Film not found", e);
             throw new CommandException("Film not found", e);

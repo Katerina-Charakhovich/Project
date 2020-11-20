@@ -1,5 +1,6 @@
 package by.epam.project.pool;
 
+import by.epam.project.pool.exception.PoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +14,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * The type Connection pool.
+ * Connection pool which contains 32 connections and, if necessary, issues them to users
  */
 public class ConnectionPool {
 
@@ -71,13 +72,14 @@ public class ConnectionPool {
      *
      * @return the connection
      */
-    public Connection getConnection() {
-        ProxyConnection connection = null;
+    public Connection getConnection() throws PoolException {
+        ProxyConnection connection;
         try {
             connection = freeConnections.take();
             givenAwayConnections.put(connection);
         } catch (InterruptedException e) {
             LOGGER.log(Level.ERROR, "Impossible to create Connection", e);
+            throw new PoolException("Can not get the connection", e);
         }
         return connection;
     }

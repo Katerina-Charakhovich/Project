@@ -10,21 +10,21 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 
-
+/**
+ * Filter for encoding data for the database
+ */
 @WebFilter(urlPatterns = {"/*"},
         initParams = {
                 @WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
-
 public class EncodingFilter implements Filter {
     private String code;
 
+    @Override
     public void init(FilterConfig fConfig) throws ServletException {
         code = fConfig.getInitParameter("encoding");
     }
 
-    /**
-     * The type Encoding filter.
-     */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         String codeRequest = request.getCharacterEncoding();
@@ -35,6 +35,7 @@ public class EncodingFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    @Override
     public void destroy() {
         code = null;
     }

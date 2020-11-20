@@ -1,22 +1,19 @@
 package by.epam.project.service.impl;
 
+import by.epam.project.dao.UserDao;
 import by.epam.project.dao.impl.UserDaoImpl;
 import by.epam.project.entity.impl.User;
-import by.epam.project.dao.DaoException;
+import by.epam.project.dao.exception.DaoException;
 import by.epam.project.service.UserService;
 import by.epam.project.service.exception.ServiceException;
 import by.epam.project.util.HashPassword;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 
 public class UserServiceImpl implements UserService {
-    public static final Logger LOGGER = LogManager.getLogger();
     private static final UserServiceImpl instance = new UserServiceImpl();
-    private UserDaoImpl userDao = UserDaoImpl.getInstance();
+    private UserDao userDao = UserDaoImpl.getInstance();
 
     private UserServiceImpl() {
     }
@@ -34,7 +31,6 @@ public class UserServiceImpl implements UserService {
                 result = true;
             }
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
             throw new ServiceException("User not found", e);
         }
         return result;
@@ -42,35 +38,47 @@ public class UserServiceImpl implements UserService {
 
     public boolean create(String enteredLogin, String enteredPassword) throws ServiceException {
         boolean result = false;
-        if (!isLoginExists(enteredLogin)) {
+        if (!isLoginExistsForCreationUser(enteredLogin)) {
             String hashPassword = HashPassword.hash(enteredPassword);
             try {
                 result = userDao.create(enteredLogin, hashPassword);
             } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "Creation failed", e);
                 throw new ServiceException("Creation failed", e);
             }
         }
         return result;
     }
 
+    public boolean isLoginExistsForCreationUser(String enteredLogin) throws ServiceException {
+        try {
+            return userDao.isUserExist(enteredLogin);
+
+        } catch (DaoException e) {
+            throw new ServiceException("Select operation failed. Please contact your system administrator", e);
+        }
+    }
 
     public boolean isLoginExists(String enteredLogin) throws ServiceException {
         boolean result;
         try {
             result = userDao.isUserExist(enteredLogin);
+            if (!result) {
+                throw new ServiceException("User not found. Please contact your system administrator");
+            }
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
-            throw new ServiceException("User not found", e);
+            throw new ServiceException("Select operation failed. Please contact your system administrator", e);
         }
         return result;
     }
 
     public User findUserWithTheAllInfoByLogin(String email) throws ServiceException {
         try {
-            return userDao.findUserWithTheAllInfoByLogin(email);
+            User user = userDao.findUserWithTheAllInfoByLogin(email);
+            if (user == null) {
+                throw new ServiceException("User not found. Please contact your system administrator");
+            }
+            return user;
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
             throw new ServiceException("User not found", e);
         }
     }
@@ -87,7 +95,6 @@ public class UserServiceImpl implements UserService {
             try {
                 userDao.updateInfo(user);
             } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "Info has not been updated", e);
                 throw new ServiceException("Info has not been updated", e);
             }
         }
@@ -102,7 +109,6 @@ public class UserServiceImpl implements UserService {
             try {
                 userDao.updateAvatar(user);
             } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "Avatar has not been updated", e);
                 throw new ServiceException("Avatar has not been updated", e);
             }
         }
@@ -110,21 +116,17 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> findUsersOnPage(int currentPage, int usersOnPage) throws ServiceException {
-        List<User> users;
         try {
-            users = userDao.findUsersOnPage(currentPage, usersOnPage);
+            return userDao.findUsersOnPage(currentPage, usersOnPage);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
             throw new ServiceException("User not found", e);
         }
-        return users;
     }
 
     public int calculateNumberOfRowsByUser() throws ServiceException {
         try {
             return userDao.calculateNumberOfRowsByUser();
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
             throw new ServiceException("User not found", e);
         }
     }
@@ -134,7 +136,6 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.calculateNumberOfRowsByAdmin();
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
             throw new ServiceException("User not found", e);
         }
     }
@@ -142,15 +143,10 @@ public class UserServiceImpl implements UserService {
     public User lockUser(User user) throws ServiceException {
         try {
             if (isLoginExists(user.getEmail())) {
-                if (!user.isLocked()) {
-                    user.setLocked(true);
-                } else {
-                    user.setLocked(false);
-                }
+                user.setLocked(!user.isLocked());
                 userDao.lockUser(user);
             }
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
             throw new ServiceException("User not found", e);
         }
         return user;
@@ -170,7 +166,6 @@ public class UserServiceImpl implements UserService {
                     user.setUserRole(User.UserRole.ADMIN.name());
                 }
             } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "Impossible to appoint as admin", e);
                 throw new ServiceException("Impossible to appoint as admin", e);
             }
         }
@@ -179,14 +174,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllAdmins(int currentPage, int adminsOnPage) throws ServiceException {
-        List<User> admins;
         try {
-            admins = userDao.findAdminsOnPage(currentPage, adminsOnPage);
+            return userDao.findAdminsOnPage(currentPage, adminsOnPage);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Admin not found", e);
             throw new ServiceException("Admin not found", e);
         }
-        return admins;
     }
 
     @Override
@@ -199,7 +191,6 @@ public class UserServiceImpl implements UserService {
                     userDao.changeRoleToUser(user);
                 }
             } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "Impossible to appoint as admin", e);
                 throw new ServiceException("Impossible to appoint as admin", e);
             }
         }
@@ -211,7 +202,6 @@ public class UserServiceImpl implements UserService {
         try {
             return userDao.findUserIdByLogin(email);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "UserId not found", e);
             throw new ServiceException("UserId not found", e);
         }
     }

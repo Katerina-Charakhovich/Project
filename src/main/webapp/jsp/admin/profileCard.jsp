@@ -17,7 +17,7 @@
 <c:import url="/jsp/common/header.jsp"/>
 <div class="profileCard">
     <div class="container-sm">
-        <a onclick="javascript:history.back();return false;">
+        <a href="controller?command=${cardBackButtonPageAddress}">
             <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-arrow-left-square text-light"
                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"

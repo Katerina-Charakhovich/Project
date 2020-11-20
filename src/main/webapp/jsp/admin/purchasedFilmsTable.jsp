@@ -23,7 +23,7 @@
         <div class="row">
             <div class="dropdown">
                 <div class="input-group-prepend">
-                    <label class="input-group-text" for="dropDownGroup"><fmt:message key="Label.chooseUsers"/></label>
+                    <label class="input-group-text" for="dropDownGroup"><fmt:message key="Label.choose"/></label>
                 </div>
                 <button class="btn btn-secondary dropdown-toggle" id="dropDownGroup" type="button"
                         data-toggle="dropdown"
@@ -68,9 +68,9 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
+            <nav class="app-pagination" aria-label="Page navigation example">
                 <ul class="pagination pg-blue">
-                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                    <c:forEach begin="1" end="${noOfPagesPurchaseTable}" var="i">
                         <c:choose>
                             <c:when test="${currentPurchasedFilmPage eq i}">
                                 <li class="page-item active"><span class="page-link">
@@ -85,7 +85,7 @@
                         </c:choose>
                     </c:forEach>
 
-                    <c:if test="${currentPurchasedFilmPage lt noOfPages}">
+                    <c:if test="${currentPurchasedFilmPage lt noOfPagesPurchaseTable}">
                         <li class="page-item"><a class="page-link"
                                                  href="controller?command=purchased_film_table&purchasedFilmsOnPage=${purchasedFilmsOnPage}&currentPurchasedFilmPage=${currentPurchasedFilmPage+1}">
                             <fmt:message key="Label.next"/></a>

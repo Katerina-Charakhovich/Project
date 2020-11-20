@@ -12,28 +12,27 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
+/**
+ * Filter denying access to the admin page
+ */
 @WebFilter(dispatcherTypes = {
-        DispatcherType.FORWARD,
+        DispatcherType.FORWARD
 }, urlPatterns = {"/jsp/admin/*"})
 public class SecurityFilter implements Filter {
 
-    public void destroy() {
-    }
-
-    /**
-     * Filter denying access to the admin page
-     */
+    @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpSession session = request.getSession();
         String userRole = (String) session.getAttribute(RequestAttribute.ROLE);
-        if (!userRole.equals(User.UserRole.ADMIN.name())) {
+        if (!User.UserRole.ADMIN.name().equals(userRole)) {
             String language = (String) request.getSession().getAttribute(RequestAttribute.LANGUAGE);
             RequestDispatcher dispatcher = request.getServletContext()
                     .getRequestDispatcher(PathToPage.INDEX_PAGE);
-            request.getSession().invalidate();
-            request.getSession().setAttribute(RequestAttribute.LANGUAGE, language);
+            session.removeAttribute(RequestAttribute.EMAIL);
+            session.removeAttribute(RequestAttribute.ROLE);
+            session.setAttribute(RequestAttribute.LANGUAGE, language);
             dispatcher.forward(req, resp);
             return;
         }

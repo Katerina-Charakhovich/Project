@@ -12,6 +12,9 @@ import static by.epam.project.command.RequestAttribute.*;
  */
 public class CommandUtil {
 
+    private CommandUtil() {
+    }
+
     /**
      * Has value boolean.
      *
@@ -41,7 +44,6 @@ public class CommandUtil {
         if (!validationMedia.validateDescription(descriptionEn)) {
             return errorResponse(request, LABEL_FOR_FILM_DESCRIPTION, page);
         }
-
         if (!validationMedia.validateLink(linkEn)) {
             return errorResponse(request, LABEL_FOR_FILM_LINK, page);
         }
@@ -54,11 +56,10 @@ public class CommandUtil {
 
     private static Router validateNameGenre(HttpServletRequest request, String genreEn, String filmName, String page, String filmLang) {
         ValidationMedia validationMedia = ValidationMedia.getInstance();
-        if (filmLang.equals(LANGUAGE_EN)) {
+        if (filmLang.equals(EN)) {
             if (!validationMedia.validateGenreEn(genreEn)) {
                 return errorResponse(request, LABEL_FOR_FILM_GENRE, page);
             }
-
             if (!validationMedia.validateNameEn(filmName)) {
                 return errorResponse(request, LABEL_FOR_FILM_NAME, page);
             }
@@ -66,7 +67,6 @@ public class CommandUtil {
             if (!validationMedia.validateGenreRu(genreEn)) {
                 return errorResponse(request, LABEL_FOR_FILM_GENRE, page);
             }
-
             if (!validationMedia.validateNameRu(filmName)) {
                 return errorResponse(request, LABEL_FOR_FILM_NAME, page);
             }
@@ -78,5 +78,26 @@ public class CommandUtil {
         request.setAttribute(RequestAttribute.ERROR_DATA, true);
         request.setAttribute(LABEL_FOR_FILM_FIELD, field);
         return new Router(page);
+    }
+
+    /**
+     * Calculate table parameter string.
+     *
+     * @param request       the request
+     * @param parameterName the parameter name
+     * @param defaultValue  the default value
+     * @return the string
+     */
+    public static String calculateTableParameter(HttpServletRequest request, String parameterName, String defaultValue) {
+        String current = request.getParameter(parameterName);
+        if (current == null || current.isEmpty()) {
+            Object currentPage = request.getSession().getAttribute(parameterName);
+            if (currentPage != null) {
+                current = currentPage.toString();
+            } else {
+                current = defaultValue;
+            }
+        }
+        return current;
     }
 }

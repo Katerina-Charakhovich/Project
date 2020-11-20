@@ -33,12 +33,20 @@ public interface MediaService {
                                   String language, boolean active) throws ServiceException;
 
     /**
-     * Calculate number of rows int.
+     * Calculate number of active rows int.
      *
      * @return the int
      * @throws ServiceException the service exception
      */
-    int calculateNumberOfRows() throws ServiceException;
+    int calculateNumberOfActiveRows() throws ServiceException;
+
+    /**
+     * Calculate number of all rows int.
+     *
+     * @return the int
+     * @throws ServiceException the service exception
+     */
+    int calculateNumberOfAllRows() throws ServiceException;
 
     /**
      * Find film by name film.
@@ -97,8 +105,8 @@ public interface MediaService {
      * @return the film
      * @throws ServiceException the service exception
      */
-    Film updateFilm(long id, String filmNameRu, String descriptionRu,
-                    String genreRu, String language, String linkRu) throws ServiceException;
+    Film updateFilm(long id, String filmName, String description,
+                    String genre, String language, String link) throws ServiceException;
 
     /**
      * Update avatar ru.

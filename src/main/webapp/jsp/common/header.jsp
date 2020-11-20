@@ -10,7 +10,7 @@
     <title><fmt:message key="Label.Header"/></title>
 </head>
 <nav class="navbar fixed-top navbar-expand-lg navbar navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
+    <a class="navbar-brand text-light">Cinema Project</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -58,7 +58,7 @@
             <form class="form-inline my-2 my-lg-0 " id="searchForm" method="post"
                   action="${request.getContextPath()}/TaskWebLogin_war/controller">
                 <input type="hidden" name="command" value="search"/>
-                <div class="input-group mb-3">
+                <div class="input-group">
                     <div class="input-group-prepend">
                         <select id="inputState" class="form-control" name="searchRequest">
                             <option value="filmName" selected><fmt:message key="Label.FilmName"/></option>

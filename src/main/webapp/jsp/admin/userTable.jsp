@@ -64,7 +64,7 @@
                         <td><c:out value="${user.userRole}"/></td>
                         <c:choose>
                             <c:when test="${user.locked == true}">
-                        <td><fmt:message key="Label.Yes"/></td>
+                                <td><fmt:message key="Label.Yes"/></td>
                             </c:when>
                             <c:otherwise>
                                 <td><fmt:message key="Label.No"/></td>
@@ -77,7 +77,7 @@
                                     ...
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item"
                                        href="controller?command=admin_page&lock=${user.locked}&email=${user.email}&currentUsersPage=${currentUsersPage}&usersOnPage=${usersOnPage}">
                                         <c:choose>
@@ -103,9 +103,9 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
+            <nav class="app-pagination" aria-label="Page navigation example">
                 <ul class="pagination pg-blue">
-                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                    <c:forEach begin="1" end="${noOfPagesUserTable}" var="i">
                         <c:choose>
                             <c:when test="${currentUsersPage eq i}">
                                 <li class="page-item active"><span class="page-link">
@@ -120,7 +120,7 @@
                         </c:choose>
                     </c:forEach>
 
-                    <c:if test="${currentUsersPage lt noOfPages}">
+                    <c:if test="${currentUsersPage lt noOfPagesUserTable}">
                         <li class="page-item"><a class="page-link"
                                                  href="controller?command=admin_page&usersOnPage=${usersOnPage}&currentUsersPage=${currentUsersPage+1}">
                             <fmt:message key="Label.next"/></a>

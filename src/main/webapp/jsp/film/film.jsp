@@ -19,7 +19,7 @@
 <c:import url="/jsp/common/header.jsp"/>
 <div class="film">
     <div class="container-sm">
-        <a onclick="javascript:history.back();return false;">
+        <a href="controller?command=${backButtonPageAddress}">
             <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-arrow-left-square text-light"
                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd"
@@ -35,7 +35,17 @@
                 <div><span class="font-weight-bold text-uppercase text-info"><c:out value="${filmName}"/></span>
                 </div>
                 <br/>
-                <div><img src="pictures_for_project/posters_${fn:toLowerCase(lang)}/${filmAvatar}" alt="" width="250">
+                <div>
+                    <c:choose>
+                        <c:when test="${(currentFilmLang == 'ru' or currentFilmLang == 'en') and language_changed != true}">
+                            <img src="pictures_for_project/posters_${currentFilmLang}/${filmAvatar}" alt=""
+                                 width="250">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="pictures_for_project/posters_${fn:toLowerCase(lang)}/${filmAvatar}" alt=""
+                                 width="250">
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <br/>
                 <div><span class="font-weight-normal text-secondary"><c:out value="${yearOfCreation}"/></span>
@@ -59,9 +69,9 @@
         <br>
         <div class="row">
             <div class="col-4">
-                ${buyFilm}
                 <c:if test="${role == 'USER' && buyFilm == 'false'}">
-                    <form name="BuyForm" method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
+                    <form name="BuyForm" method="post"
+                          action="${request.getContextPath()}/TaskWebLogin_war/controller">
                         <button type="submit" name="buyFilm" value="true" class="btn btn-warning btn-lg btn-block">
                             <fmt:message key="Label.Buy"/></button>
                         <input type="hidden" name="command" value="purchase_film"/>
@@ -74,7 +84,8 @@
                     </form>
                 </c:if>
                 <c:if test="${role == 'USER' && buyFilm == 'true'}">
-                    <button type="button" name="buyFilm" value="true" class="btn btn-outline-warning btn-lg btn-block">
+                    <button type="button" name="buyFilm" value="true"
+                            class="btn btn-outline-warning btn-lg btn-block">
                         <fmt:message key="Label.Purchased"/></button>
                 </c:if>
             </div>

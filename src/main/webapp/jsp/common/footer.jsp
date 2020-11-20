@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setLocale value="${language}" scope="session"/>
 <fmt:setBundle basename="prop.pagecontent"/>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tld/custom.tld" %>
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -11,10 +12,11 @@
 <style>
     <%@include file="/css/style.css" %>
 </style>
-<footer class="page-footer font-small blue">
-    <div class="footer-copyright text-center py-3"><fmt:message key="Label.FooterCopyright"/></div>
-
-</footer>
+<div class="app-footer">
+    <footer class="page-footer font-small blue">
+        <div class="footer-copyright text-center py-3"><fmt:message key="Label.FooterCopyright"/> <ctg:time/></div>
+    </footer>
+</div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>

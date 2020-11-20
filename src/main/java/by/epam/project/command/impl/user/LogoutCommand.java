@@ -7,11 +7,10 @@ import by.epam.project.command.RequestAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ * Command where user or administrator can log out from their profile
+ */
 public class LogoutCommand implements Command {
-    /**
-     * The type Logout command.
-     */
 
     @Override
     public Router execute(HttpServletRequest request) {

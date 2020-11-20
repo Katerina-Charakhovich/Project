@@ -21,17 +21,17 @@
 </head>
 <c:import url="/jsp/common/header.jsp"/>
 <div class="error">
-<div class="container-sm">
-    <div class="row">
-        <div class="col">
-        </div>
-        <div class="col">
-            ERROR: ${error}
-        </div>
-        <div class="col">
+    <div class="container-sm">
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                ERROR: ${error}
+            </div>
+            <div class="col">
+            </div>
         </div>
     </div>
-</div>
     <c:import url="/jsp/common/footer.jsp"/>
 </div>
 </html>

@@ -152,4 +152,13 @@ public interface UserService {
      * @throws ServiceException the service exception
      */
     long findUserIdByLogin(String email) throws ServiceException;
+
+    /**
+     * Is login exists for creation user boolean.
+     *
+     * @param enteredLogin the entered login
+     * @return the boolean
+     * @throws ServiceException the service exception
+     */
+    boolean isLoginExistsForCreationUser(String enteredLogin) throws ServiceException;
 }

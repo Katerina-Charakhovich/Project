@@ -1,5 +1,6 @@
 package by.epam.project.dao;
 
+import by.epam.project.dao.exception.DaoException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.FilmInfo;
 
@@ -33,12 +34,20 @@ public interface MediaDao extends BaseDao<Film> {
                                   boolean active) throws DaoException;
 
     /**
-     * Calculate number of rows int.
+     * Calculate number of active rows int.
      *
      * @return the int
      * @throws DaoException the dao exception
      */
-    int calculateNumberOfRows() throws DaoException;
+    int calculateNumberOfActiveRows() throws DaoException;
+
+    /**
+     * Calculate number of all rows int.
+     *
+     * @return the int
+     * @throws DaoException the dao exception
+     */
+    int calculateNumberOfAllRows() throws DaoException;
 
     /**
      * Find film by id film.
@@ -82,11 +91,11 @@ public interface MediaDao extends BaseDao<Film> {
     /**
      * Update avatar ru film.
      *
-     * @param film the film
-     * @return the film
+     * @param avatar
+     * @param filmName
      * @throws DaoException the dao exception
      */
-    Film updateAvatarRu(Film film) throws DaoException;
+    void updateAvatarRu(String avatar, String filmName) throws DaoException;
 
     /**
      * Update avatar en film.
@@ -102,8 +111,9 @@ public interface MediaDao extends BaseDao<Film> {
      *
      * @param film the film
      * @return the film
+     * @throws DaoException the dao exception
      */
-    Film updateInfoEn(Film film);
+    Film updateInfoEn(Film film) throws DaoException;
 
     /**
      * Find all films list.
@@ -164,5 +174,12 @@ public interface MediaDao extends BaseDao<Film> {
      */
     List<Film> findFilmByGenre(String genre, String language) throws DaoException;
 
-
+    /**
+     * Find avatar ru by name en film.
+     *
+     * @param name film name
+     * @return the film
+     * @throws DaoException the dao exception
+     */
+    String findAvatarRuByFilmNameEn(String name) throws DaoException;
 }

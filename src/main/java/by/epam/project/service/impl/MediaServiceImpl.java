@@ -1,26 +1,23 @@
 package by.epam.project.service.impl;
 
-import by.epam.project.dao.DaoException;
+import by.epam.project.dao.exception.DaoException;
+import by.epam.project.dao.MediaDao;
 import by.epam.project.dao.impl.MediaDaoImpl;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.FilmInfo;
 import by.epam.project.service.MediaService;
 import by.epam.project.service.exception.ServiceException;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 import static by.epam.project.service.TypeOfSearch.*;
 
 /**
- * The type Media service.
+ * Service that works with user data
  */
 public class MediaServiceImpl implements MediaService {
-    public static final Logger LOGGER = LogManager.getLogger();
     private static final MediaServiceImpl instance = new MediaServiceImpl();
-    private static final MediaDaoImpl mediaDao = MediaDaoImpl.getInstance();
+    private static final MediaDao mediaDao = MediaDaoImpl.getInstance();
 
     private MediaServiceImpl() {
     }
@@ -35,33 +32,34 @@ public class MediaServiceImpl implements MediaService {
     }
 
     public boolean isFilmExist(String name) throws ServiceException {
-        boolean result;
         try {
-            result = mediaDao.isFilmExist(name);
+            return mediaDao.isFilmExist(name);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found",e);
-            throw new ServiceException("Film not found",e);
+            throw new ServiceException("Film not found", e);
         }
-        return result;
     }
 
     public List<Film> findAllActiveFilms(int currentPage, int filmsOnPage, String language,
                                          boolean active) throws ServiceException {
-        List<Film> films;
         try {
-            films = mediaDao.findAllActiveFilms(currentPage, filmsOnPage, language, active);
+            return mediaDao.findAllActiveFilms(currentPage, filmsOnPage, language, active);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found",e);
             throw new ServiceException("Film not found", e);
         }
-        return films;
     }
 
-    public int calculateNumberOfRows() throws ServiceException {
+    public int calculateNumberOfAllRows() throws ServiceException {
         try {
-            return mediaDao.calculateNumberOfRows();
+            return mediaDao.calculateNumberOfAllRows();
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found", e);
+            throw new ServiceException("Film not found", e);
+        }
+    }
+
+    public int calculateNumberOfActiveRows() throws ServiceException {
+        try {
+            return mediaDao.calculateNumberOfActiveRows();
+        } catch (DaoException e) {
             throw new ServiceException("Film not found", e);
         }
     }
@@ -70,7 +68,6 @@ public class MediaServiceImpl implements MediaService {
         try {
             return mediaDao.findFilmByName(name, language);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found", e);
             throw new ServiceException("Film not found", e);
         }
     }
@@ -79,7 +76,6 @@ public class MediaServiceImpl implements MediaService {
         try {
             return mediaDao.findFilmById(id, language);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found", e);
             throw new ServiceException("Film not found", e);
         }
     }
@@ -88,7 +84,6 @@ public class MediaServiceImpl implements MediaService {
         try {
             return mediaDao.findInfoById(filmId, language);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found", e);
             throw new ServiceException("Film not found", e);
         }
     }
@@ -105,27 +100,25 @@ public class MediaServiceImpl implements MediaService {
                 result = mediaDao.create(film);
             }
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Creation failed", e);
             throw new ServiceException("Creation failed", e);
         }
         return result;
     }
 
     @Override
-    public Film updateFilm(long id, String filmNameRu, String descriptionRu,
-                           String genreRu, String language, String linkRu) throws ServiceException {
+    public Film updateFilm(long id, String filmName, String description,
+                           String genre, String language, String link) throws ServiceException {
         Film film;
         try {
             film = mediaDao.findFilmById(id, language);
             if (film != null) {
-                film.setFilmName(filmNameRu);
-                film.getFilmInfo().setDescription(descriptionRu);
-                film.getFilmInfo().setGenre(genreRu);
-                film.getFilmInfo().setLink(linkRu);
+                film.setFilmName(filmName);
+                film.getFilmInfo().setDescription(description);
+                film.getFilmInfo().setGenre(genre);
+                film.getFilmInfo().setLink(link);
                 film = mediaDao.update(film);
             }
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Update not successfully", e);
             throw new ServiceException("Update not successfully", e);
         }
         return film;
@@ -133,13 +126,9 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public void updateAvatarRu(String filmName, String avatarRu, String language) throws ServiceException {
-        Film film;
         try {
-            film = mediaDao.findFilmByName(filmName, "ru");
-            film.setFilmAvatar(avatarRu);
-            mediaDao.updateAvatarRu(film);
+            mediaDao.updateAvatarRu(avatarRu, filmName);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Update not successfully", e);
             throw new ServiceException("Update not successfully", e);
         }
     }
@@ -152,7 +141,6 @@ public class MediaServiceImpl implements MediaService {
             film.setFilmAvatar(avatarEn);
             mediaDao.updateAvatarEn(film);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Update not successfully", e);
             throw new ServiceException("Update not successfully", e);
         }
     }
@@ -173,7 +161,6 @@ public class MediaServiceImpl implements MediaService {
                 film = mediaDao.updateInfoEn(film);
             }
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Update not successfully", e);
             throw new ServiceException("Update not successfully", e);
         }
         return film;
@@ -181,28 +168,20 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public List<Film> findAllFilms(int currentPage, int filmsOnPage, String language) throws ServiceException {
-        List<Film> films;
         try {
-            films = mediaDao.findAllFilms(currentPage, filmsOnPage, language);
+            return mediaDao.findAllFilms(currentPage, filmsOnPage, language);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found");
             throw new ServiceException("Film not found", e);
         }
-        return films;
     }
 
     @Override
     public Film changeActiveFilm(Film film) throws ServiceException {
         if (isFilmExist(film.getFilmName())) {
-            if (!film.isActive()) {
-                film.setActive(true);
-            } else {
-                film.setActive(false);
-            }
+            film.setActive(!film.isActive());
             try {
                 film = mediaDao.changeActiveFilm(film);
             } catch (DaoException e) {
-                LOGGER.log(Level.ERROR, "Activity could not be changed", e);
                 throw new ServiceException("Activity could not be changed", e);
             }
         }
@@ -214,7 +193,6 @@ public class MediaServiceImpl implements MediaService {
         try {
             return mediaDao.findFilmIdByFilmName(filmName);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film id not found", e);
             throw new ServiceException("Film id not found", e);
         }
     }
@@ -224,7 +202,6 @@ public class MediaServiceImpl implements MediaService {
         try {
             return mediaDao.findFilmByFilmName(filmName, language);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found");
             throw new ServiceException("Film not found", e);
         }
     }
@@ -234,7 +211,6 @@ public class MediaServiceImpl implements MediaService {
         try {
             return mediaDao.findFilmByDescription(description, language);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found");
             throw new ServiceException("Film not found", e);
         }
     }
@@ -244,7 +220,6 @@ public class MediaServiceImpl implements MediaService {
         try {
             return mediaDao.findFilmByGenre(genre, language);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Film not found");
             throw new ServiceException("Film not found", e);
         }
     }

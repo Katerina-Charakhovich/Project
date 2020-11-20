@@ -1,11 +1,11 @@
 package by.epam.project.command.impl.user;
 
 import by.epam.project.command.Command;
-import by.epam.project.command.CommandException;
+import by.epam.project.command.exception.CommandException;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
-import by.epam.project.entity.impl.User;
+import by.epam.project.service.UserService;
 import by.epam.project.util.ValidationUser;
 import by.epam.project.service.exception.ServiceException;
 import by.epam.project.service.impl.UserServiceImpl;
@@ -15,17 +15,14 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ * Command for registering a new user
+ */
 public class RegistrationCommand implements Command {
 
     public static final Logger LOGGER = LogManager.getLogger();
     private ValidationUser validationUser = ValidationUser.getInstance();
-    private UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
-    private Router router;
-
-    /**
-     * The type Registration command.
-     */
+    private UserService userService = UserServiceImpl.getInstance();
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -34,37 +31,29 @@ public class RegistrationCommand implements Command {
         String password = request.getParameter(RequestAttribute.PASSWORD);
         String repeatPassword = request.getParameter(RequestAttribute.REPEAT_PASSWORD);
         if (!password.equals(repeatPassword)) {
-            boolean registrationErrorPasswords = true;
-            request.setAttribute(RequestAttribute.PASSWORDS_DO_NOT_MATCH,
-                    registrationErrorPasswords);
+            request.setAttribute(RequestAttribute.PASSWORDS_DO_NOT_MATCH, true);
             page = PathToPage.REGISTRATION_PAGE;
-            router = new Router(page);
+            return new Router(page);
         }
-        if (!validationUser.isRightPassword(password) && !validationUser.isRightLogin(email)) {
-            boolean registrationErrorSymbols = true;
-            request.setAttribute(RequestAttribute.INCORRECT_ERROR_SYMBOLS, registrationErrorSymbols);
+        if (!validationUser.isRightLogin(email) || !validationUser.isRightPassword(password)) {
+            request.setAttribute(RequestAttribute.INCORRECT_ERROR_SYMBOLS, true);
             page = PathToPage.REGISTRATION_PAGE;
-            router = new Router(page);
+            return new Router(page);
         }
         try {
-            if (userServiceImpl.create(email, password)) {
-                User user = userServiceImpl.findUserWithTheAllInfoByLogin(email);
-                request.getSession().setAttribute(RequestAttribute.ROLE, user.getUserRole());
-                request.getSession().setAttribute(RequestAttribute.EMAIL, email);
-                page = PathToPage.INDEX_PAGE;
-                router = new Router(page);
+            Router router;
+            if (userService.create(email, password)) {
+                router = new Router(PathToPage.LOGIN_PAGE);
                 router.useRedirect();
             } else {
-                boolean registrationError = true;
-                request.setAttribute(RequestAttribute.REGISTRATION_ERROR, registrationError);
-                page = PathToPage.REGISTRATION_PAGE;
-                router = new Router(page);
+                request.setAttribute(RequestAttribute.REGISTRATION_ERROR, true);
+                router = new Router(PathToPage.REGISTRATION_PAGE);
             }
+            return router;
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "Registration failed", e);
             throw new CommandException("Registration failed", e);
         }
-        return router;
     }
 }
 

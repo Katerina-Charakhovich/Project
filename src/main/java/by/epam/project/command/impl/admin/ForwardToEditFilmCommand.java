@@ -4,7 +4,7 @@ import by.epam.project.command.Command;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
-import by.epam.project.command.CommandException;
+import by.epam.project.command.exception.CommandException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.service.MediaService;
 import by.epam.project.service.exception.ServiceException;
@@ -15,16 +15,14 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-
-
+/**
+ * Forward to edit film command.
+ */
 public class ForwardToEditFilmCommand implements Command {
 
     public static final Logger LOGGER = LogManager.getLogger();
     private MediaService mediaService = MediaServiceImpl.getInstance();
 
-    /**
-     * Forward to edit film command.
-     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.FILM_EDIT_EN;
@@ -39,10 +37,16 @@ public class ForwardToEditFilmCommand implements Command {
                 == null ? (String) request.getSession().getAttribute(RequestAttribute.CURRENT_FILM_LANG)
                 : request.getParameter(RequestAttribute.CURRENT_FILM_LANG);
         String active = request.getParameter(RequestAttribute.FILM_ACTIVE);
-        Film film;
         try {
-            film = mediaService.findFilmById(filmId, currentFilmLang);
-            request.getSession().setAttribute(RequestAttribute.FILM_NAME, film.getFilmName());
+            Film film = mediaService.findFilmById(filmId, currentFilmLang);
+            if (film == null) {
+                throw new CommandException("Film is broken. Please contact your system administrator");
+            }
+            if (RequestAttribute.EN.equals(currentFilmLang)) {
+                request.getSession().setAttribute(RequestAttribute.FILM_NAME, film.getFilmName());
+            } else {
+                request.setAttribute(RequestAttribute.FILM_NAME, film.getFilmName() == null ? "" : film.getFilmName());
+            }
             request.getSession().setAttribute(RequestAttribute.CURRENT_DESCRIPTION, film.getFilmInfo().getDescription());
             request.getSession().setAttribute(RequestAttribute.CURRENT_GENRE, film.getFilmInfo().getGenre());
             request.getSession().setAttribute(RequestAttribute.CURRENT_LINK, film.getFilmInfo().getLink());

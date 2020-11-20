@@ -4,19 +4,18 @@ package by.epam.project.dao.impl;
 import by.epam.project.dao.ColumnName;
 import by.epam.project.dao.UserDao;
 import by.epam.project.pool.ConnectionPool;
-import by.epam.project.dao.DaoException;
+import by.epam.project.dao.exception.DaoException;
 import by.epam.project.entity.impl.User;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import by.epam.project.pool.exception.PoolException;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * The class contains query`s processing to the database for the user
+ */
 public class UserDaoImpl implements UserDao {
-    public static final Logger LOGGER = LogManager.getLogger();
     private static UserDaoImpl instance;
     private static final String SQL_SELECT_USERS_ON_PAGE =
             "SELECT id_user,role, email,name_user, gender, country, locked FROM testlogin.users " +
@@ -75,8 +74,7 @@ public class UserDaoImpl implements UserDao {
                 String role = resultSet.getString(ColumnName.ROLE_USER);
                 user = new User(userId, email, role);
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("User not found", e);
         }
         return user;
@@ -95,8 +93,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(1, email);
             statement.setString(2, password);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Creation failed", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("Creation failed", e);
         }
         return result;
@@ -109,8 +106,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, user.getEmail());
             statement.setString(1, User.UserRole.ADMIN.name());
             statement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Role not updated", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("Role not updated", e);
         }
     }
@@ -121,16 +117,16 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_COUNT_USERS)) {
             statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                int countUsers = resultSet.getInt(1);
-                if (countUsers == 0) {
-                    result = false;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int countUsers = resultSet.getInt(1);
+                    if (countUsers == 0) {
+                        result = false;
+                    }
                 }
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
-            throw new DaoException("User not found", e);
+        } catch (SQLException | PoolException e) {
+            throw new DaoException("Select operation failed", e);
         }
         return result;
     }
@@ -144,20 +140,20 @@ public class UserDaoImpl implements UserDao {
             statement.setInt(2, start);
             statement.setInt(3, adminsOnPage);
             statement.setString(1, User.UserRole.ADMIN.name());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                User user = new User();
-                user.setEmail(resultSet.getString(ColumnName.EMAIL));
-                user.setUserId(resultSet.getLong(ColumnName.ID_USER));
-                user.setName(resultSet.getString(ColumnName.NAME_USER));
-                user.setLocked(resultSet.getBoolean(ColumnName.LOCKED));
-                user.setCountry(resultSet.getString(ColumnName.COUNTRY));
-                user.setUserGender(resultSet.getString(ColumnName.GENDER));
-                user.setUserRole(resultSet.getString(ColumnName.ROLE_USER));
-                admins.add(user);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setEmail(resultSet.getString(ColumnName.EMAIL));
+                    user.setUserId(resultSet.getLong(ColumnName.ID_USER));
+                    user.setName(resultSet.getString(ColumnName.NAME_USER));
+                    user.setLocked(resultSet.getBoolean(ColumnName.LOCKED));
+                    user.setCountry(resultSet.getString(ColumnName.COUNTRY));
+                    user.setUserGender(resultSet.getString(ColumnName.GENDER));
+                    user.setUserRole(resultSet.getString(ColumnName.ROLE_USER));
+                    admins.add(user);
+                }
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("User not found", e);
         }
         return admins;
@@ -170,8 +166,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(2, user.getEmail());
             statement.setString(1, User.UserRole.USER.name());
             statement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Role not updated", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("Role not updated", e);
         }
         return user;
@@ -183,12 +178,12 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_COUNT_OF_ROWS)) {
             statement.setString(1, User.UserRole.ADMIN.name());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                numOfRows = resultSet.getInt(1);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    numOfRows = resultSet.getInt(1);
+                }
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("User not found", e);
         }
         return numOfRows;
@@ -200,12 +195,12 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_USER_ID_BY_LOGIN)) {
             statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                userId = resultSet.getLong(ColumnName.ID_USER);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    userId = resultSet.getLong(ColumnName.ID_USER);
+                }
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User id not found", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("User id not found", e);
         }
         return userId;
@@ -224,18 +219,18 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_LOGIN)) {
             statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                userEmail = resultSet.getString(ColumnName.EMAIL);
-                userPassword = resultSet.getString(ColumnName.PASSWORD);
-            }
-            if (userEmail != null && userPassword != null) {
-                if (userEmail.equals(email) && userPassword.equals(password)) {
-                    result = true;
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    userEmail = resultSet.getString(ColumnName.EMAIL);
+                    userPassword = resultSet.getString(ColumnName.PASSWORD);
+                }
+                if (userEmail != null && userPassword != null) {
+                    if (userEmail.equals(email) && userPassword.equals(password)) {
+                        result = true;
+                    }
                 }
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("User not found", e);
         }
         return result;
@@ -251,20 +246,20 @@ public class UserDaoImpl implements UserDao {
             statement.setInt(2, start);
             statement.setInt(3, usersOnPage);
             statement.setString(1, User.UserRole.USER.name());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                User user = new User();
-                user.setEmail(resultSet.getString(ColumnName.EMAIL));
-                user.setUserId(resultSet.getLong(ColumnName.ID_USER));
-                user.setName(resultSet.getString(ColumnName.NAME_USER));
-                user.setLocked(resultSet.getBoolean(ColumnName.LOCKED));
-                user.setCountry(resultSet.getString(ColumnName.COUNTRY));
-                user.setUserGender(resultSet.getString(ColumnName.GENDER));
-                user.setUserRole(resultSet.getString(ColumnName.ROLE_USER));
-                undeletedUsers.add(user);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setEmail(resultSet.getString(ColumnName.EMAIL));
+                    user.setUserId(resultSet.getLong(ColumnName.ID_USER));
+                    user.setName(resultSet.getString(ColumnName.NAME_USER));
+                    user.setLocked(resultSet.getBoolean(ColumnName.LOCKED));
+                    user.setCountry(resultSet.getString(ColumnName.COUNTRY));
+                    user.setUserGender(resultSet.getString(ColumnName.GENDER));
+                    user.setUserRole(resultSet.getString(ColumnName.ROLE_USER));
+                    undeletedUsers.add(user);
+                }
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("User not found", e);
         }
         return undeletedUsers;
@@ -272,25 +267,26 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findUserWithTheAllInfoByLogin(String email) throws DaoException {
-        User user = new User();
+        User user = null;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_THE_ALL_INFO_BY_LOGIN)) {
             statement.setString(1, email);
-            ResultSet resultSet = statement.executeQuery();
+            try (ResultSet resultSet = statement.executeQuery()) {
 
-            while (resultSet.next()) {
-                user.setUserId(resultSet.getLong(ColumnName.ID_USER));
-                user.setEmail(resultSet.getString(ColumnName.EMAIL));
-                user.setLocked(resultSet.getBoolean(ColumnName.LOCKED));
-                user.setUserRole(resultSet.getString(ColumnName.ROLE_USER));
-                user.setAboutMe(resultSet.getString(ColumnName.ABOUT_ME));
-                user.setName(resultSet.getString(ColumnName.NAME_USER));
-                user.setAvatar(resultSet.getString(ColumnName.AVATAR));
-                user.setCountry(resultSet.getString(ColumnName.COUNTRY));
-                user.setUserGender(resultSet.getString(ColumnName.GENDER));
+                while (resultSet.next()) {
+                    user = new User();
+                    user.setUserId(resultSet.getLong(ColumnName.ID_USER));
+                    user.setEmail(resultSet.getString(ColumnName.EMAIL));
+                    user.setLocked(resultSet.getBoolean(ColumnName.LOCKED));
+                    user.setUserRole(resultSet.getString(ColumnName.ROLE_USER));
+                    user.setAboutMe(resultSet.getString(ColumnName.ABOUT_ME));
+                    user.setName(resultSet.getString(ColumnName.NAME_USER));
+                    user.setAvatar(resultSet.getString(ColumnName.AVATAR));
+                    user.setCountry(resultSet.getString(ColumnName.COUNTRY));
+                    user.setUserGender(resultSet.getString(ColumnName.GENDER));
+                }
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("User not found", e);
         }
         return user;
@@ -306,8 +302,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(4, user.getAboutMe());
             statement.setString(5, user.getEmail());
             statement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Info has not been updated", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("Info has not been updated", e);
         }
         return user;
@@ -320,9 +315,7 @@ public class UserDaoImpl implements UserDao {
             statement.setString(1, user.getAvatar());
             statement.setString(2, user.getEmail());
             statement.executeUpdate();
-
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Avatar has not been updated", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("Avatar has not been updated", e);
         }
         return user;
@@ -334,12 +327,12 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL_SELECT_COUNT_OF_ROWS)) {
             statement.setString(1, User.UserRole.USER.name());
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                numOfRows = resultSet.getInt(1);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    numOfRows = resultSet.getInt(1);
+                }
             }
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "User not found", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("User not found", e);
         }
         return numOfRows;
@@ -352,8 +345,7 @@ public class UserDaoImpl implements UserDao {
             statement.setBoolean(1, user.isLocked());
             statement.setString(2, user.getEmail());
             statement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.log(Level.ERROR, "Info not updated", e);
+        } catch (SQLException | PoolException e) {
             throw new DaoException("Info not updated", e);
         }
     }

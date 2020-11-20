@@ -1,6 +1,7 @@
 package by.epam.project.pool;
 
 
+import by.epam.project.pool.exception.PoolException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +14,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.Properties;
-
 
 
 class ConnectionCreator {

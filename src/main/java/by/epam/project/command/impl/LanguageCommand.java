@@ -1,39 +1,41 @@
 package by.epam.project.command.impl;
 
-import by.epam.project.command.Command;
-import by.epam.project.command.PathToPage;
-import by.epam.project.command.RequestAttribute;
-import by.epam.project.command.CommandException;
+import by.epam.project.command.*;
+import by.epam.project.command.exception.CommandException;
 import by.epam.project.command.factory.ActionFactory;
-import by.epam.project.command.Router;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ * Command for changing the language in the application
+ */
 public class LanguageCommand implements Command {
-    private static final String LOCALE = "en";
-
-    /**
-     * The type Language command.
-     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        String localeFromNavButton = request.getParameter(RequestAttribute.CURRENT_NAV_LOCALE);
-        String action = request.getParameter(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND);
-        if (LOCALE.equalsIgnoreCase(localeFromNavButton)) {
+        String localeFromNavButton = request.getParameter(RequestAttribute.CURRENT_NAV_LOCALE) == null
+                ? RequestAttribute.EN : request.getParameter(RequestAttribute.CURRENT_NAV_LOCALE);
+        String action = request.getParameter(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND) == null
+                ? (String) request.getSession().getAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND)
+                : request.getParameter(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND);
+        String language = (String) request.getSession().getAttribute(RequestAttribute.LANGUAGE);
+        if (RequestAttribute.EN.equalsIgnoreCase(localeFromNavButton) || RequestAttribute.EN.equalsIgnoreCase(language)) {
             request.getSession().setAttribute(RequestAttribute.LANGUAGE, RequestAttribute.LOCALE_RU);
         } else {
             request.getSession().setAttribute(RequestAttribute.LANGUAGE, RequestAttribute.LOCALE_EN);
         }
-        String currentPage = (String) request.getSession().getAttribute(RequestAttribute.CURRENT_PAGE);
+        request.setAttribute(RequestAttribute.LANGUAGE_CHANGED, true);
+        String sessionCurrentPage = (String) request.getSession().getAttribute(RequestAttribute.CURRENT_PAGE);
+        String currentPage = sessionCurrentPage == null ? PathToPage.LOGIN_PAGE : sessionCurrentPage;
+        if (PathToPage.INDEX_PAGE.equals(currentPage) && RequestAttribute.EN.equalsIgnoreCase(language)) {
+            currentPage = PathToPage.LOGIN_PAGE;
+        }
         Router router = new Router(currentPage);
         if (action != null && !action.isEmpty()) {
             Command current = new EmptyCommand();
-            current = ActionFactory.getCommand(request, current, action);
+            current = ActionFactory.getCommand(current, action);
             router = current.execute(request);
         }
-        router.setPage(currentPage != null ? currentPage : PathToPage.LOGIN_PAGE);
         return router;
     }
 }

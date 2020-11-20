@@ -1,7 +1,7 @@
 package by.epam.project.service.impl;
 
 import by.epam.project.dao.PurchasedFilmDao;
-import by.epam.project.dao.DaoException;
+import by.epam.project.dao.exception.DaoException;
 import by.epam.project.dao.impl.PurchasedDaoImpl;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.FilmInfo;
@@ -11,16 +11,15 @@ import by.epam.project.service.MediaService;
 import by.epam.project.service.PurchasedFilmService;
 import by.epam.project.service.UserService;
 import by.epam.project.service.exception.ServiceException;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Service that works with purchased films
+ */
 public class PurchasedFilmServiceImpl implements PurchasedFilmService {
-    public static final Logger LOGGER = LogManager.getLogger();
     private static final PurchasedFilmServiceImpl instance = new PurchasedFilmServiceImpl();
     private UserService userService = UserServiceImpl.getInstance();
     private MediaService mediaService = MediaServiceImpl.getInstance();
@@ -48,7 +47,6 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
                 films.add(film);
             }
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Purchased Films not found");
             throw new ServiceException();
         }
         return films;
@@ -59,7 +57,6 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
         try {
             return purchasedFilmDao.findEntityById(userId);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Purchased Films not found");
             throw new ServiceException();
         }
     }
@@ -73,9 +70,7 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
             if (purchasedFilmDao.create(purchasedFilm)) {
                 result = true;
             }
-
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Failed to buy movie", e);
             throw new ServiceException("Failed to buy movie", e);
         }
         return result;
@@ -93,7 +88,6 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
                 }
             }
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Purchased Films not found");
             throw new ServiceException();
         }
         return purchasedFilm;
@@ -106,7 +100,6 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
             return purchasedFilmDao.findAllInfoAboutUsersAndPurchasedFilms
                     (currentPage, purchasedFilmsOnPage, language);
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Purchased Films not found");
             throw new ServiceException();
         }
     }
@@ -116,7 +109,6 @@ public class PurchasedFilmServiceImpl implements PurchasedFilmService {
         try {
             return purchasedFilmDao.calculateNumberOfRowsByPurchasedFilms();
         } catch (DaoException e) {
-            LOGGER.log(Level.ERROR, "Purchased film not found", e);
             throw new ServiceException("Purchased film not found", e);
         }
     }

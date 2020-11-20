@@ -83,6 +83,9 @@
                     <c:if test="${errorData == true}">
                         <div class="validation"><fmt:message key="${field}"/>: <fmt:message key="Message.data"/></div>
                     </c:if>
+                    <c:if test="${errorDataExistsFilm == true}">
+                        <div class="validation"><fmt:message key="Label.ExistsFilm"/></div>
+                    </c:if>
                     <div class="submit-create">
                         <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="Submit.Save"/>">
                     </div>

@@ -8,6 +8,9 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Algorithm for hash password
+ */
 public class HashPassword {
 
     public static final Logger LOGGER = LogManager.getLogger();
@@ -19,10 +22,6 @@ public class HashPassword {
     private HashPassword() {
     }
 
-    /**
-     * Algorithm for hash password
-     */
-
     public static String hash(String password) {
         String hashPassword = null;
         try {
@@ -33,7 +32,6 @@ public class HashPassword {
             while (hashPassword.length() < MAX_LENGTH_PASSWORD) {
                 hashPassword = SALT.concat(hashPassword);
             }
-
         } catch (NoSuchAlgorithmException e) {
             LOGGER.log(Level.ERROR, "Algorithm not found", e);
         }

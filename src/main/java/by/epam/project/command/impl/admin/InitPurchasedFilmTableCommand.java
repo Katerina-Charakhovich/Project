@@ -1,10 +1,7 @@
 package by.epam.project.command.impl.admin;
 
-import by.epam.project.command.Command;
-import by.epam.project.command.PathToPage;
-import by.epam.project.command.RequestAttribute;
-import by.epam.project.command.Router;
-import by.epam.project.command.CommandException;
+import by.epam.project.command.*;
+import by.epam.project.command.exception.CommandException;
 import by.epam.project.entity.impl.Film;
 import by.epam.project.entity.impl.User;
 import by.epam.project.service.PurchasedFilmService;
@@ -17,7 +14,9 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-
+/**
+ * Command to initialize the purchased film table
+ */
 public class InitPurchasedFilmTableCommand implements Command {
 
     public static final Logger LOGGER = LogManager.getLogger();
@@ -25,32 +24,29 @@ public class InitPurchasedFilmTableCommand implements Command {
     private static final String DEFAULT_VALUE_OF_PURCHASED_FILM_PAGE = "1";
     private static final String DEFAULT_VALUE_OF_PURCHASED_FILMS_ON_PAGES = "8";
 
-    /**
-     * The type Init purchased film table command.
-     */
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String page = PathToPage.PURCHASED_FILMS_TABLE;
-        String current = request.getParameter(RequestAttribute.CURRENT_PURCHASED_FILM_PAGE) == null
-                ? DEFAULT_VALUE_OF_PURCHASED_FILM_PAGE
-                : request.getParameter(RequestAttribute.CURRENT_PURCHASED_FILM_PAGE);
-        String countOfPurchasedFilms = request.getParameter(RequestAttribute.PURCHASED_FILMS_ON_PAGE) == null
-                ? DEFAULT_VALUE_OF_PURCHASED_FILMS_ON_PAGES
-                : request.getParameter(RequestAttribute.PURCHASED_FILMS_ON_PAGE);
+        String current = CommandUtil.calculateTableParameter(request, RequestAttribute.CURRENT_PURCHASED_FILM_PAGE, DEFAULT_VALUE_OF_PURCHASED_FILM_PAGE);
+        String countOfPurchasedFilms = CommandUtil.calculateTableParameter(request, RequestAttribute.PURCHASED_FILMS_ON_PAGE, DEFAULT_VALUE_OF_PURCHASED_FILMS_ON_PAGES);
         int currentPage = Integer.parseInt(current);
         String language = (String) request.getSession().getAttribute(RequestAttribute.LANGUAGE);
         int purchasedFilmsOnPage = Integer.parseInt(countOfPurchasedFilms);
         Map<User, Film> purchasedFilms;
         try {
+            int nOfPages = calcNumberOfPages(purchasedFilmsOnPage);
+            if (currentPage > nOfPages) {
+                currentPage = nOfPages;
+            }
             purchasedFilms = purchasedFilmService.findAllInfoAboutPurchasedFilms
                     (currentPage, purchasedFilmsOnPage, language.toLowerCase());
-            request.setAttribute(RequestAttribute.NUMBER_OF_PAGES, calcNumberOfPages(purchasedFilmsOnPage));
+            request.getSession().setAttribute(RequestAttribute.NUMBER_OF_PAGES_PURCHASE_TABLE, nOfPages);
         } catch (ServiceException e) {
             LOGGER.log(Level.ERROR, "Command  initPurchasedFimTable invalid", e);
             throw new CommandException("Command  initPurchasedFimTable invalid", e);
         }
-        request.setAttribute(RequestAttribute.CURRENT_PURCHASED_FILM_PAGE, currentPage);
-        request.setAttribute(RequestAttribute.PURCHASED_FILMS_ON_PAGE, purchasedFilmsOnPage);
+        request.getSession().setAttribute(RequestAttribute.CURRENT_PURCHASED_FILM_PAGE, currentPage);
+        request.getSession().setAttribute(RequestAttribute.PURCHASED_FILMS_ON_PAGE, purchasedFilmsOnPage);
         request.setAttribute(RequestAttribute.MAP_PURCHASED_FILMS, purchasedFilms);
         request.setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND,
                 RequestAttribute.COMMAND_PURCHASED_FILM_TABLE);

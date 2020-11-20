@@ -45,15 +45,15 @@
                 <button class="btn btn-secondary dropdown-toggle" id="dropDownGroup" type="button"
                         data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
-                    ${filmsOnPage}
+                    ${filmsOnPageFilmTable}
                 </button>
                 <form method="post" action="${request.getContextPath()}/TaskWebLogin_war/controller">
                     <input type="hidden" name="command" value="admin_page_films"/>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                        <button class="dropdown-item" type="input" name="filmsOnPage" value="4">4</button>
-                        <button class="dropdown-item" type="input" name="filmsOnPage" value="8">8</button>
-                        <button class="dropdown-item" type="input" name="filmsOnPage" value="12">12</button>
-                        <button class="dropdown-item" type="input" name="filmsOnPage" value="16">16</button>
+                        <button class="dropdown-item" type="input" name="filmsOnPageFilmTable" value="4">4</button>
+                        <button class="dropdown-item" type="input" name="filmsOnPageFilmTable" value="8">8</button>
+                        <button class="dropdown-item" type="input" name="filmsOnPageFilmTable" value="12">12</button>
+                        <button class="dropdown-item" type="input" name="filmsOnPageFilmTable" value="16">16</button>
                     </div>
                 </form>
             </div>
@@ -92,7 +92,7 @@
                                     ...
                                 </a>
 
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                                     <a class="dropdown-item"
                                        href="controller?command=view_film_page&filmId=${film.filmId}&filmName=${film.filmName}&filmAvatar=${film.filmAvatar}">
                                         <fmt:message key="View.film"/>
@@ -108,26 +108,26 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
+            <nav class="app-pagination" aria-label="Page navigation example">
                 <ul class="pagination pg-blue">
-                    <c:forEach begin="1" end="${noOfPages}" var="i">
+                    <c:forEach begin="1" end="${noOfPagesFilmTable}" var="i">
                         <c:choose>
-                            <c:when test="${currentFilmPage eq i}">
+                            <c:when test="${currentTableFilmPage eq i}">
                                 <li class="page-item active"><span class="page-link">
                                     ${i} <span class="sr-only">(current)</span>
                                 </li>
                             </c:when>
                             <c:otherwise>
                                 <li class="page-item"><a class="page-link"
-                                                         href="controller?command=admin_page_films&filmsOnPage=${filmsOnPage}&currentFilmPage=${i}">${i}</a>
+                                                         href="controller?command=admin_page_films&filmsOnPageFilmTable=${filmsOnPageFilmTable}&currentTableFilmPage=${i}">${i}</a>
                                 </li>
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
 
-                    <c:if test="${currentFilmPage lt noOfPages}">
+                    <c:if test="${currentTableFilmPage lt noOfPagesFilmTable}">
                         <li class="page-item"><a class="page-link"
-                                                 href="controller?command=admin_page_films&filmsOnPage=${filmsOnPage}&currentFilmPage=${currentFilmPage+1}"><fmt:message
+                                                 href="controller?command=admin_page_films&filmsOnPageFilmTable=${filmsOnPageFilmTable}&currentTableFilmPage=${currentTableFilmPage+1}"><fmt:message
                                 key="Label.next"/></a>
                         </li>
                     </c:if>

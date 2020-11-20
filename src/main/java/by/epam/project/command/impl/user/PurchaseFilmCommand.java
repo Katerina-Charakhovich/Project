@@ -4,7 +4,7 @@ import by.epam.project.command.Command;
 import by.epam.project.command.PathToPage;
 import by.epam.project.command.RequestAttribute;
 import by.epam.project.command.Router;
-import by.epam.project.command.CommandException;
+import by.epam.project.command.exception.CommandException;
 import by.epam.project.service.PurchasedFilmService;
 import by.epam.project.service.exception.ServiceException;
 import by.epam.project.service.impl.PurchasedFilmServiceImpl;
@@ -14,15 +14,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ * User movie purchase
+ */
 public class PurchaseFilmCommand implements Command {
 
     public static final Logger LOGGER = LogManager.getLogger();
     private PurchasedFilmService purchasedFilmService = PurchasedFilmServiceImpl.getInstance();
-
-    /**
-     * The type Purchase film command.
-     */
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -49,11 +47,14 @@ public class PurchaseFilmCommand implements Command {
                     request.getSession().setAttribute(RequestAttribute.CURRENT_LINK, link);
                     request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_NAME, filmName);
                     request.getSession().setAttribute(RequestAttribute.CURRENT_FILM_AVATAR, filmAvatar);
+                    request.getSession().setAttribute(RequestAttribute.LANG_CHANGE_PROCESS_COMMAND,
+                            RequestAttribute.COMMAND_FILM);
+                    request.getSession().setAttribute(RequestAttribute.JUST_BOUGHT, true);
                     router = new Router(PathToPage.INIT_FILM_PAGE);
                     router.useRedirect();
                 } else {
                     router = new Router(PathToPage.ERROR_PAGE);
-                    request.setAttribute(RequestAttribute.ERROR, "Unsuccessful attempt to buy a movie");
+                    request.setAttribute(RequestAttribute.ERROR, RequestAttribute.ERROR_MESSAGE_FOR_BUY_FILM);
                 }
             }
         } catch (ServiceException e) {

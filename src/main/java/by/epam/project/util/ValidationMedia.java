@@ -4,7 +4,7 @@ import by.epam.project.command.CommandUtil;
 
 
 /**
- * The type Validation media.
+ * Class for movie validation
  */
 public class ValidationMedia {
     private static ValidationMedia instance = new ValidationMedia();
@@ -155,7 +155,7 @@ public class ValidationMedia {
      * @return the boolean
      */
     public boolean validateNameRu(String filmName) {
-        return CommandUtil.hasValue(filmName) && isRightFilmNameRu(filmName);
+        return !CommandUtil.hasValue(filmName) || isRightFilmNameRu(filmName);
     }
 
     /**

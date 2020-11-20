@@ -1,5 +1,6 @@
 package by.epam.project.dao;
 
+import by.epam.project.dao.exception.DaoException;
 import by.epam.project.entity.impl.User;
 
 import java.util.List;
@@ -133,6 +134,5 @@ public interface UserDao extends BaseDao<User> {
      * @throws DaoException the dao exception
      */
     long findUserIdByLogin(String email) throws DaoException;
-
 }
 
