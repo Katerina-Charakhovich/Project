@@ -31,6 +31,7 @@ public class MediaServiceImpl implements MediaService {
         return instance;
     }
 
+    @Override
     public boolean isFilmExist(String name) throws ServiceException {
         try {
             return mediaDao.isFilmExist(name);
@@ -39,6 +40,7 @@ public class MediaServiceImpl implements MediaService {
         }
     }
 
+    @Override
     public List<Film> findAllActiveFilms(int currentPage, int filmsOnPage, String language,
                                          boolean active) throws ServiceException {
         try {
@@ -48,6 +50,7 @@ public class MediaServiceImpl implements MediaService {
         }
     }
 
+    @Override
     public int calculateNumberOfAllRows() throws ServiceException {
         try {
             return mediaDao.calculateNumberOfAllRows();
@@ -56,6 +59,7 @@ public class MediaServiceImpl implements MediaService {
         }
     }
 
+    @Override
     public int calculateNumberOfActiveRows() throws ServiceException {
         try {
             return mediaDao.calculateNumberOfActiveRows();
@@ -64,6 +68,7 @@ public class MediaServiceImpl implements MediaService {
         }
     }
 
+    @Override
     public Film findFilmByName(String name, String language) throws ServiceException {
         try {
             return mediaDao.findFilmByName(name, language);
@@ -72,6 +77,7 @@ public class MediaServiceImpl implements MediaService {
         }
     }
 
+    @Override
     public Film findFilmById(long id, String language) throws ServiceException {
         try {
             return mediaDao.findFilmById(id, language);
@@ -80,6 +86,7 @@ public class MediaServiceImpl implements MediaService {
         }
     }
 
+    @Override
     public FilmInfo findInfoById(long filmId, String language) throws ServiceException {
         try {
             return mediaDao.findInfoById(filmId, language);

@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService {
         return instance;
     }
 
+    @Override
     public boolean isLoginAndPasswordValid(String enteredLogin, String enteredPassword) throws
             ServiceException {
         String hashPassword = HashPassword.hash(enteredPassword);
@@ -36,6 +37,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
     public boolean create(String enteredLogin, String enteredPassword) throws ServiceException {
         boolean result = false;
         if (!isLoginExistsForCreationUser(enteredLogin)) {
@@ -49,6 +51,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
     public boolean isLoginExistsForCreationUser(String enteredLogin) throws ServiceException {
         try {
             return userDao.isUserExist(enteredLogin);
@@ -58,6 +61,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public boolean isLoginExists(String enteredLogin) throws ServiceException {
         boolean result;
         try {
@@ -71,6 +75,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
     public User findUserWithTheAllInfoByLogin(String email) throws ServiceException {
         try {
             User user = userDao.findUserWithTheAllInfoByLogin(email);
@@ -83,6 +88,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public User updateInfo(String email, String name,
                            String aboutMe, String country, String gender) throws ServiceException {
         User user = null;
@@ -101,6 +107,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     public User updateAvatar(String email, String avatar) throws ServiceException {
         User user = new User();
         if (isLoginExists(email)) {
@@ -115,6 +122,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     public List<User> findUsersOnPage(int currentPage, int usersOnPage) throws ServiceException {
         try {
             return userDao.findUsersOnPage(currentPage, usersOnPage);
@@ -123,6 +131,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public int calculateNumberOfRowsByUser() throws ServiceException {
         try {
             return userDao.calculateNumberOfRowsByUser();
@@ -140,6 +149,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
     public User lockUser(User user) throws ServiceException {
         try {
             if (isLoginExists(user.getEmail())) {
@@ -152,6 +162,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
     public boolean isUserLocked(String name) throws ServiceException {
         User user = findUserWithTheAllInfoByLogin(name);
         return user.isLocked();
